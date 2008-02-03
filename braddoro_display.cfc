@@ -63,16 +63,16 @@
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="display_topicDropdown">
-<cfargument type="query" name="topicQuery" required="true">
-<cfargument type="numeric" name="topicID" default="0">
-<cfargument type="string" name="selectName" default="topicID">
+<cfargument name="topicQuery" type="query" required="true">
+<cfargument name="topicID" type="numeric" default="0">
+<cfargument name="selectName" type="string" default="topicID">
 
 	<cfsavecontent variable="ret_display_topicDropdown">
 		<cfoutput>
 			<SELECT name="#arguments.selectName#" id="#arguments.selectName#">
 			<option value="0"<cfif arguments.topicID EQ 0> SELECTED</cfif></option>
 			<cfloop query="arguments.topicQuery">
-				<cfset lcl_topicID = topicID>
+				<cfset lcl_topicID = arguments.topicQuery.topicID>
 				<option value="#arguments.topicQuery.topicID#"<cfif lcl_topicID EQ arguments.topicID> SELECTED</cfif>>#topic#</option>
 			</cfloop>
 			</SELECT>
@@ -193,7 +193,7 @@
 	<cfsavecontent variable="ret_display_reply">
 		<cfoutput>
 		<input type="hidden" id="postReplyID_#arguments.PostID#" value="#arguments.replyID#">
-		<textarea id="replytext_#arguments.PostID#" name="replytext_#arguments.PostID#" cols="80" rows="5">#arguments.reply#</textarea>
+		<textarea id="replytext_#arguments.PostID#" name="replytext_#arguments.PostID#" cols="80" rows="20">#arguments.reply#</textarea>
 		<br>
 		<input type="button" id="saveReply_#arguments.PostID#" name="saveReply_#arguments.PostID#" alt="save reply" value="save reply" title="save reply" class="navButtons" style="" onclick="js_buildRequest('#lcl_task#','div_main',#arguments.postID#);">
 		</cfoutput>
