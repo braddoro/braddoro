@@ -6,8 +6,9 @@
 	<cfargument name="userName" type="string" default="">
 	<cfargument name="password" type="string" default="">
 	<cfargument name="userID" type="numeric" default="0">
+	<cfargument name="remoteIP" type="string" default="">
 	
-	  <cfquery name="q_sql_checkUser" datasource="#module_dsn#">
+	<cfquery name="q_sql_checkUser" datasource="#module_dsn#">
 	    select * from braddoro.dyn_Users where 
 		active = 'Y'
 	<cfif arguments.userID GT 0>
@@ -20,11 +21,17 @@
 		and userName = '#arguments.userName#'
 		and password = '#arguments.password#'
 	</cfif>
-	  </cfquery>
+	 </cfquery>
 	 
 	<cfquery name="q_insert" datasource="#module_dsn#">
 		update braddoro.dyn_Users set lastVisit = now() where userID = #val(q_sql_checkUser.userID)# 
 	</cfquery>
+	<cfif userName NEQ "" and val(q_sql_checkUser.userID) LT 2>
+	<cfquery name="q_insert2" datasource="#module_dsn#">
+		insert into braddoro.log_loginHistory (remoteIP, userName) select '#arguments.remoteIP#', '#arguments.userName#' 
+	</cfquery>
+	</cfif>
+	
 	<cfreturn q_sql_checkUser>
 </cffunction>
 <!--- End Function --->

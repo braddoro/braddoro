@@ -55,7 +55,7 @@ function SQLSafe(string) {
 </cfif>
 <!--- authenticateUser --->
 <cfif form.task EQ "authenticateUser">
-	<cfset x = objBraddoro.logic_authenticateUser(username=form.userName,password=form.password)>
+	<cfset x = objBraddoro.logic_authenticateUser(username=form.userName,password=form.password,remoteIP=cgi.REMOTE_ADDR)>
 	<cfsavecontent variable="_html">
 	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
 	</cfsavecontent>
