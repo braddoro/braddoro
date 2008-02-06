@@ -1,8 +1,12 @@
+<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
+<cfset session.userID = objBraddoro.logic_checkUser(session.userGUID).userID>
+<cfset session.siteName = objBraddoro.logic_checkUser(session.userGUID).siteName>
+<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue="#session.userID#")>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <title><cfoutput>#objBraddoro.logic_GetConstant("siteBanner")#</cfoutput></title>
 <head>
-<link href="braddoro.css" rel="stylesheet" type="text/css">
+<link href="braddoro/braddoro.css" rel="stylesheet" type="text/css">
 <cfoutput>#objBraddoro.logic_javaScript(showDebug=false)#</cfoutput>
 </head>
 <cfoutput>

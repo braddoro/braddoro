@@ -90,10 +90,10 @@ function js_buildRequest(Task, container, itemID) {
 	}
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
-	document.getElementById(container).innerHTML = http_post_request("braddoro_ajax.cfm",sPostString);
+	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
 }
 </script>
-<script type="text/javascript" src="md5.js"></script>
+<script type="text/javascript" src="/braddoro/md5.js"></script>
 	</cfoutput>
 	</cfsavecontent>
 	<cfreturn ret_logic_javaScript>
@@ -126,8 +126,9 @@ function js_buildRequest(Task, container, itemID) {
 <cffunction access="public" output="false" returntype="query" name="logic_authenticateUser">
 <cfargument name="username" type="string" required="true">
 <cfargument name="password" type="string" required="true">
+<cfargument name="remoteIP" type="string" default="">
 
-	<cfset q_logic_authenticateUser = this.sql_checkUser(userName=arguments.userName,password=arguments.password)>
+	<cfset q_logic_authenticateUser = this.sql_checkUser(userName=arguments.userName,password=arguments.password,remoteIP=arguments.remoteIP)>
 	<cfset session.userID = 1>
 	<cfset session.siteName = "">
 	<cfset cookie.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
