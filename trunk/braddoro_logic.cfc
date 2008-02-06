@@ -20,8 +20,7 @@
 
 	<cfsavecontent variable="ret_logic_javaScript">
 	<cfoutput>
-<script language="JavaScript" type="text/javascript">
-
+<script language="javascript" type="text/javascript">
 function ChangeTextSize(element,changeBy) {
 	document.getElementById(element).rows = parseInt(document.getElementById(element).rows)+parseInt(changeBy);
 }
@@ -80,7 +79,7 @@ function js_buildRequest(Task, container, itemID) {
 	}
 	if (Task == "authenticateUser") {
 		sPostString += "userName=" + document.getElementById("username").value + "&";
-		sPostString += "password=" + document.getElementById("password").value + "&";
+		sPostString += "password=" + hex_md5(document.getElementById("password").value) + "&";
 	}
 	if (Task == "saveReply") {
 		sPostString += "replyText=" + document.getElementById("replytext_"+itemID).value.replace(/\r\n/g,"<br>") + "&";
@@ -94,6 +93,7 @@ function js_buildRequest(Task, container, itemID) {
 	document.getElementById(container).innerHTML = http_post_request("braddoro_ajax.cfm",sPostString);
 }
 </script>
+<script type="text/javascript" src="md5.js"></script>
 	</cfoutput>
 	</cfsavecontent>
 	<cfreturn ret_logic_javaScript>
@@ -127,7 +127,10 @@ function js_buildRequest(Task, container, itemID) {
 <cfargument name="username" type="string" required="true">
 <cfargument name="password" type="string" required="true">
 
-	<cfset q_logic_authenticateUser = this.sql_checkUser(userName=arguments.userName,password=hash(arguments.password))>
+	<cfset q_logic_authenticateUser = this.sql_checkUser(userName=arguments.userName,password=arguments.password)>
+	<cfset session.userID = 1>
+	<cfset session.siteName = "">
+	<cfset cookie.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
 	<cfloop query="q_logic_authenticateUser">
 		<cfset session.userID = userID>
 		<cfset session.siteName = siteName>

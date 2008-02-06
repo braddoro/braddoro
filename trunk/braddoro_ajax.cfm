@@ -13,21 +13,13 @@ function SQLSafe(string) {
 <!--- showPost --->
 <cfif form.task EQ "showPost">
 	<cfsavecontent variable="_html">
-	<cfoutput>
-		<!--- #objBraddoro.display_AddPost(
-			UserID="#session.UserID#",
-			Display="none"
-			)# --->
-		#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#
-		</cfoutput>
+	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- composePost --->
 <cfif form.task EQ "composePost">
 	<cfsavecontent variable="_html">
-	<cfoutput>
-		#objBraddoro.logic_addPost(getNone=true)#
-		</cfoutput>
+	<cfoutput>#objBraddoro.logic_addPost(getNone=true)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- addPost --->
@@ -40,38 +32,38 @@ function SQLSafe(string) {
 <!--- searchPost --->
 <cfif form.task EQ "searchPost">
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_showSearch()#</cfoutput>
+	<cfoutput>#objBraddoro.logic_showSearch()#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- getSearch --->
 <cfif form.task EQ "getSearch">
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_getSearch(topicID=form.topicID,filterString=form.Filter)#</cfoutput>
+	<cfoutput>#objBraddoro.logic_getSearch(topicID=form.topicID,filterString=form.Filter)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- editPost --->
 <cfif form.task EQ "editPost">
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_addPost(postID=form.itemID)#</cfoutput>
+	<cfoutput>#objBraddoro.logic_addPost(postID=form.itemID)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- logIn --->
 <cfif form.task EQ "logIn">
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_logIn()#</cfoutput>
+	<cfoutput>#objBraddoro.logic_logIn()#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- authenticateUser --->
 <cfif form.task EQ "authenticateUser">
 	<cfset x = objBraddoro.logic_authenticateUser(username=form.userName,password=form.password)>
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- showBanner --->
 <cfif form.task EQ "showBanner">
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.display_showBanner(siteName=session.siteName)#</cfoutput>
+	<cfoutput>#objBraddoro.display_showBanner(siteName=session.siteName)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- searchPost --->
