@@ -1,3 +1,10 @@
+<cflock timeout="20" type="exclusive" scope="Session">
+	<cfif isdefined("cookie.userGUID")>
+	<cfset session.userGUID = cookie.userGUID>
+	<cfelse>
+		<cfset session.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
+	</cfif>
+</cflock>
 <cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
 <cfset session.userID = objBraddoro.logic_checkUser(session.userGUID).userID>
 <cfset session.siteName = objBraddoro.logic_checkUser(session.userGUID).siteName>
