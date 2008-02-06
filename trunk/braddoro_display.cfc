@@ -13,9 +13,13 @@
 #replace(post,g_crlf,"<br>","All")#
 <br>
 <cfif variables.post_userID EQ session.userID>
-<input type="button" id="editPost_#postID#" name="editPost_#postID#" alt="edit post" value="edit post" title="edit post" class="navButtons" style="" onclick="js_buildRequest('editPost','div_main',#postID#);">
-<input type="button" id="addReply_#postID#" name="addReply_#postID#" alt="add reply" value="add reply" title="add reply" class="navButtons" style="" onclick="js_buildRequest('addReply','div_main',#postID#);">
+<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_buildRequest('editPost','div_main',#postID#);">[edit post]</a>
 </cfif>
+<cfif session.userID GT 1>
+<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_buildRequest('addReply','div_main',#postID#);">[add reply]</a>
+</cfif>
+<!--- <input type="button" id="editPost_#postID#" name="editPost_#postID#" alt="edit post" value="edit post" title="edit post" class="navButtons" style="" onclick="js_buildRequest('editPost','div_main',#postID#);">
+<input type="button" id="addReply_#postID#" name="addReply_#postID#" alt="add reply" value="add reply" title="add reply" class="navButtons" style="" onclick="js_buildRequest('addReply','div_main',#postID#);"> --->
 <cfset q_sql_getReplies = this.sql_getReplies(postID=postID)>
 <cfif q_sql_getReplies.recordCount GT 0>
 <br>
@@ -27,9 +31,10 @@
 #replace(reply,g_crlf,"<br>","All")#
 <br>
 <cfif variables.reply_userID EQ session.userID>
-<input type="button" id="editReply_#replyID#" name="editReply_#replyID#" alt="edit reply" value="edit reply" title="edit reply" class="navButtons" style="" onclick="js_buildRequest('editReply','div_main',#replyID#);">
+<a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_buildRequest('editReply','div_main',#replyID#);">[edit reply]</a>
+<!--- <input type="button" id="editReply_#replyID#" name="editReply_#replyID#" alt="edit reply" value="edit reply" title="edit reply" class="navButtons" style="" onclick="js_buildRequest('editReply','div_main',#replyID#);"> --->
 </cfif>
-<hr>
+<cfif currentRow LT recordCount><hr></cfif>
 </cfloop>
 </fieldset>
 </cfif>
@@ -48,9 +53,11 @@
 
 <cfsavecontent variable="ret_display_navMenu">
 	<cfoutput>
+	<cfif variables.userID LT 2>
+	<input type="button" id="logIn" name="logIn" alt="log in" value="log in" title="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+	</cfif>
 	<input type="button" id="showPost" name="showPost" alt="show posts" value="show posts" title="show posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 	<input type="button" id="searchPost" name="searchPost" alt="search posts" value="search posts" title="search posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">	
-	<input type="button" id="logIn" name="logIn" alt="log in" value="log in" title="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 	<cfif variables.userID GT 1>
 	<input type="button" id="composePost" name="composePost" alt="show posts" value="compose post" title="compose post" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 	</cfif>
