@@ -3,7 +3,7 @@
 <title><cfoutput>#objBraddoro.logic_GetConstant("siteBanner")#</cfoutput></title>
 <head>
 <link href="braddoro.css" rel="stylesheet" type="text/css">
-<cfoutput>#objBraddoro.logic_javaScript(showDebug=false)#</cfoutput>
+<cfoutput>#objBraddoro.logic_javaScript(showDebug=true)#</cfoutput>
 </head>
 <cfoutput>
 <body class="body">
