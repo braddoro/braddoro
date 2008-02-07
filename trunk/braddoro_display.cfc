@@ -10,7 +10,7 @@
 <cfset variables.post_userID = arguments.postQuery.userID>
 <fieldset>
 <legend title="<cfif description neq ''>#description#</cfif>"><strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm TT")# :: #title#</strong><br>posted by #siteName# to #topic#</legend>
-#replace(post,g_crlf,"<br>","All")#
+#post#
 <br>
 <cfif variables.post_userID EQ session.userID>
 <a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_buildRequest('editPost','div_main',#postID#);">[edit post]</a>
@@ -28,7 +28,7 @@
 <cfloop query="q_sql_getReplies">
 <cfset variables.reply_userID = q_sql_getReplies.userID>
 <strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm tt")#&nbsp;:: by #siteName#</strong><br>
-#replace(reply,g_crlf,"<br>","All")#
+#reply#
 <br>
 <cfif variables.reply_userID EQ session.userID>
 <a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_buildRequest('editReply','div_main',#replyID#);">[edit reply]</a>
@@ -60,6 +60,7 @@
 	<input type="button" id="searchPost" name="searchPost" alt="search posts" value="search posts" title="search posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">	
 	<cfif variables.userID GT 1>
 	<input type="button" id="composePost" name="composePost" alt="show posts" value="compose post" title="compose post" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+	<input type="button" id="showMessages" name="showMessages" alt="messages" value="messages" title="messages" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 	</cfif>
 	</cfoutput>
 </cfsavecontent>
@@ -69,24 +70,23 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="String" name="display_topicDropdown">
-<cfargument name="topicQuery" type="query" required="true">
-<cfargument name="topicID" type="numeric" default="0">
+<cffunction access="package" output="false" returntype="String" name="display_queryDropdown">
 <cfargument name="selectName" type="string" default="topicID">
+<cfargument name="dataQuery" type="query" required="true">
+<cfargument name="currentID" type="numeric" default="0">
 
-	<cfsavecontent variable="ret_display_topicDropdown">
+	<cfsavecontent variable="ret_display_queryDropdown">
 		<cfoutput>
 			<SELECT name="#arguments.selectName#" id="#arguments.selectName#">
-			<option value="0"<cfif arguments.topicID EQ 0> SELECTED</cfif></option>
-			<cfloop query="arguments.topicQuery">
-				<cfset lcl_topicID = arguments.topicQuery.topicID>
-				<option value="#arguments.topicQuery.topicID#"<cfif lcl_topicID EQ arguments.topicID> SELECTED</cfif>>#topic#</option>
+			<option value="0"<cfif arguments.currentID EQ 0> SELECTED</cfif></option>
+			<cfloop query="arguments.dataQuery">
+				<option value="#value#"<cfif val(value) EQ val(arguments.currentID)> SELECTED</cfif>>#display#</option>
 			</cfloop>
 			</SELECT>
 		</cfoutput>
 	</cfsavecontent>
 
-	<cfreturn ret_display_topicDropdown>
+	<cfreturn ret_display_queryDropdown>
 </cffunction>
 <!--- End Function --->
 
@@ -116,7 +116,11 @@
 		<legend>#lcl_displayWord#</legend>
 			<table class="tablenormal">
 				<TR>
-					<TD>#this.display_topicDropdown(topicQuery=arguments.topicList,topicID=lcl_topicID)#</TD>
+					<TD>#this.display_queryDropdown(
+							selectName="topicID",
+							dataQuery=arguments.topicList,
+							currentID=lcl_topicID
+							)#</TD>
 				</TR>
 				<TR>
 					<TD><INPUT type="text" name="subject" id="subject" value="#lcl_title#" size="80" maxlength="200"></TD>
@@ -149,7 +153,9 @@
 		<cfoutput>
 			<fieldset>
 			<legend>search</legend>
-			#this.display_topicDropdown(topicQuery=topicList,selectName="topicFilter")#&nbsp;<INPUT type="text" name="filter" id="filter" value="" size="20" maxlength="50">&nbsp;
+			#this.display_queryDropdown(
+				selectName="topicFilter",
+				dataQuery=topicList)#&nbsp;<INPUT type="text" name="filter" id="filter" value="" size="20" maxlength="50">&nbsp;
 			<input type="button" id="saveMe" name="saveMe" alt="search" value="search" title="search" class="navButtons" style="" onclick="js_buildRequest('getSearch', 'div_main',0);">
 			</fieldset>
 		</cfoutput>
@@ -206,6 +212,69 @@
 		</cfoutput>
 	</cfsavecontent>
 	<cfreturn ret_display_reply>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="String" name="display_messageMain">
+<cfargument name="userID" type="numeric" required="true">
+<cfargument name="messageQuery" type="query" required="true">
+<cfargument name="userQuery" type="query" required="true">
+
+<cfsavecontent variable="ret_display_messageMain">
+	<cfoutput>
+		#this.display_messageInput(userID=arguments.userID,userQuery=arguments.userQuery)#
+		<br>
+		<div id="div_messages">#this.display_messageOutput(messageQuery=arguments.messageQuery)#</div>
+	</cfoutput>
+</cfsavecontent>
+<cfreturn ret_display_messageMain>
+
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="String" name="display_messageInput">
+<cfargument name="userID" type="numeric" required="true">
+<cfargument name="userQuery" type="query" required="true">
+<cfsavecontent variable="ret_display_messageInput">
+	<cfoutput>
+	<fieldset>
+	<legend>write message</legend>
+		#this.display_queryDropdown(selectName="message_userID",dataQuery=arguments.userQuery)#<br>
+		<textarea id="messageText" name="messageText" class="navButtons" rows="10" cols="80"></textarea><br>
+		<input type="button" id="saveMessage" name="saveMessage" value="save" class="navButtons" onclick="js_buildRequest(this.id,'div_messages',0);">
+	</fieldset>
+	</cfoutput>
+</cfsavecontent>
+<cfreturn ret_display_messageInput>
+
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="String" name="display_messageOutput">
+<cfargument name="messageQuery" type="query" required="true">
+
+<!--- #messageID# #from_userID# #dateFormat(readDate,"long")# --->
+<cfsavecontent variable="ret_display_messageOutput">
+	<cfoutput>
+	<fieldset>
+	<legend>messages</legend>
+	<cfif arguments.messageQuery.recordCount GT 0>
+	<cfloop query="arguments.messageQuery">
+		<strong>from: #siteName# on #dateFormat(sentDate,"long")#</strong><br>
+		#message#<br>
+		<cfif currentRow LT recordCount><hr size="1"></cfif>
+	</cfloop>
+	</fieldset>
+	<cfelse>
+		no messages
+	</cfif>
+	</cfoutput>
+</cfsavecontent>
+<cfreturn ret_display_messageOutput>
+
 </cffunction>
 <!--- End Function --->
 
