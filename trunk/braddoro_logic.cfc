@@ -287,4 +287,20 @@ function js_buildRequest(Task, container, itemID) {
 </cffunction>
 <!--- End Function --->  
 
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="logic_showMessagesOutput">
+	<cfargument name="from_userID" type="numeric" required="true">
+	<cfargument name="to_userID" type="numeric" required="true">
+	<cfargument name="messageText" type="string" required="true">
+
+	<cfset x = this.sql_insertMessage(from_userID=arguments.from_userID,to_userID=arguments.to_userID,message=form.messageText)>
+	<cfset q_sql_getMessages = this.sql_getMessages(userID=arguments.from_userID)>
+	<cfsavecontent variable="ret_logic_showMessagesOutput">
+	<cfoutput>#this.display_messageOutput(messageQuery=q_sql_getMessages)#</cfoutput>
+	</cfsavecontent>
+
+	<cfreturn ret_logic_showMessagesOutput>
+</cffunction>
+<!--- End Function --->  
+
 </cfcomponent>
