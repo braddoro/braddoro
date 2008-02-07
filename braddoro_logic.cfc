@@ -88,6 +88,10 @@ function js_buildRequest(Task, container, itemID) {
 		sPostString += "replyText=" + document.getElementById("replytext_"+itemID).value.replace(/\r\n/g,"<br>") + "&";
 		sPostString += "replyID=" + document.getElementById("postReplyID_"+itemID).value + "&";
 	}
+	if (Task == "saveMessage") {
+		sPostString += "messageText=" + document.getElementById("messageText").value.replace(/\r\n/g,"<br>") + "&";
+		sPostString += "message_userID=" + document.getElementById("message_userID").value + "&";
+	}
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
@@ -130,7 +134,7 @@ function js_buildRequest(Task, container, itemID) {
 
 	<cfset q_logic_authenticateUser = this.sql_checkUser(userName=arguments.userName,password=arguments.password,remoteIP=arguments.remoteIP)>
 	<cfset session.userID = 1>
-	<cfset session.siteName = "">
+	<cfset session.siteName = "Anon Y. Mous">
 	<cfset cookie.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
 	<cfloop query="q_logic_authenticateUser">
 		<cflock timeout="20" type="exclusive" scope="Session">
@@ -264,6 +268,22 @@ function js_buildRequest(Task, container, itemID) {
 		<cfoutput>#this.display_reply(replyID=arguments.replyID,postID=lcl_postID,reply=lcl_reply)#</cfoutput>
 	</cfsavecontent>
 	<cfreturn ret_logic_displayReply>
+</cffunction>
+<!--- End Function --->  
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="logic_showMessages">
+	<cfargument name="userID" type="numeric" required="true">
+
+	<cfset q_sql_getMessages = this.sql_getMessages(userID=arguments.userID)>
+	<cfset q_sql_getUsers = this.sql_getUsers()>
+	
+	<cfsavecontent variable="ret_logic_showMessages">
+		<cfoutput>
+			#this.display_messageMain(userID=arguments.userID,messageQuery=q_sql_getMessages,userQuery=q_sql_getUsers)#
+		</cfoutput>
+	</cfsavecontent>
+	<cfreturn ret_logic_showMessages>
 </cffunction>
 <!--- End Function --->  
 

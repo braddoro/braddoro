@@ -136,10 +136,20 @@
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="sql_getTopics">
 	<cfquery name="q_sql_getTopics" datasource="#module_dsn#">
-		select topicID, topic from braddoro.cfg_topics where active = 'Y' order by topic 	
+		select topicID as 'value', topic as 'display' from braddoro.cfg_topics where active = 'Y' order by topic 	
 	</cfquery>
 
   <cfreturn q_sql_getTopics>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="sql_getUsers">
+	<cfquery name="sql_getUsers" datasource="#module_dsn#">
+		select userID as 'value', siteName as 'display' from braddoro.dyn_users where active = 'Y' order by siteName 	
+	</cfquery>
+
+  <cfreturn sql_getUsers>
 </cffunction>
 <!--- End Function --->
 
@@ -219,6 +229,34 @@
 		select * from braddoro.dyn_replies where replyID = #arguments.replyID# 
 	</cfquery>
 	<cfreturn q_sql_insertReply>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="sql_getMessages">
+<cfargument name="userID" type="Numeric" required="true">
+	
+	<cfquery name="q_sql_getMessages" datasource="#module_dsn#">
+		select M.messageID, M.from_userID, U.siteName, M.sentDate, M.readDate, M.message 
+		from braddoro.dyn_messages M 
+		inner join braddoro.dyn_users U 
+		on U.userID = M.from_userID
+		and M.to_userID = #arguments.userID#		
+		order by M.sentDate desc
+	</cfquery>
+	<cfreturn q_sql_getMessages>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="sql_insertMessage">
+<cfargument name="from_userID" type="Numeric" required="true">
+<cfargument name="to_userID" type="Numeric" required="true">
+<cfargument name="message" type="string" required="true">
+	<cfquery name="q_sql_getMessages" datasource="#module_dsn#">
+		insert into braddoro.dyn_messages (from_userID, to_userID, message)
+		select #arguments.from_userID#, #arguments.to_userID#, '#arguments.message#' 
+	</cfquery>
 </cffunction>
 <!--- End Function --->
 

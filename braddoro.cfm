@@ -1,11 +1,11 @@
 <cflock timeout="20" type="exclusive" scope="Session">
 	<cfif isdefined("cookie.userGUID")>
 		<cfset session.userGUID = cookie.userGUID>
-		<cfset session.siteName = "">
+		<cfset session.siteName = "Anon Y. Mous">
 		<cfset session.userID = 1>
 	<cfelse>
 		<cfset session.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
-		<cfset session.siteName = "">
+		<cfset session.siteName = "Anon Y. Mous">
 		<cfset session.userID = 1>
 	</cfif>
 </cflock>
