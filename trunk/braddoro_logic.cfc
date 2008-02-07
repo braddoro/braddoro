@@ -133,9 +133,11 @@ function js_buildRequest(Task, container, itemID) {
 	<cfset session.siteName = "">
 	<cfset cookie.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
 	<cfloop query="q_logic_authenticateUser">
-		<cfset session.userID = userID>
-		<cfset session.siteName = siteName>
-		<cfset cookie.userGUID = userGUID>
+		<cflock timeout="20" type="exclusive" scope="Session">
+			<cfset session.userID = userID>
+			<cfset session.siteName = siteName>
+			<cfset cookie.userGUID = userGUID>
+		</cflock>
 	</cfloop>
 	<cfset variables.userID = q_logic_authenticateUser.userID>
 	<cfset x = this.display_showBanner(siteName=q_logic_authenticateUser.siteName)>

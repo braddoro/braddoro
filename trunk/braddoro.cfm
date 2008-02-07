@@ -1,14 +1,18 @@
 <cflock timeout="20" type="exclusive" scope="Session">
 	<cfif isdefined("cookie.userGUID")>
-	<cfset session.userGUID = cookie.userGUID>
+		<cfset session.userGUID = cookie.userGUID>
+		<cfset session.siteName = "">
+		<cfset session.userID = 1>
 	<cfelse>
 		<cfset session.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
+		<cfset session.siteName = "">
+		<cfset session.userID = 1>
 	</cfif>
 </cflock>
 <cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
 <cfset session.userID = objBraddoro.logic_checkUser(session.userGUID).userID>
 <cfset session.siteName = objBraddoro.logic_checkUser(session.userGUID).siteName>
-<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue="#session.userID#")>
+<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <title><cfoutput>#objBraddoro.logic_GetConstant("siteBanner")#</cfoutput></title>
