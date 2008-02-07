@@ -114,10 +114,8 @@ function SQLSafe(string) {
 </cfif>
 <!--- saveMessage --->
 <cfif form.task EQ "saveMessage">
-	<cfset x = objBraddoro.sql_insertMessage(from_userID=val(session.userID),to_userID=val(form.message_userID),message=form.messageText)>
-	<cfset q_sql_getMessages = objBraddoro.sql_getMessages(userID=val(session.userID))>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.display_messageOutput(messageQuery=q_sql_getMessages)#</cfoutput>
+	<cfoutput>#objBraddoro.logic_showMessagesOutput(from_userID=val(session.userID),to_userID=val(form.message_userID),messageText=form.messageText)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 
