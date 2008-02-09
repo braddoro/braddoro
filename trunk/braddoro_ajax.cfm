@@ -1,3 +1,8 @@
+<cflock timeout="20" type="exclusive" scope="Session">
+	<cfif not isdefined("session.userID")>
+		<cfset session.userID = 1>
+	</cfif>
+</cflock>
 <cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
 <cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
 <cfparam name="_html" type="string" default="">

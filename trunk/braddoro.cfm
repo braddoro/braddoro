@@ -1,3 +1,16 @@
+<cfset session.siteDsn="braddoro">
+<cftry>
+<cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
+<cfoutput>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<title>#obj_application.getSiteTitle()#</title>
+<head>
+<link href="#obj_application.getCSSfile()#" rel="stylesheet" type="text/css">
+#obj_application.showJavascript(showDebug=false)#
+</head>
+<body class="body">
+
 <cflock timeout="20" type="exclusive" scope="Session">
 	<cfif isdefined("cookie.userGUID")>
 		<cfset session.userGUID = cookie.userGUID>
@@ -9,19 +22,11 @@
 		<cfset session.userID = 1>
 	</cfif>
 </cflock>
-<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
-<cfset session.userID = objBraddoro.logic_checkUser(session.userGUID).userID>
-<cfset session.siteName = objBraddoro.logic_checkUser(session.userGUID).siteName>
+<cfset obj_user = createObject("component","user_logic").init(dsn=session.siteDsn)>
+<cfset session.userID = obj_user.authenticateUser(userID=val(session.userGUID)).userID>
+<cfset session.siteName = obj_user.authenticateUser(userID=val(session.userGUID)).siteName>
+<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn=session.siteDsn)>
 <cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<title><cfoutput>#objBraddoro.logic_GetConstant("siteBanner")#</cfoutput></title>
-<head>
-<link href="braddoro/braddoro.css" rel="stylesheet" type="text/css">
-<cfoutput>#objBraddoro.logic_javaScript(showDebug=false)#</cfoutput>
-</head>
-<cfoutput>
-<body class="body">
 <div id="div_top" class="divtop">
 <fieldset>
 <div id="div_banner" class="banner"><cfoutput>#objBraddoro.display_showBanner(siteName=session.siteName)#</cfoutput></div>
@@ -33,3 +38,8 @@
 </cfoutput>
 </body>
 </html>
+<cfcatch type="any">
+	<cfset obj_error = createObject("component","error_logic")>
+	<cfoutput>#obj_error.fail(message=cfcatch.message,detail=cfcatch.detail)#</cfoutput>
+</cfcatch>
+</cftry>

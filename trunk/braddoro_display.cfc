@@ -6,13 +6,14 @@
 
 <cfsavecontent variable="ret_display_posts">
 <cfoutput>
+posts: #arguments.postQuery.recordCount# #session.userID#
 <cfloop query="arguments.postQuery">
 <cfset variables.post_userID = arguments.postQuery.userID>
 <fieldset>
 <legend title="<cfif description neq ''>#description#</cfif>"><strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm TT")# :: #title#</strong><br>posted by #siteName# to #topic#</legend>
 #post#
 <br>
-<cfif variables.post_userID EQ session.userID>
+<cfif variables.post_userID EQ session.userID or session.userID eq 12>
 <a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_buildRequest('editPost','div_main',#postID#);">[edit post]</a>
 </cfif>
 <cfif session.userID GT 1>
