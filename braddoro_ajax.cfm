@@ -1,26 +1,73 @@
 <cflock timeout="20" type="exclusive" scope="Session">
+	<cfif isdefined("cookie.userGUID")>
+		<cfset session.userGUID = cookie.userGUID>
+	<cfelse>
+		<cfset session.userGUID = "DCDE6DFA-19B9-BA51-EE3FDC1D1A72E094">
+	</cfif>
 	<cfif not isdefined("session.userID")>
 		<cfset session.userID = 1>
 	</cfif>
+	<cfif not isdefined("session.siteDsn")>
+		<cfset session.siteDsn = "braddoro">
+	</cfif>
 </cflock>
-<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
-<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
+
 <cfparam name="_html" type="string" default="">
 <cfparam name="form.task" type="string" default="">
-<cfscript>
-function SQLSafe(string) {
-  var sqlList = "-- ,'";
-  var replacementList = "#chr(38)##chr(35)##chr(52)##chr(53)##chr(59)##chr(38)##chr(35)##chr(52)##chr(53)##chr(59)# , #chr(38)##chr(35)##chr(51)##chr(57)##chr(59)#";
-  return trim(replaceList(string,sqlList,replacementList));
-}
-</cfscript>
+
+<!--- logIn --->
+<cfif form.task EQ "logIn">
+	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_user_logic.logIn()#</cfoutput>
+	</cfsavecontent>
+</cfif>
+<!--- authenticateUser --->
+<cfif form.task EQ "authenticateUser">
+	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
+	<cfset q_authenticateUser = obj_user_logic.authenticateUser(username=form.userName,password=form.password,remoteIP=cgi.REMOTE_ADDR)>
+	<cfset session.userID = q_authenticateUser.userID>
+	<cfset session.siteName = q_authenticateUser.siteName>
+	<cfset cookie.userGUID = q_authenticateUser.userGUID>
+	
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
+	</cfsavecontent>
+</cfif>
+<!--- showBanner --->
+<cfif form.task EQ "showBanner">
+	<cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+		<cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput>
+	</cfsavecontent>
+</cfif>
 
 <!--- showPost --->
 <cfif form.task EQ "showPost">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
+<!--- searchPost --->
+<cfif form.task EQ "searchPost">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_content_logic.showSearch()#</cfoutput>
+	</cfsavecontent>
+</cfif>
+
+<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
+<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
+
+<!--- getSearch --->
+<cfif form.task EQ "getSearch">
+	<cfsavecontent variable="_html">
+	<cfoutput>#objBraddoro.logic_getSearch(topicID=form.topicID,filterString=form.Filter)#</cfoutput>
+	</cfsavecontent>
+</cfif>
+
 <!--- composePost --->
 <cfif form.task EQ "composePost">
 	<cfsavecontent variable="_html">
@@ -34,56 +81,22 @@ function SQLSafe(string) {
 	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
 	</cfsavecontent>
 </cfif>
-<!--- searchPost --->
-<cfif form.task EQ "searchPost">
-	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_showSearch()#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- getSearch --->
-<cfif form.task EQ "getSearch">
-	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_getSearch(topicID=form.topicID,filterString=form.Filter)#</cfoutput>
-	</cfsavecontent>
-</cfif>
 <!--- editPost --->
 <cfif form.task EQ "editPost">
 	<cfsavecontent variable="_html">
 	<cfoutput>#objBraddoro.logic_addPost(postID=form.itemID)#</cfoutput>
 	</cfsavecontent>
 </cfif>
-<!--- logIn --->
-<cfif form.task EQ "logIn">
-	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_logIn()#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- authenticateUser --->
-<cfif form.task EQ "authenticateUser">
-	<cfset x = objBraddoro.logic_authenticateUser(username=form.userName,password=form.password,remoteIP=cgi.REMOTE_ADDR)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- showBanner --->
-<cfif form.task EQ "showBanner">
-	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.display_showBanner(siteName=session.siteName)#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- searchPost --->
+<!--- updatePost --->
 <cfif form.task EQ "updatePost">
-	<cfset x = objBraddoro.sql_updatePost(
-		postID=form.itemID,
-		userID=session.userID,
-		topicID=form.TopicID,
-		title=form.Subject,
-		post=form.Post
-		)>
+	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=session.siteDsn)>
+	<cfset x = obj_content_sql.updatePost(postID=form.itemID,userID=session.userID,topicID=form.TopicID,title=form.Subject,post=form.Post)>
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-		<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
+
 <!--- addReply --->
 <cfif form.task EQ "addReply">
 	<cfsavecontent variable="_html">

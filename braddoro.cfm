@@ -40,7 +40,7 @@
 </body>
 </html>
 <cfcatch type="any">
-	<cfset obj_error = createObject("component","error_logic")>
-	<cfoutput>#obj_error.fail(message=cfcatch.message,detail=cfcatch.detail,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
+	<cfset obj_error = createObject("component","error_logic").init(dsn=session.siteDsn)>
+	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 </cfcatch>
 </cftry>

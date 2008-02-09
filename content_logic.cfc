@@ -25,5 +25,19 @@
 	<cfreturn s_displayPosts>
 </cffunction>
 <!--- End Function --->
+
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="showSearch">
+
+	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
+	<cfset q_topics = obj_content_sql.getTopics()>
+	<cfset obj_content_display = createObject("component","content_display")>
+	<cfsavecontent variable="s_showSearch">
+	<cfoutput>#obj_content_display.showSearch(topicList=q_topics)#</cfoutput>
+	</cfsavecontent>
 	
+	<cfreturn s_showSearch>
+</cffunction>
+
 </cfcomponent>
