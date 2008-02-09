@@ -117,16 +117,17 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="void" name="replySave">
+<cffunction access="public" output="false" returntype="void" name="saveReply">
 	<cfargument name="postID" type="numeric" default="0"> 
 	<cfargument name="replyID" type="numeric" default="0">
 	<cfargument name="reply" type="string" default="">
+	<cfargument name="userID" type="numeric" required="true">
 
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
 	<cfif arguments.postID GT 0>
-		<cfset x = obj_content_sql.updateReply(replyID=arguments.replyID,reply=arguments.reply)>	
+		<cfset x = obj_content_sql.insertReply(userID=arguments.userID,postID=arguments.postID,reply=arguments.reply)>
 	<cfelse>
-		<cfset x = obj_content_sql.insertReply(postID=arguments.postID,reply=arguments.reply)>
+		<cfset x = obj_content_sql.updateReply(replyID=arguments.replyID,reply=arguments.reply)>
 	</cfif>
 
 </cffunction>

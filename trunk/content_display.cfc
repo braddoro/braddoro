@@ -200,7 +200,7 @@
 		<legend>messages</legend>
 		<cfif arguments.messageQuery.recordCount GT 0>
 		<cfloop query="arguments.messageQuery">
-			<strong>from: #siteName# on #dateFormat(sentDate,"long")#</strong><br>
+			<strong>from: #from# to: #to# on #dateFormat(sentDate,"long")#</strong><br>
 			#message#<br>
 			<cfif currentRow LT recordCount><hr size="1"></cfif>
 		</cfloop>

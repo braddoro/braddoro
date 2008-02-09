@@ -1,3 +1,4 @@
+<cftry>
 <cflock timeout="20" type="exclusive" scope="Session">
 	<cfif isdefined("cookie.userGUID")>
 		<cfset session.userGUID = cookie.userGUID>
@@ -119,7 +120,7 @@
 <!--- updateReply --->
 <cfif form.task EQ "updateReply">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
-	<cfset x = obj_content_logic.saveReply(reply=form.replyText,replyID=val(form.replyID))>
+	<cfset x = obj_content_logic.saveReply(reply=form.replyText,replyID=val(form.replyID),userID=val(session.userID))>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
@@ -141,5 +142,9 @@
 	<cfoutput>#obj_content_logic.showMessages(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
+<cfcatch type="any">
+	<cfset obj_error = createObject("component","error_logic").init(dsn=session.siteDsn)>
+	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
+</cfcatch>
+</cftry>
 <cfoutput>#_html#</cfoutput>
