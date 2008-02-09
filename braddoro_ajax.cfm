@@ -42,7 +42,6 @@
 		<cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
 <!--- showPost --->
 <cfif form.task EQ "showPost">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
@@ -57,38 +56,37 @@
 	<cfoutput>#obj_content_logic.showSearch()#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
-<cfset objBraddoro = createObject("component","braddoro_display").logic_Init(dsn="braddoro")>
-<cfset x = objBraddoro.logic_setConstant(constantName="userID",constantValue=val(session.userID))>
-
 <!--- getSearch --->
 <cfif form.task EQ "getSearch">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_getSearch(topicID=form.topicID,filterString=form.Filter)#</cfoutput>
+	<cfoutput>#obj_content_logic.getSearch(userID=val(session.userID),topicID=form.topicID,filterString=form.Filter)#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
 <!--- composePost --->
 <cfif form.task EQ "composePost">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_addPost(getNone=true)#</cfoutput>
+	<cfoutput>#obj_content_logic.postInput(getNone=true,userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- addPost --->
 <cfif form.task EQ "addPost">
-	<cfset x = objBraddoro.sql_insertPost(userID=session.userID,topicID=form.TopicID,title=form.Subject,post=form.Post)>
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#obj_content_logic.postUpdate(userID=val(session.userID),topicID=form.TopicID,title=form.Subject,post=form.Post)#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- editPost --->
 <cfif form.task EQ "editPost">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_addPost(postID=form.itemID)#</cfoutput>
+	<cfoutput>#obj_content_logic.postInput(userID=val(session.userID),postID=val(form.itemID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- updatePost --->
 <cfif form.task EQ "updatePost">
+	<!--- this one is not done right --->
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=session.siteDsn)>
 	<cfset x = obj_content_sql.updatePost(postID=form.itemID,userID=session.userID,topicID=form.TopicID,title=form.Subject,post=form.Post)>
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
@@ -96,44 +94,51 @@
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
 <!--- addReply --->
 <cfif form.task EQ "addReply">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayReply(postID=int(form.itemID))#</cfoutput>
+	<cfoutput>#obj_content_logic.replyInput(postID=int(form.itemID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- editReply --->
 <cfif form.task EQ "editReply">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayReply(replyID=int(form.itemID))#</cfoutput>
+	<cfoutput>#obj_content_logic.replyInput(replyID=int(form.itemID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- saveReply --->
 <cfif form.task EQ "saveReply">
-	<cfset x = objBraddoro.sql_insertReply(reply=form.replyText,postID=val(form.itemID))>
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfset x = obj_content_logic.saveReply(reply=form.replyText,postID=val(form.itemID))>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
-<!--- addPost --->
 <!--- updateReply --->
 <cfif form.task EQ "updateReply">
-	<cfset x = objBraddoro.sql_updateReply(reply=form.replyText,replyID=val(form.replyID))>
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfset x = obj_content_logic.saveReply(reply=form.replyText,replyID=val(form.replyID))>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_displayPosts(numberToGet=objBraddoro.logic_GetConstant("postsToShow"))#</cfoutput>
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- showMessages --->
 <cfif form.task EQ "showMessages">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_showMessages(userID=session.userID)#</cfoutput>
+	<cfoutput>#obj_content_logic.showMessages(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- saveMessage --->
 <cfif form.task EQ "saveMessage">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfset x = obj_content_logic.saveMessage(from_userID=val(session.userID),to_userID=val(form.message_userID),messageText=form.messageText)>
+
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#objBraddoro.logic_showMessagesOutput(from_userID=val(session.userID),to_userID=val(form.message_userID),messageText=form.messageText)#</cfoutput>
+	<cfoutput>#obj_content_logic.showMessages(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 

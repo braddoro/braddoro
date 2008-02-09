@@ -10,7 +10,6 @@
 	<cfreturn this>
 </cffunction>
 
-
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="getPosts">
 	<cfargument name="numberToGet" type="Numeric" default="0">
@@ -100,6 +99,20 @@
 <!--- End Function --->
 
 <!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="insertPost">
+	<cfargument type="numeric" name="userID" required="true">
+	<cfargument type="numeric" name="topicID" required="true">
+	<cfargument type="string" name="title" required="true">
+	<cfargument type="string" name="post" required="true">
+	
+	<cfquery name="q_insertPost" datasource="#module_dsn#">
+		insert into braddoro.dyn_posts (userID, topicID, title, post)
+		select #arguments.userID#, #arguments.topicID#, '#arguments.title#', '#arguments.post#'
+	</cfquery>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="getTopics">
 	
 	<cfquery name="q_getTopics" datasource="#module_dsn#">
@@ -107,6 +120,73 @@
 	</cfquery>
 
   <cfreturn q_getTopics>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getReplyInfo">
+<cfargument name="replyID" type="Numeric" required="true">
+	
+	<cfquery name="q_getReplyInfo" datasource="#module_dsn#">
+		select * from braddoro.dyn_replies where replyID = #arguments.replyID# 
+	</cfquery>
+	<cfreturn q_getReplyInfo>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="insertReply">
+<cfargument name="postID" type="Numeric" required="true">
+<cfargument name="reply" type="string" required="true">
+	
+	<cfquery name="q_insertReply" datasource="#module_dsn#">
+		insert into braddoro.dyn_replies (postID, userID, reply)
+		select #arguments.postID#, #variables.userID#, '#arguments.reply#'
+	</cfquery>
+
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="updateReply">
+<cfargument name="replyID" type="Numeric" required="true">
+<cfargument name="reply" type="string" required="true">
+	
+	<cfquery name="q_updateReply" datasource="#module_dsn#">
+		update braddoro.dyn_replies set reply = '#arguments.reply#' where replyID = #arguments.replyID# 
+	</cfquery>
+
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getMessages">
+	<cfargument name="userID" type="numeric" required="true">
+	
+	<cfquery name="q_getMessages" datasource="#module_dsn#">
+		select M.messageID, M.from_userID, U.siteName, M.sentDate, M.readDate, M.message 
+		from braddoro.dyn_messages M 
+		inner join braddoro.dyn_users U 
+		on U.userID = M.from_userID
+		and (M.to_userID = #arguments.userID# or M.from_userID = #arguments.userID#)
+		order by M.sentDate desc
+	</cfquery>
+	
+	<cfreturn q_getMessages>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="insertMessage">
+	<cfargument name="from_userID" type="numeric" required="true">
+	<cfargument name="to_userID" type="numeric" required="true">
+	<cfargument name="message" type="string" required="true">
+	
+	<cfquery name="q_insertMessage" datasource="#module_dsn#">
+		insert into braddoro.dyn_messages (from_userID, to_userID, message)
+		select #arguments.from_userID#, #arguments.to_userID#, '#arguments.message#' 
+	</cfquery>
+	
 </cffunction>
 <!--- End Function --->
 

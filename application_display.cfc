@@ -124,8 +124,8 @@ function js_buildRequest(Task, container, itemID) {
 	
 	<cfsavecontent variable="s_showNavMenu">
 		<cfoutput>
-		<input type="button" id="logIn" name="logIn" alt="log in" value="log in" title="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		<cfif arguments.userID LT 2>
+		<input type="button" id="logIn" name="logIn" alt="log in" value="log in" title="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		</cfif>
 		<input type="button" id="showPost" name="showPost" alt="show posts" value="show posts" title="show posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		<input type="button" id="searchPost" name="searchPost" alt="search posts" value="search posts" title="search posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">	

@@ -41,6 +41,7 @@
 		and userName = '#arguments.userName#'
 		and password = '#arguments.password#'
 	</cfif>
+		limit 1
 	 </cfquery>
 	 
 	<cfquery name="q_insert" datasource="#module_dsn#">
@@ -79,6 +80,17 @@
 	</cfquery>
 
 	<cfreturn q_selectUserInfo>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getUsers">
+	
+	<cfquery name="q_getUsers" datasource="#module_dsn#">
+		select userID as 'value', siteName as 'display' from braddoro.dyn_users where active = 'Y' order by siteName 	
+	</cfquery>
+
+  <cfreturn q_getUsers>
 </cffunction>
 <!--- End Function --->
 
