@@ -5,6 +5,7 @@
 	<cfargument name="postQuery" type="query" required="true">
 	<cfargument name="userID" type="numeric" required="true">
 	
+	<cfset obj_content_sql = createObject("component","content_sql").init(dsn="braddoro")>
 	<cfsavecontent variable="s_showPosts">
 	<cfoutput>
 		posts: #arguments.postQuery.recordCount#
@@ -20,23 +21,26 @@
 			<cfif arguments.userID GT 1>
 				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_buildRequest('addReply','div_main',#postID#);">add reply</a>
 			</cfif>
-			<!--- <cfset q_sql_getReplies = this.sql_getReplies(postID=postID)>
-			<cfif q_sql_getReplies.recordCount GT 0>
+			<!--- BEGIN: move this --->
+			<cfset q_getReplies = obj_content_sql.getReplies(postID=postID)>
+			<cfif q_getReplies.recordCount GT 0>
 			<br>
 			<fieldset class="indented">
-			<legend><strong>replies: #q_sql_getReplies.recordCount#</strong></legend>
-			<cfloop query="q_sql_getReplies">
-			<cfset variables.reply_userID = q_sql_getReplies.userID>
+			<legend><strong>replies: #q_getReplies.recordCount#</strong></legend>
+			<cfloop query="q_getReplies">
+			<cfset variables.reply_userID = q_getReplies.userID>
 			<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm tt")#&nbsp;:: by #siteName#</strong><br>
 			#reply#
 			<br>
-			<cfif variables.reply_userID EQ session.userID>
+			<cfif variables.reply_userID EQ arguments.userID>
 			<a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_buildRequest('editReply','div_main',#replyID#);">edit reply</a>
 			</cfif>
 			<cfif currentRow LT recordCount><hr></cfif>
 			</cfloop>
 			</fieldset>
-			</cfif> --->
+			</cfif>
+			<!--- END: move this --->
+			
 			</fieldset>
 			<br>
 		</cfloop>

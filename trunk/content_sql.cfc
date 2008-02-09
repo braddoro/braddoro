@@ -58,4 +58,27 @@
 </cffunction>
 <!--- End Function --->
 
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getReplies">
+	<cfargument type="numeric" name="postID" required="true">
+	
+	<cfquery name="q_getReplies" datasource="#module_dsn#">
+		SELECT 
+		R.replyID, 
+		R.reply, 
+		R.userID,
+		R.addedDate, 
+		U.siteName
+		FROM braddoro.dyn_replies R
+		inner join braddoro.dyn_users U
+		on U.userID = R.userID
+		and R.active = 'Y' 
+		and R.postID = #arguments.postID#
+		order by R.addedDate
+	</cfquery>
+  <cfreturn q_getReplies>
+</cffunction>
+<!--- End Function --->
+
 </cfcomponent>
