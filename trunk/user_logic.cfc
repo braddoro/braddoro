@@ -37,5 +37,16 @@
 	<cfreturn q_authenticateUser>
 </cffunction>
 <!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="query" name="selectUserInfo">
+	<cfargument name="userID" type="numeric" default="0">
+
+	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
+	<cfset q_selectUserInfo = obj_user_sql.selectUserInfo(userID=arguments.userID)>
+
+	<cfreturn q_selectUserInfo>
+</cffunction>
+<!--- End Function --->
 	
 </cfcomponent>

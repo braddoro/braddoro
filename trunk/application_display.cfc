@@ -1,5 +1,6 @@
 <cfcomponent displayname="application_display" output="false">
 
+<!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="showJavascript">
 	<cfargument name="showDebug" type="boolean" default="false">
 
@@ -88,5 +89,55 @@ function js_buildRequest(Task, container, itemID) {
 	<cfreturn s_showJavascript>
 	
 </cffunction>	
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="string" name="showBanner">
+<cfargument type="string" name="siteName" default="">
+<cfargument type="string" name="siteTitle" default="">
+
+	<cfsavecontent variable="s_showBanner">
+		<cfoutput>#siteTitle#<cfif arguments.siteName NEQ ""><span class="mediumtext"> - #arguments.siteName#</span></cfif></cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_showBanner>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="string" name="showQuote">
+<cfargument name="quoteQuery" type="query" required="true">
+
+	<cfsavecontent variable="s_showQuote">
+	<cfoutput query="arguments.quoteQuery">
+		#quote#<cfif quoteBy NEQ ""> - #quoteBy#</cfif><cfif quoteWhen NEQ ""> (#quoteWhen#)</cfif>
+	</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_showQuote>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="String" name="showNavMenu">
+	<cfargument name="userID" type="numeric" default="1">
+	
+	<cfsavecontent variable="s_showNavMenu">
+		<cfoutput>
+		<cfif arguments.userID LT 2>
+		<input type="button" id="logIn" name="logIn" alt="log in" value="log in" title="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		</cfif>
+		<input type="button" id="showPost" name="showPost" alt="show posts" value="show posts" title="show posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="searchPost" name="searchPost" alt="search posts" value="search posts" title="search posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">	
+		<cfif arguments.userID GT 1>
+		<input type="button" id="composePost" name="composePost" alt="show posts" value="compose post" title="compose post" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="showMessages" name="showMessages" alt="messages" value="messages" title="messages" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		</cfif>
+		</cfoutput>
+	</cfsavecontent>
+	<cfreturn s_showNavMenu>
+	
+	</cffunction>
+	<!--- End Function --->
 
 </cfcomponent>
