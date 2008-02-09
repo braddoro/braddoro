@@ -136,12 +136,13 @@
 
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="void" name="insertReply">
-<cfargument name="postID" type="Numeric" required="true">
-<cfargument name="reply" type="string" required="true">
+	<cfargument name="postID" type="Numeric" required="true">
+	<cfargument name="reply" type="string" required="true">
+	<cfargument name="userID" type="numeric" required="true">
 	
 	<cfquery name="q_insertReply" datasource="#module_dsn#">
 		insert into braddoro.dyn_replies (postID, userID, reply)
-		select #arguments.postID#, #variables.userID#, '#arguments.reply#'
+		select #arguments.postID#, #arguments.userID#, '#arguments.reply#'
 	</cfquery>
 
 </cffunction>
@@ -164,12 +165,12 @@
 	<cfargument name="userID" type="numeric" required="true">
 	
 	<cfquery name="q_getMessages" datasource="#module_dsn#">
-		select M.messageID, M.from_userID, U.siteName, M.sentDate, M.readDate, M.message 
-		from braddoro.dyn_messages M 
-		inner join braddoro.dyn_users U 
-		on U.userID = M.from_userID
-		and (M.to_userID = #arguments.userID# or M.from_userID = #arguments.userID#)
-		order by M.sentDate desc
+		SELECT M.messageID, M.to_userID, M.from_userID, U0.siteName AS 'from', U1.siteName AS 'to', M.sentDate, M.readDate, M.message
+		FROM braddoro.dyn_messages M
+		INNER JOIN braddoro.dyn_users U0 ON U0.userID = M.from_userID
+		INNER JOIN braddoro.dyn_users U1 ON U1.userID = M.to_userID
+		AND (M.to_userID = #arguments.userID# OR M.from_userID = #arguments.userID#)
+		ORDER BY M.sentDate DESC 
 	</cfquery>
 	
 	<cfreturn q_getMessages>
