@@ -70,4 +70,16 @@
 </cffunction>
 <!--- End Function --->
 
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="selectUserInfo">
+	<cfargument name="userID" type="numeric" required="true">
+  
+	<cfquery name="q_selectUserInfo" datasource="#module_dsn#">
+	select userID, userGUID, userName, realName, siteName, password, emailAddress, webSite, lastVisit, Active from braddoro.dyn_Users where userID = #arguments.userID# 
+	</cfquery>
+
+	<cfreturn q_selectUserInfo>
+</cffunction>
+<!--- End Function --->
+
 </cfcomponent>

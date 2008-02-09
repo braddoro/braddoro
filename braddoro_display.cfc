@@ -6,7 +6,7 @@
 
 <cfsavecontent variable="ret_display_posts">
 <cfoutput>
-posts: #arguments.postQuery.recordCount# #session.userID#
+posts: #arguments.postQuery.recordCount#
 <cfloop query="arguments.postQuery">
 <cfset variables.post_userID = arguments.postQuery.userID>
 <fieldset>
@@ -180,17 +180,6 @@ posts: #arguments.postQuery.recordCount# #session.userID#
 </cfsavecontent>
 <cfreturn ret_display_navMenu>
 
-</cffunction>
-<!--- End Function --->
-
-<!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="display_showBanner">
-<cfargument type="string" name="siteName" default="">
-
-	<cfsavecontent variable="ret_display_userLoggedStatus">
-		<cfoutput>#this.logic_GetConstant("siteBanner")#<cfif arguments.siteName NEQ ""><span class="mediumtext"> - #arguments.siteName#</span></cfif></cfoutput>
-	</cfsavecontent>
-	<cfreturn ret_display_userLoggedStatus>
 </cffunction>
 <!--- End Function --->
 
