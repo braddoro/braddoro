@@ -12,7 +12,6 @@
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="logIn">
-	<cfargument name="userGUID" type="string" required="true">
 	
 	<cfset obj_user_display = createObject("component","user_display")>
 	<cfsavecontent variable="s_logIn">

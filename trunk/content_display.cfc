@@ -21,6 +21,7 @@
 			<cfif arguments.userID GT 1>
 				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_buildRequest('addReply','div_main',#postID#);">add reply</a>
 			</cfif>
+			
 			<!--- BEGIN: move this --->
 			<cfset q_getReplies = obj_content_sql.getReplies(postID=postID)>
 			<cfif q_getReplies.recordCount GT 0>
@@ -50,5 +51,23 @@
 	<cfreturn s_showPosts>
 </cffunction>
 <!--- End Function  --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="string" name="showSearch">
+<cfargument type="query" name="topicList" required="true">
+
+	<cfset obj_utility_display = createObject("component","utility_display")>
+	<cfsavecontent variable="s_showSearch">
+		<cfoutput>
+			<fieldset>
+			<legend>search</legend>
+			#obj_utility_display.queryDropdown(selectName="topicFilter",dataQuery=topicList)#&nbsp;<INPUT type="text" name="filter" id="filter" value="" size="20" maxlength="50">&nbsp;
+			<input type="button" id="saveMe" name="saveMe" alt="search" value="search" title="search" class="navButtons" style="" onclick="js_buildRequest('getSearch', 'div_main',0);">
+			</fieldset>
+		</cfoutput>
+	</cfsavecontent>
+	<cfreturn s_showSearch>
+</cffunction>
+<!--- End Function --->
 
 </cfcomponent>

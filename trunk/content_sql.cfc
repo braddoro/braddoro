@@ -58,7 +58,6 @@
 </cffunction>
 <!--- End Function --->
 
-
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="getReplies">
 	<cfargument type="numeric" name="postID" required="true">
@@ -78,6 +77,36 @@
 		order by R.addedDate
 	</cfquery>
   <cfreturn q_getReplies>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="updatePost">
+	<cfargument type="Numeric" name="postID" required="true">
+	<cfargument type="Numeric" name="userID" required="true">
+	<cfargument type="Numeric" name="topicID" required="true">
+	<cfargument type="string" name="title" default="">
+	<cfargument type="string" name="post" default="">
+	
+	<cfquery name="q_updatePost" datasource="#module_dsn#">
+		update braddoro.dyn_posts set 
+		userID = #arguments.userID#, 
+		topicID = #arguments.topicID#, 
+		title = '#arguments.title#', 
+		post = '#arguments.post#'
+		where postID = #arguments.postID#
+	</cfquery>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getTopics">
+	
+	<cfquery name="q_getTopics" datasource="#module_dsn#">
+		select topicID as 'value', topic as 'display' from braddoro.cfg_topics where active = 'Y' order by topic 	
+	</cfquery>
+
+  <cfreturn q_getTopics>
 </cffunction>
 <!--- End Function --->
 
