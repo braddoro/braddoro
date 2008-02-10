@@ -27,11 +27,17 @@
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="showJavascript">
 	<cfargument name="showDebug" type="boolean" default="false">
+	<cfargument name="start" type="boolean" default="false">
 
 	<cfset obj_application_display = createObject("component","application_display")>
 	<cfsavecontent variable="s_showJavascript">
 	<cfoutput>
-		#obj_application_display.showJavascript(showDebug=arguments.showDebug)#
+		<cfif arguments.start>
+			#obj_application_display.showJavascriptStart(showDebug=arguments.showDebug)#
+		<cfelse>
+			#obj_application_display.showJavascript(showDebug=arguments.showDebug)#
+		</cfif>
+		
 	</cfoutput>
 	</cfsavecontent>
 	
