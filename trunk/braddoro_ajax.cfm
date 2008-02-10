@@ -61,7 +61,7 @@
 <cfif form.task EQ "getSearch">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#obj_content_logic.getSearch(userID=val(session.userID),topicID=form.topicID,filterString=form.Filter)#</cfoutput>
+	<cfoutput>#obj_content_logic.getSearch(userID=val(session.userID),topicID=form.topicID,filterString=form.Filter,showCount="Yes")#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- composePost --->
@@ -87,9 +87,11 @@
 </cfif>
 <!--- updatePost --->
 <cfif form.task EQ "updatePost">
-	<!--- this one is not done right --->
-	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=session.siteDsn)>
-	<cfset x = obj_content_sql.updatePost(postID=form.itemID,userID=session.userID,topicID=form.TopicID,title=form.Subject,post=form.Post)>
+
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_content_logic.postUpdate(postID=form.itemID,userID=val(session.userID),topicID=form.TopicID,title=form.Subject,post=form.Post)#</cfoutput>
+	</cfsavecontent>
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
