@@ -1,14 +1,16 @@
 <cfcomponent displayname="content_display.cfc" output="false">
 
 <!--- Begin Function  --->
+<!--- this function needs work --->
 <cffunction access="package" output="false" returntype="String" name="showPosts">
 	<cfargument name="postQuery" type="query" required="true">
 	<cfargument name="userID" type="numeric" required="true">
+	<cfargument name="showCount" type="string" default="No">
 	
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn="braddoro")>
 	<cfsavecontent variable="s_showPosts">
 	<cfoutput>
-		posts: #arguments.postQuery.recordCount#
+		<cfif arguments.showCount EQ "Yes">posts: #arguments.postQuery.recordCount#</cfif>
 		<cfloop query="arguments.postQuery">
 			<cfset variables.post_userID = arguments.postQuery.userID>
 			<fieldset>

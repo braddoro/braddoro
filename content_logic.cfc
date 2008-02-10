@@ -2,6 +2,7 @@
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
+<!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="public" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
@@ -9,17 +10,19 @@
 	
 	<cfreturn this>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="displayPosts">
 	<cfargument name="numberToGet" type="numeric" required="true">
 	<cfargument name="userID" type="numeric" required="true">
+	<cfargument name="showCount" type="string" default="No">
 
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
 	<cfset q_getPosts = obj_content_sql.getPosts(numberToGet=arguments.numberToGet)>
 	<cfset obj_content_display = createObject("component","content_display")>	
 	<cfsavecontent variable="s_displayPosts">
-	<cfoutput>#obj_content_display.showPosts(postQuery=q_getPosts,userID=arguments.userID)#</cfoutput>
+	<cfoutput>#obj_content_display.showPosts(postQuery=q_getPosts,userID=arguments.userID,showCount=arguments.showCount)#</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_displayPosts>
@@ -38,6 +41,7 @@
 	
 	<cfreturn s_showSearch>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="getSearch">
@@ -79,20 +83,20 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="postUpdate">
-	<cfargument name="postID" type="numeric" default="0">
+<cffunction access="public" output="false" returntype="void" name="postUpdate">
 	<cfargument name="getNone" type="boolean" default="false">
-	<cfargument name="userID" type="numeric" required="true">
+	<cfargument name="postID" type="Numeric" default="0">
+	<cfargument name="userID" type="Numeric" default="0">
+	<cfargument name="topicID" type="Numeric" default="0">
+	<cfargument name="title" type="string" default="">
+	<cfargument name="post" type="string" default="">
 
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
-	<cfset q_insertPost = obj_content_sql.insertPost(argumentCollection=arguments)>
-	<cfset q_getPosts = obj_content_sql.getPosts(numberToGet=arguments.numberToGet)>
-	<cfset obj_content_display = createObject("component","content_display")>
-	<cfsavecontent variable="s_postUpdate">
-	<cfoutput>#obj_content_display.showPosts(postQuery=q_getPosts,userID=arguments.userID)#</cfoutput>
-	</cfsavecontent>
-
-	<cfreturn s_postUpdate>
+	<cfif arguments.postID GT 0>
+		<cfset q_insertPost = obj_content_sql.updatePost(argumentCollection=arguments)>
+	<cfelse>
+		<cfset q_insertPost = obj_content_sql.insertPost(argumentCollection=arguments)>
+	</cfif>
 </cffunction>
 <!--- End Function --->  
 
@@ -132,7 +136,6 @@
 
 </cffunction>
 <!--- End Function --->  
-
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="showMessages">

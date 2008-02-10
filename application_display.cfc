@@ -109,9 +109,7 @@ function js_buildRequest(Task, container, itemID) {
 <cfargument name="quoteQuery" type="query" required="true">
 
 	<cfsavecontent variable="s_showQuote">
-	<cfoutput query="arguments.quoteQuery">
-		#quote#<cfif quoteBy NEQ ""> - #quoteBy#</cfif><cfif quoteWhen NEQ ""> (#quoteWhen#)</cfif>
-	</cfoutput>
+	<cfoutput query="arguments.quoteQuery"><span class="mediumtext">#quote#<cfif quoteBy NEQ ""> - #quoteBy#</cfif><cfif quoteWhen NEQ ""> (#quoteWhen#)</cfif></span></cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_showQuote>
