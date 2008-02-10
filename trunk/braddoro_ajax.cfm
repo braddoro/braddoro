@@ -16,6 +16,14 @@
 <cfparam name="_html" type="string" default="">
 <cfparam name="form.task" type="string" default="">
 
+
+<!--- logIn --->
+<cfif form.task EQ "getJS">
+	<cfset obj_application_logic = createObject("component","application_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_application_logic.showJavascript()#</cfoutput>
+	</cfsavecontent>
+</cfif>
 <!--- logIn --->
 <cfif form.task EQ "logIn">
 	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
