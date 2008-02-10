@@ -47,5 +47,30 @@
 	<cfreturn q_selectUserInfo>
 </cffunction>
 <!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="showUser">
+	<cfargument name="userID" type="numeric" default="0">
+
+	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
+	<cfset q_selectUserInfo = obj_user_sql.selectUserInfo(userID=arguments.userID)>
+	
+	<cfset obj_user_display = createObject("component","user_display")>
+	<cfsavecontent variable="s_showUser">
+		<cfoutput>#obj_user_display.showUserInput(userQuery=q_selectUserInfo)#</cfoutput>
+	</cfsavecontent>
+
+	<cfreturn s_showUser>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="void" name="saveUserInfo">
+
+	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
+	<cfset x = obj_user_sql.updateUser(argumentCollection=arguments)>
+	
+</cffunction>
+<!--- End Function --->  
 	
 </cfcomponent>
