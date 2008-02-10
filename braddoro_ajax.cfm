@@ -114,7 +114,7 @@
 <!--- saveReply --->
 <cfif form.task EQ "saveReply">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
-	<cfset x = obj_content_logic.saveReply(reply=form.replyText,postID=val(form.itemID))>
+	<cfset x = obj_content_logic.saveReply(reply=form.replyText,postID=val(form.itemID),userID=val(session.userID))>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
