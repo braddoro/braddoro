@@ -1,17 +1,8 @@
 <cfcomponent displayname="user_sql.cfc" output="false">
 
-<!--- <cffunction name="getDsn" access="public" output="false" returntype="string">
-	<cfreturn module_dsn />
-</cffunction> --->
-
-<!--- <cffunction name="setDsn" access="public" output="false" returntype="void">
-	<cfargument name="dsn" type="string" required="true" />
-	<cfset module_dsn = arguments.dsn />
-	<cfreturn />
-</cffunction> --->
-
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
+<!--- Begin Function --->
 <cffunction name="init" displayname="init" access="public" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
@@ -19,6 +10,7 @@
 	
 	<cfreturn this>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="checkUser">
@@ -60,14 +52,32 @@
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="insertUser">
 
-  <cfquery name="q_insertUser" datasource="#module_dsn#">
-    insert into braddoro.dyn_Users 
-	(userGUID, userName, realName, siteName, password, emailAddress, webSite)
-	select '#createUUID#', '#arguments.realName#', '#arguments.siteName#', '#arguments.password#', '#arguments.emailAddress#', '#arguments.webSite#'
+	<cfquery name="q_insertUser" datasource="#module_dsn#">
+	insert into braddoro.dyn_Users 
+	(userGUID, userName, realName, siteName, password, emailAddress, webSite, dateOfBirth, zipCode)
+	select '#createUUID#', '#arguments.userName#', '#arguments.realName#', '#arguments.siteName#', '#arguments.password#', '#arguments.emailAddress#', '#arguments.webSite#', '#arguments.dateOfBirth#', '#arguments.zipCode#'
 	select last_insert_id() as 'newID'
-  </cfquery>
+	 </cfquery>
 
 	<cfreturn q_insertUser>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="updateUser">
+
+	<cfquery name="q_updateUser" datasource="#module_dsn#">
+	update braddoro.dyn_Users set
+	userName = '#arguments.userName#',
+	realName = '#arguments.realName#',
+	siteName = '#arguments.siteName#',
+	emailAddress = '#arguments.emailAddress#',
+	webSite = '#arguments.webSite#',
+	dateOfBirth = '#dateformat(arguments.dateOfBirth,"yyyy-mm-dd")#',
+	zipCode = '#arguments.zipCode#'
+	where userID = #val(arguments.userID)#
+	</cfquery>
+
 </cffunction>
 <!--- End Function --->
 
@@ -76,7 +86,7 @@
 	<cfargument name="userID" type="numeric" required="true">
   
 	<cfquery name="q_selectUserInfo" datasource="#module_dsn#">
-	select userID, userGUID, userName, realName, siteName, password, emailAddress, webSite, lastVisit, Active from braddoro.dyn_Users where userID = #arguments.userID# 
+	select userID, userGUID, userName, realName, siteName, password, emailAddress, webSite, lastVisit, dateOfBirth, zipCode, Active from braddoro.dyn_Users where userID = #arguments.userID# 
 	</cfquery>
 
 	<cfreturn q_selectUserInfo>
