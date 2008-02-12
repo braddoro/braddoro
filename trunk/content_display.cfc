@@ -14,7 +14,15 @@
 		<cfloop query="arguments.postQuery">
 			<cfset variables.post_userID = arguments.postQuery.userID>
 			<fieldset>
-			<legend title="<cfif description neq ''>#description#</cfif>"><strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm TT")# :: #title#</strong><br>posted by #siteName# to #topic#</legend>
+			<legend 
+					id="legend_post#postID#" 
+					onmouseover="js_changeBG(this.id,'##EFEFEF');" 
+					onmouseout="js_changeBG(this.id,'##E7E7E7');" 
+					onclick="js_collapseThis('div_post#postID#');" 
+					style="cursor:default;" title="<cfif description neq ''>#description#</cfif>">
+					<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm TT")# :: #title#</strong><br>posted by #siteName# to #topic#
+			</legend>
+			<div id="div_post#postID#" style="display:block;">
 			#post#
 			<br>
 			<cfif variables.post_userID EQ arguments.userID or arguments.userID eq 12>
@@ -32,7 +40,7 @@
 			<legend><strong>replies: #q_getReplies.recordCount#</strong></legend>
 			<cfloop query="q_getReplies">
 			<cfset variables.reply_userID = q_getReplies.userID>
-			<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm tt")#&nbsp;:: by #siteName#</strong><br>
+			<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm tt")# by #siteName#</strong><br>
 			#reply#
 			<br>
 			<cfif variables.reply_userID EQ arguments.userID>
@@ -43,7 +51,7 @@
 			</fieldset>
 			</cfif>
 			<!--- END: move this --->
-			
+			</div>
 			</fieldset>
 			<br>
 		</cfloop>
