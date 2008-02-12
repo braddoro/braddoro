@@ -1,4 +1,4 @@
-<cfcomponent displayname="content_logic.cfc" output="false">
+<cfcomponent output="false">
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 

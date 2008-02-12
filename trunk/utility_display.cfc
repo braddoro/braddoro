@@ -1,4 +1,4 @@
-<cfcomponent displayname="error_display" output="false">
+<cfcomponent output="false">
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="queryDropdown">

@@ -1,4 +1,4 @@
-<cfcomponent displayname="user_logic.cfc" output="false">
+<cfcomponent output="false">
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
@@ -54,10 +54,14 @@
 
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
 	<cfset q_selectUserInfo = obj_user_sql.selectUserInfo(userID=arguments.userID)>
-	
 	<cfset obj_user_display = createObject("component","user_display")>
+	<cfif arguments.userID EQ 0>
+		<cfset lcl_legend = "site registration">
+	<cfelse>
+		<cfset lcl_legend = "user info">
+	</cfif>
 	<cfsavecontent variable="s_showUser">
-		<cfoutput>#obj_user_display.showUserInput(userQuery=q_selectUserInfo)#</cfoutput>
+		<cfoutput>#obj_user_display.showUserInput(userQuery=q_selectUserInfo,legend=lcl_legend)#</cfoutput>
 	</cfsavecontent>
 
 	<cfreturn s_showUser>
@@ -67,8 +71,13 @@
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="void" name="saveUserInfo">
 
+	<cfdump var="#arguments#">
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
-	<cfset x = obj_user_sql.updateUser(argumentCollection=arguments)>
+	<cfif arguments.userID EQ 0>
+		<cfset x = obj_user_sql.insertUser(argumentCollection=arguments)>
+	<cfelse>
+		<cfset x = obj_user_sql.updateUser(argumentCollection=arguments)>
+	</cfif>
 	
 </cffunction>
 <!--- End Function --->  

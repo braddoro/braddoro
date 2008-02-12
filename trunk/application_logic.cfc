@@ -1,4 +1,4 @@
-<cfcomponent displayname="application_logic" output="false">
+<cfcomponent output="false">
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 <cfproperty name="module_siteTitle" displayname="module_siteTitle" type="string" default="braddoro.com">

@@ -1,4 +1,4 @@
-<cfcomponent displayname="content_display.cfc" output="false">
+<cfcomponent output="false">
 
 <!--- Begin Function  --->
 <!--- this function needs work --->
@@ -75,11 +75,13 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
+<!--- this function needs work --->
 <cffunction access="package" output="false" returntype="string" name="showPostInput">
 <cfargument name="topicList" type="query" required="true">
 <cfargument name="postData" type="query" required="true">
 <cfargument name="userID" type="numeric" default="0">
 
+<!--- move this --->
 <cfif arguments.postData.recordCount GT 0>
 	<cfset lcl_postID = arguments.postData.postID>
 	<cfset lcl_topicID = arguments.postData.topicID>
@@ -95,6 +97,15 @@
 	<cfset lcl_displayWord = "compose post">
 	<cfset lcl_task = "addPost">
 </cfif>
+<!--- 
+<cfif isdefined("arguments.postData.columnList")>
+	<cfloop list="#arguments.postData.columnList#" index="c">
+		<cfset "lcl_#c#"=arguments.postData[c][1]>
+	</cfloop>
+</cfif> 
+--->
+<!--- move this --->
+
 <cfset obj_utility_display = createObject("component","utility_display")>
 <cfsavecontent variable="s_showPostInput">
 	<cfoutput>
