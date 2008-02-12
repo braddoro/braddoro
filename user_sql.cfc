@@ -1,4 +1,4 @@
-<cfcomponent displayname="user_sql.cfc" output="false">
+<cfcomponent output="false">
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
@@ -50,33 +50,60 @@
 <!--- End Function --->
 
 <!--- Begin Function --->
-<cffunction access="package" output="false" returntype="query" name="insertUser">
+<cffunction access="package" output="false" returntype="void" name="insertUser">
 
-	<cfquery name="q_insertUser" datasource="#module_dsn#">
-	insert into braddoro.dyn_Users 
-	(userGUID, userName, realName, siteName, password, emailAddress, webSite, dateOfBirth, zipCode)
-	select '#createUUID#', '#arguments.userName#', '#arguments.realName#', '#arguments.siteName#', '#arguments.password#', '#arguments.emailAddress#', '#arguments.webSite#', '#arguments.dateOfBirth#', '#arguments.zipCode#'
-	select last_insert_id() as 'newID'
-	 </cfquery>
-
-	<cfreturn q_insertUser>
+	<cfsavecontent variable="_sql">
+	<cfoutput>
+		insert into braddoro.dyn_Users 
+		(userGUID, userName, realName, siteName, password, emailAddress, webSite, dateOfBirth, zipCode, Active)
+		select '#createUUID()#', '#arguments.userName#', '#arguments.realName#', '#arguments.siteName#', '#arguments.password#', '#arguments.emailAddress#', '#arguments.webSite#', '#dateformat(arguments.dateOfBirth,"yyyy-mm-dd")#', #val(arguments.zipCode)#, 'P'
+	</cfoutput>
+	</cfsavecontent>
+	<cftry>
+	<cfquery name="q_insertUser" datasource="#module_dsn#">#preserveSingleQuotes(_sql)#</cfquery>
+	<cfcatch type="database">
+		<cfset obj_error = createObject("component","error_logic").init(dsn=module_dsn)>
+		<cfset x = obj_error.fail(
+			userID=0,
+			message=cfcatch.detail,
+			detail=cfcatch.QueryError,
+			type=cfcatch.Type,
+			remoteIP=cgi.REMOTE_ADDR,
+			showOutput=false	
+			)>
+	</cfcatch>
+	</cftry>
+	
 </cffunction>
 <!--- End Function --->
 
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="void" name="updateUser">
 
+	<cftry>
 	<cfquery name="q_updateUser" datasource="#module_dsn#">
-	update braddoro.dyn_Users set
-	userName = '#arguments.userName#',
-	realName = '#arguments.realName#',
-	siteName = '#arguments.siteName#',
-	emailAddress = '#arguments.emailAddress#',
-	webSite = '#arguments.webSite#',
-	dateOfBirth = '#dateformat(arguments.dateOfBirth,"yyyy-mm-dd")#',
-	zipCode = '#arguments.zipCode#'
-	where userID = #val(arguments.userID)#
+		update braddoro.dyn_Users set
+		userName = '#arguments.userName#',
+		realName = '#arguments.realName#',
+		siteName = '#arguments.siteName#',
+		emailAddress = '#arguments.emailAddress#',
+		webSite = '#arguments.webSite#',
+		dateOfBirth = '#dateformat(arguments.dateOfBirth,"yyyy-mm-dd")#',
+		zipCode = '#arguments.zipCode#'
+		where userID = #val(arguments.userID)#
 	</cfquery>
+	<cfcatch type="database">
+		<cfset obj_error = createObject("component","error_logic").init(dsn=module_dsn)>
+		<cfset x = obj_error.fail(
+			userID=0,
+			message=cfcatch.detail,
+			detail=cfcatch.QueryError,
+			type=cfcatch.Type,
+			remoteIP=cgi.REMOTE_ADDR,
+			showOutput=false	
+			)>
+	</cfcatch>
+	</cftry>
 
 </cffunction>
 <!--- End Function --->
@@ -86,7 +113,7 @@
 	<cfargument name="userID" type="numeric" required="true">
   
 	<cfquery name="q_selectUserInfo" datasource="#module_dsn#">
-	select userID, userGUID, userName, realName, siteName, password, emailAddress, webSite, lastVisit, dateOfBirth, zipCode, Active from braddoro.dyn_Users where userID = #arguments.userID# 
+	select userID, userGUID, userName, realName, siteName, password, emailAddress, webSite, lastVisit, dateOfBirth, zipCode, Active from braddoro.dyn_Users where userID = #arguments.userID# limit 1 
 	</cfquery>
 
 	<cfreturn q_selectUserInfo>

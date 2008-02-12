@@ -17,13 +17,26 @@
 <cfparam name="form.task" type="string" default="">
 
 
-<!--- logIn --->
+<!---------------------------------------------------------------------------------
+-- application tasks 
+---------------------------------------------------------------------------------->
+<!--- getJS --->
 <cfif form.task EQ "getJS">
 	<cfset obj_application_logic = createObject("component","application_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_application_logic.showJavascript()#</cfoutput>
 	</cfsavecontent>
 </cfif>
+<!--- showBanner --->
+<cfif form.task EQ "showBanner">
+	<cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+		<cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput>
+	</cfsavecontent>
+</cfif>
+<!---------------------------------------------------------------------------------
+-- User tasks 
+---------------------------------------------------------------------------------->
 <!--- logIn --->
 <cfif form.task EQ "logIn">
 	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
@@ -53,7 +66,6 @@
 </cfif>
 <!--- saveUserInfo --->
 <cfif form.task EQ "saveUserInfo">
-
 	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
 	<cfset x = obj_user_logic.saveUserInfo(argumentCollection=form)>
 	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
@@ -61,20 +73,16 @@
 	<cfoutput>#obj_user_logic.showUser(userID=session.userID)#</cfoutput>
 	</cfsavecontent>
 </cfif>
-<!--- showBanner --->
-<cfif form.task EQ "showBanner">
-	<cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
+<!--- register --->
+<cfif form.task EQ "register">
+	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-		<cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput>
+	<cfoutput>#obj_user_logic.showUser(userID=0)#</cfoutput>
 	</cfsavecontent>
 </cfif>
-<!--- showPost --->
-<cfif form.task EQ "showPost">
-	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
+<!---------------------------------------------------------------------------------
+-- search tasks 
+---------------------------------------------------------------------------------->
 <!--- searchPost --->
 <cfif form.task EQ "searchPost">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
@@ -87,6 +95,16 @@
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_content_logic.getSearch(userID=val(session.userID),topicID=form.topicID,filterString=form.Filter,showCount="Yes")#</cfoutput>
+	</cfsavecontent>
+</cfif>
+<!---------------------------------------------------------------------------------
+-- post tasks 
+---------------------------------------------------------------------------------->
+<!--- showPost --->
+<cfif form.task EQ "showPost">
+	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- composePost --->
@@ -112,7 +130,6 @@
 </cfif>
 <!--- updatePost --->
 <cfif form.task EQ "updatePost">
-
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
 	<cfoutput>#obj_content_logic.postUpdate(postID=form.itemID,userID=val(session.userID),topicID=form.TopicID,title=form.Subject,post=form.Post)#</cfoutput>
@@ -122,6 +139,9 @@
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
+<!---------------------------------------------------------------------------------
+-- reply tasks 
+---------------------------------------------------------------------------------->
 <!--- addReply --->
 <cfif form.task EQ "addReply">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
@@ -152,6 +172,9 @@
 	<cfoutput>#obj_content_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
+<!---------------------------------------------------------------------------------
+-- message tasks 
+---------------------------------------------------------------------------------->
 <!--- showMessages --->
 <cfif form.task EQ "showMessages">
 	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>

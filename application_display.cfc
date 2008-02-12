@@ -1,4 +1,4 @@
-<cfcomponent displayname="application_display" output="false">
+<cfcomponent output="false">
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="showJavascriptStart">
@@ -55,7 +55,6 @@ function js_buildRequestStart(Task, container) {
 	
 </cffunction>	
 <!--- End Function --->
-
 
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="showJavascript">
@@ -140,6 +139,9 @@ function js_buildRequest(Task, container, itemID) {
 		sPostString += "username=" + document.getElementById("username").value + "&";
 		sPostString += "siteName=" + document.getElementById("siteName").value + "&";
 		sPostString += "realName=" + document.getElementById("realName").value + "&";
+		if (document.getElementById("password")) {
+			sPostString += "password=" + hex_md5(''+document.getElementById("password").value) + "&";
+		}
 		sPostString += "webSite=" + document.getElementById("webSite").value + "&";
 		sPostString += "emailAddress=" + document.getElementById("emailAddress").value + "&";
 		sPostString += "dateOfBirth=" + document.getElementById("dateOfBirth").value + "&";

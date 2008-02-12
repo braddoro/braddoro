@@ -1,4 +1,4 @@
-<cfcomponent displayname="application_sql" output="false">
+<cfcomponent output="false">
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
