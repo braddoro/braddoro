@@ -40,7 +40,7 @@
 		Real Name<input type="text" size="20" title="This is your real name; in full or in part, or some facsimile there of." id="realName" name="realName" value="#lcl_realName#" class="navButtons" style="display:block;">
 		Web Site<input type="text" size="40" title="Your web site.  Might or might not be used on the site." id="webSite" name="webSite" value="#lcl_webSite#" class="navButtons" style="display:block;">
 		Email Address<input type="text" size="40" title="This is not displayed on the site and will be used for password recovery." id="emailAddress" name="emailAddress" value="#lcl_emailAddress#" class="navButtons" style="display:block;">
-		Date of Birth<input type="text" size="12" title="Your date of bith." id="dateOfBirth" name="dateOfBirth" value="#dateformat(lcl_dateOfBirth,"mm/dd/yyyy")#" class="navButtons" style="display:block;">
+		Date of Birth<input type="text" size="12" title="Your date of birth." id="dateOfBirth" name="dateOfBirth" value="#dateformat(lcl_dateOfBirth,"mm/dd/yyyy")#" class="navButtons" style="display:block;">
 		Zip Code<input type="text" size="5" title="This is not displayed on the site and will be used for password recovery." id="zipCode" name="zipCode" value="#lcl_zipCode#" class="navButtons" style="display:block;">
 		Password<input type="text" size="5" title="" id="password" name="password" value="" class="navButtons" style="display:block;">
 		<br>
