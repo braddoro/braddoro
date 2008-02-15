@@ -1,7 +1,7 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="showJavascriptStart">
+<cffunction access="package" output="false" returntype="string" name="showJavascriptStart">
 	<cfargument name="showDebug" type="boolean" default="false">
 
 	<cfsavecontent variable="s_showJavascriptStart">
@@ -57,7 +57,7 @@ function js_buildRequestStart(Task, container) {
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="showJavascript">
+<cffunction access="package" output="false" returntype="string" name="showJavascript">
 	<cfargument name="showDebug" type="boolean" default="false">
 
 	<cfsavecontent variable="s_showJavascript">
