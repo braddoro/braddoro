@@ -10,6 +10,18 @@
 </cffunction>
 
 <!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="string" name="randomQuote">
+<cfargument name="quoteQuery" type="query" required="true">
+
+	<cfsavecontent variable="s_randomQuote">
+	<cfoutput query="arguments.quoteQuery"><span class="mediumtext">#quote#<cfif quoteBy NEQ ""> - #quoteBy#</cfif><cfif quoteWhen NEQ ""> (#quoteWhen#)</cfif></span></cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_randomQuote>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="quoteList">
 	<cfargument name="quoteQuery" type="query" required="true">
 	<cfargument name="displayWord" type="string" required="true">

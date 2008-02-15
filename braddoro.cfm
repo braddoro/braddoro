@@ -27,7 +27,8 @@
 <div id="div_top" class="divtop">
 <fieldset>
 <div id="div_banner" class="banner"><cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput></div>
-<div id="quote">#obj_application.Quote()#</div>
+<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
+<div id="quote" title="click for another quote" style="cursor:default;" onclick="js_buildRequest('randomQuote','quote',0);">#obj_quote_logic.randomQuote()#</div>
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>

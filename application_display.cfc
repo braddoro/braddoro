@@ -196,18 +196,6 @@ function js_buildRequest(Task, container, itemID) {
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="showQuote">
-<cfargument name="quoteQuery" type="query" required="true">
-
-	<cfsavecontent variable="s_showQuote">
-	<cfoutput query="arguments.quoteQuery"><span class="mediumtext">#quote#<cfif quoteBy NEQ ""> - #quoteBy#</cfif><cfif quoteWhen NEQ ""> (#quoteWhen#)</cfif></span></cfoutput>
-	</cfsavecontent>
-	
-	<cfreturn s_showQuote>
-</cffunction>
-<!--- End Function --->
-
-<!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="showNavMenu">
 	<cfargument name="userID" type="numeric" default="1">
 	
