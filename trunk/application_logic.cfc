@@ -60,20 +60,6 @@
 	<cfreturn s_banner>
 </cffunction>
 <!--- End Function --->
-
-<!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="quote">
-
-	<cfset obj_application_sql = createObject("component","application_sql").init(dsn=module_dsn)>
-	<cfset q_getQuote = obj_application_sql.getQuote()>
-	<cfset obj_application_display = createObject("component","application_display")>
-	<cfsavecontent variable="s_quote">
-	<cfoutput>#obj_application_display.showQuote(quoteQuery=q_getQuote)#</cfoutput>
-	</cfsavecontent>
-	
-	<cfreturn s_quote>
-</cffunction>
-<!--- End Function --->
 	
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="navMenu">

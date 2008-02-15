@@ -10,6 +10,21 @@
 	<cfreturn this>
 </cffunction>
 
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="randomQuote">
+
+	<cfset obj_quote_sql = createObject("component","quote_sql").init(dsn=module_dsn)>
+	<cfset q_getQuote = obj_quote_sql.randomQuote()>
+	<cfset obj_quote_display = createObject("component","quote_display")>
+	<cfsavecontent variable="s_randomQuote">
+	<cfoutput>#obj_quote_display.randomQuote(quoteQuery=q_getQuote)#</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_randomQuote>
+</cffunction>
+<!--- End Function --->
+
 <cffunction access="public" output="false" name="showQuoteList">
 	<cfargument required="true" type="string" name="outputDiv">
 	

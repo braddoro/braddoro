@@ -11,6 +11,18 @@
 </cffunction>
 
 <!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="randomQuote">
+	
+	<cfquery name="q_randomQuote" datasource="#module_dsn#">
+		select quote, quoteby, quoteWhen from braddoro.cfg_quotes where active = 'Y' order by rand() limit 1
+	</cfquery>
+	<cfreturn q_randomQuote>
+</cffunction>
+<!--- End Function --->
+
+
+
+<!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="getQuote">
 	
 	<cfquery name="q_getQuote" datasource="#module_dsn#">

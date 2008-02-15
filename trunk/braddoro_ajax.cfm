@@ -11,6 +11,10 @@
 	<cfif not isdefined("session.siteDsn")>
 		<cfset session.siteDsn = "braddoro">
 	</cfif>
+	<cfif not isdefined("session.postsToShow")>
+		<cfset session.postsToShow = 20>
+	</cfif>
+	
 </cflock>
 
 <cfparam name="_html" type="string" default="">
@@ -47,7 +51,13 @@
 		)#</cfoutput>
 	</cfsavecontent>
 </cfif>
-
+<!--- randomQuote --->
+<cfif form.task EQ "randomQuote">
+	<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_quote_logic.randomQuote()#</cfoutput>
+	</cfsavecontent>
+</cfif>
 <!---------------------------------------------------------------------------------
 -- application tasks 
 ---------------------------------------------------------------------------------->

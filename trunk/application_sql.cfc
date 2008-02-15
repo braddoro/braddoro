@@ -10,14 +10,4 @@
 	<cfreturn this>
 </cffunction>
 
-<!--- Begin Function --->
-<cffunction access="package" output="false" returntype="query" name="getQuote">
-	
-	<cfquery name="q_getQuote" datasource="#module_dsn#">
-		select quote, quoteby, quoteWhen from braddoro.cfg_quotes where active = 'Y' order by rand() limit 1
-	</cfquery>
-	<cfreturn q_getQuote>
-</cffunction>
-<!--- End Function --->
-
 </cfcomponent>
