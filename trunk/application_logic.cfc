@@ -4,16 +4,16 @@
 <cfproperty name="module_siteTitle" displayname="module_siteTitle" type="string" default="braddoro.com">
 <cfproperty name="module_CSSfile" displayname="module_CSSfile" type="string" default="braddoro/braddoro.css">
 
-<cffunction name="getCSSfile" access="public" output="false" returntype="string">
+<cffunction name="getCSSfile" access="package" output="false" returntype="string">
 	<cfreturn module_CSSfile>
 </cffunction>
 
-<cffunction name="getSiteTitle" access="public" output="false" returntype="string">
+<cffunction name="getSiteTitle" access="package" output="false" returntype="string">
 	<cfreturn module_siteTitle>
 </cffunction>
 
 <!--- Begin Function  --->
-<cffunction name="init" displayname="init" access="public" output="false">
+<cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 
 	<cfset module_dsn = arguments.dsn>
@@ -25,7 +25,7 @@
 <!--- End Function  --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="showJavascript">
+<cffunction access="package" output="false" returntype="string" name="showJavascript">
 	<cfargument name="showDebug" type="boolean" default="false">
 	<cfargument name="start" type="boolean" default="false">
 
@@ -46,7 +46,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="banner">
+<cffunction access="package" output="false" returntype="string" name="banner">
 	<cfargument name="userID" type="numeric" required="true">
 
 	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=module_dsn)>
@@ -62,7 +62,7 @@
 <!--- End Function --->
 	
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="navMenu">
+<cffunction access="package" output="false" returntype="string" name="navMenu">
 	<cfargument name="userID" type="numeric" default="1"> 
 	
 	<cfset obj_application_display = createObject("component","application_display")>

@@ -2,13 +2,15 @@
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
-<cffunction name="init" displayname="init" access="public" output="false">
+<!--- Begin Function --->
+<cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
 	
 	<cfreturn this>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="randomQuote">
@@ -19,8 +21,6 @@
 	<cfreturn q_randomQuote>
 </cffunction>
 <!--- End Function --->
-
-
 
 <!--- Begin Function --->
 <cffunction access="package" output="false" returntype="query" name="getQuote">

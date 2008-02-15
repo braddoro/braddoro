@@ -2,17 +2,18 @@
 
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
-<cffunction name="init" displayname="init" access="public" output="false">
+<!--- Begin Function  --->
+<cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
 	
 	<cfreturn this>
 </cffunction>
-
+<!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="randomQuote">
+<cffunction access="package" output="false" returntype="string" name="randomQuote">
 
 	<cfset obj_quote_sql = createObject("component","quote_sql").init(dsn=module_dsn)>
 	<cfset q_getQuote = obj_quote_sql.randomQuote()>
@@ -25,7 +26,8 @@
 </cffunction>
 <!--- End Function --->
 
-<cffunction access="public" output="false" name="showQuoteList">
+<!--- Begin Function  --->
+<cffunction access="package" output="false" name="showQuoteList">
 	<cfargument required="true" type="string" name="outputDiv">
 	
 	<cfset obj_quote_sql = createObject("component","quote_sql").init(dsn=module_dsn)>
@@ -43,8 +45,10 @@
 	
 	<cfreturn s_showQuoteList>
 </cffunction>
+<!--- End Function --->
 
-<cffunction access="public" output="false" name="viewQuote">
+<!--- Begin Function  --->
+<cffunction access="package" output="false" name="viewQuote">
 	<cfargument default="0" type="numeric" name="quoteID">
 	<cfargument required="true" type="string" name="outputDiv">
 
@@ -68,8 +72,10 @@
 	
 	<cfreturn s_showQuoteList>
 </cffunction>
+<!--- End Function --->
 
-<cffunction access="public" output="false" name="saveQuote">
+<!--- Begin Function  --->
+<cffunction access="package" output="false" name="saveQuote">
 	<cfargument required="true" type="string" name="outputDiv">
 	<cfargument default="0" type="numeric" name="quoteID">
 
@@ -102,5 +108,6 @@
 	
 	<cfreturn s_showQuoteList>
 </cffunction>
+<!--- End Function --->
 
 </cfcomponent>

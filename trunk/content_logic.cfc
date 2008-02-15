@@ -3,7 +3,7 @@
 <cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
 
 <!--- Begin Function  --->
-<cffunction name="init" displayname="init" access="public" output="false">
+<cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
@@ -13,7 +13,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="displayPosts">
+<cffunction access="package" output="false" returntype="string" name="displayPosts">
 	<cfargument name="numberToGet" type="numeric" required="true">
 	<cfargument name="userID" type="numeric" required="true">
 	<cfargument name="showCount" type="string" default="No">
@@ -30,7 +30,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="showSearch">
+<cffunction access="package" output="false" returntype="string" name="showSearch">
 
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
 	<cfset q_topics = obj_content_sql.getTopics()>
@@ -44,7 +44,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="getSearch">
+<cffunction access="package" output="false" returntype="string" name="getSearch">
 	<cfargument name="topicID" type="numeric" default="0">
 	<cfargument name="filterString" type="string" default="">
 	<cfargument name="userID" type="numeric" required="true">
@@ -64,7 +64,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="postInput">
+<cffunction access="package" output="false" returntype="string" name="postInput">
 	<cfargument name="postID" type="numeric" default="0">
 	<cfargument name="getNone" type="boolean" default="false">
 	<cfargument name="userID" type="numeric" required="true">
@@ -83,7 +83,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="void" name="postUpdate">
+<cffunction access="package" output="false" returntype="void" name="postUpdate">
 	<cfargument name="getNone" type="boolean" default="false">
 	<cfargument name="postID" type="Numeric" default="0">
 	<cfargument name="userID" type="Numeric" default="0">
@@ -101,7 +101,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="replyInput">
+<cffunction access="package" output="false" returntype="string" name="replyInput">
 	<cfargument name="postID" type="numeric" default="0"> 
 	<cfargument name="replyID" type="numeric" default="0">
 
@@ -121,7 +121,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="void" name="saveReply">
+<cffunction access="package" output="false" returntype="void" name="saveReply">
 	<cfargument name="postID" type="numeric" default="0"> 
 	<cfargument name="replyID" type="numeric" default="0">
 	<cfargument name="reply" type="string" default="">
@@ -138,7 +138,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="showMessages">
+<cffunction access="package" output="false" returntype="string" name="showMessages">
 	<cfargument name="userID" type="numeric" required="true">
 
 	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
@@ -156,7 +156,7 @@
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="void" name="saveMessage">
+<cffunction access="package" output="false" returntype="void" name="saveMessage">
 	<cfargument name="from_userID" type="numeric" required="true">
 	<cfargument name="to_userID" type="numeric" required="true">
 	<cfargument name="messageText" type="string" required="true">
