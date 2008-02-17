@@ -137,34 +137,4 @@
 </cffunction>
 <!--- End Function --->  
 
-<!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="showMessages">
-	<cfargument name="userID" type="numeric" required="true">
-
-	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
-	<cfset q_getMessages = obj_content_sql.getMessages(userID=arguments.userID)>
-	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
-	<cfset q_getUsers = obj_user_sql.getUsers()>
-	<cfset obj_content_display = createObject("component","content_display")>
-	<cfsavecontent variable="s_showMessages">
-		<cfoutput>
-			#obj_content_display.messageMain(userID=arguments.userID,messageQuery=q_getMessages,userQuery=q_getUsers)#
-		</cfoutput>
-	</cfsavecontent>
-	<cfreturn s_showMessages>
-</cffunction>
-<!--- End Function --->  
-
-<!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="void" name="saveMessage">
-	<cfargument name="from_userID" type="numeric" required="true">
-	<cfargument name="to_userID" type="numeric" required="true">
-	<cfargument name="messageText" type="string" required="true">
-
-	<cfset obj_content_sql = createObject("component","content_sql").init(dsn=module_dsn)>
-	<cfset x = obj_content_sql.insertMessage(from_userID=arguments.from_userID,to_userID=arguments.to_userID,message=form.messageText)>
-
-</cffunction>
-<!--- End Function --->  
-
 </cfcomponent>
