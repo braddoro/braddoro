@@ -32,8 +32,8 @@
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
-<cfset obj_content = createObject("component","content_logic").Init(dsn=session.siteDsn)>
-<div id="div_main" class="divright">#obj_content.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</div>
+<cfset obj_post_logic = createObject("component","post_logic").Init(dsn=session.siteDsn)>
+<div id="div_main" class="divright">#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</div>
 </cfoutput>
 </body>
 </html>
