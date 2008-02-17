@@ -7,7 +7,7 @@
 	<cfargument name="userID" type="numeric" required="true">
 	<cfargument name="showCount" type="string" default="No">
 	
-	<cfset obj_content_sql = createObject("component","content_sql").init(dsn="braddoro")>
+	<cfset obj_post_sql = createObject("component","post_sql").init(dsn="braddoro")>
 	<cfsavecontent variable="s_showPosts">
 	<cfoutput>
 		<cfif arguments.showCount EQ "Yes">posts: #arguments.postQuery.recordCount#</cfif>
@@ -33,7 +33,7 @@
 			</cfif>
 			
 			<!--- BEGIN: move this --->
-			<cfset q_getReplies = obj_content_sql.getReplies(postID=postID)>
+			<cfset q_getReplies = obj_post_sql.getReplies(postID=postID)>
 			<cfif q_getReplies.recordCount GT 0>
 			<br>
 			<fieldset class="indented">
