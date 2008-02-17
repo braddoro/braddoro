@@ -218,19 +218,19 @@
 ---------------------------------------------------------------------------------->
 <!--- showMessages --->
 <cfif form.task EQ "showMessages">
-	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfset obj_message_logic = createObject("component","message_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#obj_content_logic.showMessages(userID=val(session.userID))#</cfoutput>
+	<cfoutput>#obj_message_logic.showMessages(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <!--- saveMessage --->
 <cfif form.task EQ "saveMessage">
-	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
-	<cfset x = obj_content_logic.saveMessage(from_userID=val(session.userID),to_userID=val(form.message_userID),messageText=form.messageText)>
+	<cfset obj_message_logic = createObject("component","message_logic").init(dsn=session.siteDsn)>
+	<cfset x = obj_message_logic.saveMessage(from_userID=val(session.userID),to_userID=val(form.message_userID),messageText=form.messageText)>
 
-	<cfset obj_content_logic = createObject("component","content_logic").init(dsn=session.siteDsn)>
+	<cfset obj_message_logic = createObject("component","message_logic").init(dsn=session.siteDsn)>
 	<cfsavecontent variable="_html">
-	<cfoutput>#obj_content_logic.showMessages(userID=val(session.userID))#</cfoutput>
+	<cfoutput>#obj_message_logic.showMessages(userID=val(session.userID))#</cfoutput>
 	</cfsavecontent>
 </cfif>
 <cfcatch type="any">
