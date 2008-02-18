@@ -37,7 +37,6 @@
 </cfoutput>
 </body>
 </html>
-<!--- <script language="javascript">js_buildRequestStart('getJS','js_div');</script> --->
 <cfcatch type="any">
 	<cfset obj_error = createObject("component","error_logic").init(dsn=session.siteDsn)>
 	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>

@@ -1,11 +1,7 @@
 <cfcomponent output="false">
 
-<!--- <cfproperty name="module_dsn" displayname="module_dsn" type="string" default=""> --->
-
 <!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="package" output="false">
-<!--- 	<cfargument required="true" type="string" name="dsn">
-	<cfset module_dsn = arguments.dsn> --->
 	
 	<cfreturn this>
 </cffunction>
@@ -60,8 +56,9 @@
 		<legend>messages</legend>
 		<cfif arguments.messageQuery.recordCount GT 0>
 		<cfloop query="arguments.messageQuery">
-			<strong>from #from# to #to# on #dateFormat(sentDate,"long")#</strong><br>
+			<strong>from #from# to #to# on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong><br>
 			#message#<br>
+			<a id="message_#messageID#" name="message_#messageID#" href="javascript:js_buildRequest('deleteMessage','div_main',#messageID#);">delete message</a>
 			<cfif currentRow LT recordCount><hr size="1"></cfif>
 		</cfloop>
 		</fieldset>

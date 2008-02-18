@@ -1,6 +1,13 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
+<cffunction name="init" displayname="init" access="package" output="false">
+	
+	<cfreturn this>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="showLogin">
 
 	<cfsavecontent variable="s_showLogin">

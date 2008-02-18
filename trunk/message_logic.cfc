@@ -1,7 +1,5 @@
 <cfcomponent output="false">
-
-<cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
-
+	
 <!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
@@ -38,6 +36,16 @@
 
 	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
 	<cfset x = obj_message_sql.insertMessage(from_userID=arguments.from_userID,to_userID=arguments.to_userID,message=form.messageText)>
+
+</cffunction>
+<!--- End Function --->  
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="void" name="deleteMessage">
+	<cfargument name="messageID" type="numeric" required="true">
+
+	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
+	<cfset x = obj_message_sql.deleteMessage(messageID=arguments.messageID)>
 
 </cffunction>
 <!--- End Function --->  

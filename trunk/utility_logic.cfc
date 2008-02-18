@@ -1,17 +1,12 @@
 <cfcomponent output="false">
 
-<cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
-<cfproperty name="module_siteTitle" displayname="module_siteTitle" type="string" default="braddoro.com">
-
-<cffunction name="getSiteTitle" access="package" output="false" returntype="string">
-	<cfreturn module_siteTitle>
-</cffunction>
-
+<!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	<cfset module_dsn = arguments.dsn>
 	<cfreturn this>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="string" name="fail">
