@@ -31,14 +31,7 @@
 
 	<cfset obj_application_display = createObject("component","application_display")>
 	<cfsavecontent variable="s_showJavascript">
-	<cfoutput>
-		<cfif arguments.start>
-			#obj_application_display.showJavascriptStart(showDebug=arguments.showDebug)#
-		<cfelse>
-			#obj_application_display.showJavascript(showDebug=arguments.showDebug)#
-		</cfif>
-		
-	</cfoutput>
+	<cfoutput>#obj_application_display.showJavascript(showDebug=arguments.showDebug)#</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_showJavascript>

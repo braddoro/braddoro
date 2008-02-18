@@ -1,7 +1,5 @@
 <cfcomponent output="false">
 
-<cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
-
 <!--- Begin Function --->
 <cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
@@ -38,6 +36,17 @@
 	<cfquery name="q_insertMessage" datasource="#module_dsn#">
 		insert into braddoro.dyn_messages (from_userID, to_userID, message)
 		select #arguments.from_userID#, #arguments.to_userID#, '#arguments.message#' 
+	</cfquery>
+	
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="deleteMessage">
+	<cfargument name="messageID" type="numeric" required="true">
+	
+	<cfquery name="q_deleteMessage" datasource="#module_dsn#">
+		delete from braddoro.dyn_messages where messageID = #arguments.messageID#
 	</cfquery>
 	
 </cffunction>

@@ -1,6 +1,13 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
+<cffunction name="init" displayname="init" access="package" output="false">
+	
+	<cfreturn this>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
 <!--- this function needs work --->
 <cffunction access="package" output="false" returntype="String" name="showPosts">
 	<cfargument name="postQuery" type="query" required="true">

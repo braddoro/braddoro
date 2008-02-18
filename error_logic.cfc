@@ -1,17 +1,12 @@
 <cfcomponent output="false">
 
-<cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
-<cfproperty name="module_siteTitle" displayname="module_siteTitle" type="string" default="braddoro.com">
-
-<cffunction name="getSiteTitle" access="package" output="false" returntype="string">
-	<cfreturn module_siteTitle>
-</cffunction>
-
+<!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	<cfset module_dsn = arguments.dsn>
 	<cfreturn this>
 </cffunction>
+<!--- End Function --->
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="string" name="fail">
@@ -40,6 +35,21 @@
 	</cfif>	
 
 	<cfreturn s_fail>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction access="package" output="false" returntype="string" name="showErrors">
+	<cfargument name="numberToGet" type="numeric" default="20">
+	
+	<cfset obj_error_sql = createObject("component","error_sql").init(dsn=module_dsn)>
+	<cfset q_showErrors = obj_error_sql.showErrors(numberToGet=arguments.numberToGet)>
+	<cfset obj_error_display = createObject("component","error_display").init()>	
+	<cfsavecontent variable="s_showErrors">
+		<cfoutput>#obj_error_display.showErrors(errorQuery=q_showErrors)#</cfoutput>
+	</cfsavecontent>
+
+	<cfreturn s_showErrors>
 </cffunction>
 <!--- End Function --->
 	

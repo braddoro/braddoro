@@ -1,7 +1,5 @@
 <cfcomponent output="false">
 
-<cfproperty name="module_dsn" displayname="module_dsn" type="string" default="">
-
 <!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="package" output="false">
 	<cfargument required="true" type="string" name="dsn">
@@ -35,12 +33,7 @@
 
 	<cfset obj_quote_display = createObject("component","quote_display").init()>
 	<cfsavecontent variable="s_showQuoteList">
-	<cfoutput>#obj_quote_display.quoteList(
-		quoteQuery=q_getQuoteData,
-		displayWord="quote list",
-		action="viewQuote",
-		outputDiv=arguments.outputDiv
-		)#</cfoutput>
+	<cfoutput>#obj_quote_display.quoteList(quoteQuery=q_getQuoteData,displayWord="quote list",action="viewQuote",outputDiv=arguments.outputDiv)#</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_showQuoteList>
