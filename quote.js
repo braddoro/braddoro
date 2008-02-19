@@ -1,7 +1,7 @@
 function js_requestQuote(Task, container, itemID) {
 	var sPostString = "";
 	sPostString += "Task=" + Task + "&";
-	sPostString += "itemID=" + itemID + "&";
+	sPostString += "quoteID=" + itemID + "&";
 	sPostString += "outputDiv=" + "div_main" + "&";
 	if (Task == "saveQuote") {
 		sPostString += "quoteBy=" + document.getElementById("quoteBy").value + "&";

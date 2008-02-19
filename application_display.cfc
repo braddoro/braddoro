@@ -55,12 +55,7 @@ function js_buildRequest(Task, container, itemID) {
 		sPostString += "dateOfBirth=" + document.getElementById("dateOfBirth").value + "&";
 		sPostString += "zipCode=" + document.getElementById("zipCode").value + "&";
 	}
-	//if (Task == "saveQuote") {
-	//	sPostString += "quoteBy=" + document.getElementById("quoteBy").value + "&";
-	//	sPostString += "quoteWhen=" + document.getElementById("quoteWhen").value + "&";
-	//	sPostString += "quoteActive=" + document.getElementById("quoteActive").value + "&";
-	//	sPostString += "quoteText=" + document.getElementById("quoteText").value.replace(/\r\n/g,"<br>") + "&";
-	//}
+
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
@@ -96,7 +91,7 @@ function js_buildRequest(Task, container, itemID) {
 	<cfsavecontent variable="s_showNavMenu">
 		<cfoutput>
 		<cfif arguments.userID EQ 12>
-		<input type="button" id="quoteStuff" name="quoteStuff" value="quote stuff" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="quoteStuff" name="quoteStuff" value="quote stuff" class="navButtons" style="" onclick="js_requestQuote(this.id,'div_main',0);">
 		</cfif>
 		<cfif arguments.userID LT 2>
 		<input type="button" id="logIn" name="logIn" value="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
