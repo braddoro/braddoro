@@ -14,65 +14,6 @@
 	<cfsavecontent variable="s_showJavascript">
 	<cfoutput>
 <script language="javascript" type="text/javascript">
-function ChangeTextSize(element,changeBy) {
-	document.getElementById(element).rows = parseInt(document.getElementById(element).rows)+parseInt(changeBy);
-}
-
-function ChangeTextSizeW(element,changeBy) {
-	document.getElementById(element).cols = parseInt(document.getElementById(element).cols)+parseInt(changeBy);
-}
-function isNumber(frm, fld, val) {
-	if(isNaN(val)) {
-		document.forms[frm].elements[fld].focus();
-		alert("This is not a number.");
-	}
-}
-function js_collapseThis(changeme) {
-	if (document.getElementById(changeme).style.display == "block") {
-		document.getElementById(changeme).style.display = "none";
-	} else {
-		document.getElementById(changeme).style.display = "block";
-	}
-}
-function js_changeBG(changeme,colorbg) {
-	document.getElementById(changeme).style.backgroundColor = colorbg;
-}
-function http_post_request(url, sPostString) {
-	var results = "";
-	var ajax_http_request = false;
-	var AjaxTime = new Date();
-	sPostString += "AjaxTime=" + AjaxTime.getTime();
-	if (window.XMLHttpRequest) {
-		ajax_http_request = new XMLHttpRequest();
-		if (ajax_http_request.overrideMimeType) {
-			ajax_http_request.overrideMimeType("text/html");
-		}
-	} else if (window.ActiveXObject) {
-		try {
-			ajax_http_request = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e0) {
-			try {
-				ajax_http_request = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e1) {
-				var strErr = "Object Error";
-				strErr += "\nNumber: " + e1.number;
-				strErr += "\nDescription: " + e1.description;
-				results = strErr;
-			}
-		}
-	}
-	if (!ajax_http_request) {
-		results = "Cannot create XML/HTTP instance";
-	} else {
-		ajax_http_request.open("POST", url, false);
-		ajax_http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		ajax_http_request.setRequestHeader("Content-length", sPostString.length);
-		ajax_http_request.setRequestHeader("Connection", "close");
-		ajax_http_request.send(sPostString);
-		results = ajax_http_request.responseText;
-	}
-	return results;
-}
 function js_buildRequest(Task, container, itemID) {
 	var sPostString = "";
 	sPostString += "Task=" + Task + "&";
@@ -114,18 +55,20 @@ function js_buildRequest(Task, container, itemID) {
 		sPostString += "dateOfBirth=" + document.getElementById("dateOfBirth").value + "&";
 		sPostString += "zipCode=" + document.getElementById("zipCode").value + "&";
 	}
-	if (Task == "saveQuote") {
-		sPostString += "quoteBy=" + document.getElementById("quoteBy").value + "&";
-		sPostString += "quoteWhen=" + document.getElementById("quoteWhen").value + "&";
-		sPostString += "quoteActive=" + document.getElementById("quoteActive").value + "&";
-		sPostString += "quoteText=" + document.getElementById("quoteText").value.replace(/\r\n/g,"<br>") + "&";
-	}
+	//if (Task == "saveQuote") {
+	//	sPostString += "quoteBy=" + document.getElementById("quoteBy").value + "&";
+	//	sPostString += "quoteWhen=" + document.getElementById("quoteWhen").value + "&";
+	//	sPostString += "quoteActive=" + document.getElementById("quoteActive").value + "&";
+	//	sPostString += "quoteText=" + document.getElementById("quoteText").value.replace(/\r\n/g,"<br>") + "&";
+	//}
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
 }
 </script>
 <script type="text/javascript" src="/braddoro/md5.js"></script>
+<script type="text/javascript" src="/braddoro/ajax.js"></script>
+<script type="text/javascript" src="/braddoro/utility.js"></script>
 	</cfoutput>
 	</cfsavecontent>
 	<cfreturn s_showJavascript>

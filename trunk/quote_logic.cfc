@@ -10,6 +10,34 @@
 </cffunction>
 <!--- End Function --->
 
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="string" name="javascriptTask">
+	
+	<cfsavecontent variable="s_javascript">
+		<cfoutput><script type="text/javascript" src="/braddoro/quote.js"></script></cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_javascript>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="string" name="ajaxTask">
+	<cfargument required="true" type="string" name="task">
+	
+	<cfsavecontent variable="s_ajaxTask">
+		<cfoutput>
+			<cfif arguments.task EQ "randomQuote">#this.randomQuote(argumentCollection=arguments)#</cfif>
+			<cfif arguments.task EQ "quoteStuff">#this.showQuoteList(argumentCollection=arguments)#</cfif>
+			<cfif arguments.task EQ "viewQuote">#this.viewQuote(argumentCollection=arguments)#</cfif>
+			<cfif arguments.task EQ "saveQuote">#this.saveQuote(argumentCollection=arguments)#</cfif>
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_ajaxTask>
+</cffunction>
+<!--- End Function --->
+
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="string" name="randomQuote">
 

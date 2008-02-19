@@ -29,7 +29,7 @@
 	<cfsavecontent variable="s_quoteList">
 		<cfoutput>
 		<br>
-		<input type="button" id="add_viewQuote" name="viewQuote" value="add quote" class="navButtons" onclick="js_buildRequest('viewQuote','#arguments.outputDiv#',0);"><br>
+		<input type="button" id="add_viewQuote" name="viewQuote" value="add quote" class="navButtons" onclick="js_requestQuote('viewQuote','#arguments.outputDiv#',0);"><br>
 		<br>
 		<fieldset>
 		<legend>#arguments.displayWord#</legend>
@@ -43,7 +43,7 @@
 					<th>Quote</th>
 				</tr>
 			<cfloop query="arguments.quoteQuery">
-				<tr id="quoteID_#quoteID#" onclick="js_buildRequest('#arguments.action#','#arguments.outputDiv#',#quoteID#);" onmouseover="js_changeBG(this.id,'##AB9448');" onmouseout="js_changeBG(this.id,'##E7E7E7');" style="cursor:default;" title="click to view">
+				<tr id="quoteID_#quoteID#" onclick="js_requestQuote('#arguments.action#','#arguments.outputDiv#',#quoteID#);" onmouseover="js_changeBG(this.id,'##AB9448');" onmouseout="js_changeBG(this.id,'##E7E7E7');" style="cursor:default;" title="click to view">
 					<td>#numberformat(quoteID,"0000")#</td>
 					<td>#quoteBy#</td>
 					<td>#quoteWhen#</td>
@@ -77,7 +77,7 @@
 			<input type="text" id="quoteWhen" name="quoteWhen" class="navButtons" size="40" value="#arguments.quoteQuery.quoteWhen#">
 			<input type="text" id="quoteActive" name="quoteActive" class="navButtons" size="1" value="#arguments.quoteQuery.active#">
 			<textarea id="quoteText" name="quoteText" class="navButtons" rows="10" cols="80">#arguments.quoteQuery.quote#</textarea><br>
-			<input type="button" id="#arguments.action#" name="#arguments.action#" value="save" class="navButtons" onclick="js_buildRequest(this.id,'#arguments.outputDiv#',#arguments.quoteID#);">
+			<input type="button" id="#arguments.action#" name="#arguments.action#" value="save" class="navButtons" onclick="js_requestQuote(this.id,'#arguments.outputDiv#',#arguments.quoteID#);">
 		</fieldset>
 		</cfoutput>
 	</cfsavecontent>
@@ -97,9 +97,9 @@
 		<fieldset>
 		<legend>#arguments.displayWord#</legend>
 			<br>
-			<input type="button" id="edit_viewQuote" name="viewQuote" value="view quote" class="navButtons" onclick="js_buildRequest('viewQuote','#arguments.outputDiv#',#arguments.quoteID#);"><br>			
-			<input type="button" id="add_viewQuote" name="viewQuote" value="add quote" class="navButtons" onclick="js_buildRequest('viewQuote','#arguments.outputDiv#',0);"><br>
-			<input type="button" id="quoteStuff2" name="quoteStuff2" value="quote list" class="navButtons" onclick="js_buildRequest('quoteStuff','#arguments.outputDiv#',0);"><br>
+			<input type="button" id="edit_viewQuote" name="viewQuote" value="view quote" class="navButtons" onclick="js_requestQuote('viewQuote','#arguments.outputDiv#',#arguments.quoteID#);"><br>			
+			<input type="button" id="add_viewQuote" name="viewQuote" value="add quote" class="navButtons" onclick="js_requestQuote('viewQuote','#arguments.outputDiv#',0);"><br>
+			<input type="button" id="quoteStuff2" name="quoteStuff2" value="quote list" class="navButtons" onclick="js_requestQuote('quoteStuff','#arguments.outputDiv#',0);"><br>
 		</fieldset>
 		</cfoutput>
 	</cfsavecontent>
