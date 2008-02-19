@@ -21,44 +21,6 @@
 <cfparam name="form.task" type="string" default="">
 
 <!---------------------------------------------------------------------------------
--- quote tasks 
----------------------------------------------------------------------------------->
-<!--- quoteStuff --->
-<cfif form.task EQ "quoteStuff">
-	<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_quote_logic.showQuoteList(outputDiv="div_main")#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- viewQuote --->
-<cfif form.task EQ "viewQuote">
-	<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_quote_logic.viewQuote(quoteID=val(form.itemID),outputDiv="div_main")#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- saveQuote --->
-<cfif form.task EQ "saveQuote">
-	<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_quote_logic.saveQuote(
-		outputDiv="div_main",
-		quoteID=val(form.itemID),
-		quoteBy=form.quoteBy,
-		quoteWhen=form.quoteWhen,
-		active=form.quoteActive,
-		quote=form.quoteText
-		)#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- randomQuote --->
-<cfif form.task EQ "randomQuote">
-	<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_quote_logic.randomQuote()#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!---------------------------------------------------------------------------------
 -- application tasks 
 ---------------------------------------------------------------------------------->
 <!--- showBanner --->
