@@ -22,20 +22,21 @@
 <head>
 <link href="#obj_application.getCSSfile()#" rel="stylesheet" type="text/css">
 <div id="js_div">#obj_application.showJavascript(showDebug=false)#</div>
+#obj_user.javascriptTask()#
 </head>
 <body class="body">
 <div id="div_top" class="divtop">
 <fieldset>
 <div id="div_banner" class="banner"><cfoutput>#obj_application.banner(userID=val(session.userID))#</cfoutput></div>
-<cfset obj_quote_logic = createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
-#obj_quote_logic.javascriptTask()#
-<div id="quote" title="click for another quote" style="cursor:default;" onclick="js_requestQuote('randomQuote','quote',0);">#obj_quote_logic.randomQuote()#</div>
+<cfset obj_quote = createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
+#obj_quote.javascriptTask()#
+<div id="quote" title="click for another quote" style="cursor:default;" onclick="js_requestQuote('randomQuote','quote',0);">#obj_quote.randomQuote()#</div>
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
-<cfset obj_post_logic = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=session.userID)>
-#obj_post_logic.javascriptTask()#
-<div id="div_main" class="divright">#obj_post_logic.displayPosts()#</div>
+<cfset obj_post = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=session.userID)>
+#obj_post.javascriptTask()#
+<div id="div_main" class="divright">#obj_post.displayPosts()#</div>
 </cfoutput>
 </body>
 </html>

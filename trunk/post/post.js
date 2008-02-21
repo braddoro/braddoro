@@ -19,6 +19,5 @@ function js_requestPost(Task, container, itemID) {
 		sPostString += "replyID=" + document.getElementById("postReplyID_"+itemID).value + "&";
 	}
 	sPostString = sPostString.replace("%","%25");
-	alert(sPostString);
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/post/post_ajax.cfm",sPostString);
 }

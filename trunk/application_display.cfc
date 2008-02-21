@@ -18,26 +18,9 @@ function js_buildRequest(Task, container, itemID) {
 	var sPostString = "";
 	sPostString += "Task=" + Task + "&";
 	sPostString += "itemID=" + itemID + "&";
-	if (Task == "authenticateUser") {
-		sPostString += "userName=" + document.getElementById("username").value + "&";
-		sPostString += "password=" + hex_md5(document.getElementById("password").value) + "&";
-	}
 	if (Task == "saveMessage") {
 		sPostString += "messageText=" + document.getElementById("messageText").value.replace(/\r\n/g,"<br>") + "&";
 		sPostString += "message_userID=" + document.getElementById("message_userID").value + "&";
-	}
-	if (Task == "saveUserInfo") {
-		sPostString += "userID=" + document.getElementById("userID").value + "&";
-		sPostString += "username=" + document.getElementById("username").value + "&";
-		sPostString += "siteName=" + document.getElementById("siteName").value + "&";
-		sPostString += "realName=" + document.getElementById("realName").value + "&";
-		if (document.getElementById("password")) {
-			sPostString += "password=" + hex_md5(''+document.getElementById("password").value) + "&";
-		}
-		sPostString += "webSite=" + document.getElementById("webSite").value + "&";
-		sPostString += "emailAddress=" + document.getElementById("emailAddress").value + "&";
-		sPostString += "dateOfBirth=" + document.getElementById("dateOfBirth").value + "&";
-		sPostString += "zipCode=" + document.getElementById("zipCode").value + "&";
 	}
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
@@ -45,7 +28,7 @@ function js_buildRequest(Task, container, itemID) {
 }
 </script>
 <script type="text/javascript" src="/braddoro/user/md5.js"></script>
-<script type="text/javascript" src="/braddoro/ajax.js"></script>
+<script type="text/javascript" src="/braddoro/utility/ajax.js"></script>
 <script type="text/javascript" src="/braddoro/utility/utility.js"></script>
 	</cfoutput>
 	</cfsavecontent>
@@ -77,14 +60,14 @@ function js_buildRequest(Task, container, itemID) {
 		<input type="button" id="quoteStuff" name="quoteStuff" value="quote stuff" class="navButtons" style="" onclick="js_requestQuote(this.id,'div_main',0);">
 		</cfif>
 		<cfif arguments.userID LT 2>
-		<input type="button" id="logIn" name="logIn" value="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="logIn" name="logIn" value="log in" class="navButtons" style="" onclick="js_requestUser(this.id,'div_main',0);">
 		</cfif>
 		<input type="button" id="showPost" name="showPost" value="show posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
 		<input type="button" id="searchPost" name="searchPost" value="search posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">	
 		<cfif arguments.userID GT 1>
 		<input type="button" id="composePost" name="composePost" value="compose post" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
 		<input type="button" id="showMessages" name="showMessages" value="messages" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
-		<input type="button" id="showUserInfo" name="showUserInfo" value="user info" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="showUserInfo" name="showUserInfo" value="user info" class="navButtons" style="" onclick="js_requestUser(this.id,'div_main',0);">
 		</cfif>
 		</cfoutput>
 	</cfsavecontent>
