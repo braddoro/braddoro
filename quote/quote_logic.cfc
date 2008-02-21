@@ -1,7 +1,7 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction name="init" displayname="init" access="package" output="false">
+<cffunction name="init" displayname="init" access="public" output="false">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
@@ -11,10 +11,10 @@
 <!--- End Function --->
 
 <!--- Begin Function --->
-<cffunction access="package" output="false" returntype="string" name="javascriptTask">
+<cffunction access="public" output="false" returntype="string" name="javascriptTask">
 	
 	<cfsavecontent variable="s_javascript">
-		<cfoutput><script type="text/javascript" src="/braddoro/quote.js"></script></cfoutput>
+		<cfoutput><script type="text/javascript" src="/braddoro/quote/quote.js"></script></cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_javascript>
@@ -39,7 +39,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="randomQuote">
+<cffunction access="public" output="false" returntype="string" name="randomQuote">
 
 	<cfset obj_quote_sql = createObject("component","quote_sql").init(dsn=module_dsn)>
 	<cfset q_getQuote = obj_quote_sql.randomQuote()>
