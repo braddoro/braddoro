@@ -1,6 +1,6 @@
 <cfcomponent output="false">
 
-<cffunction name="init" displayname="init" access="package" output="false">
+<cffunction access="public" output="false" returntype="any" name="init">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
@@ -9,7 +9,7 @@
 </cffunction>
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="logIn">
+<cffunction access="public" output="false" returntype="string" name="logIn">
 	
 	<cfset obj_user_display = createObject("component","user_display")>
 	<cfsavecontent variable="s_logIn">
@@ -21,7 +21,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="query" name="authenticateUser">
+<cffunction access="public" output="false" returntype="query" name="authenticateUser">
 	<cfargument name="userID" type="numeric" default="0">
 	<cfargument name="userGUID" type="string" default="">
 	<cfargument name="username" type="string" default="">
@@ -36,7 +36,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="query" name="selectUserInfo">
+<cffunction access="public" output="false" returntype="query" name="selectUserInfo">
 	<cfargument name="userID" type="numeric" default="0">
 
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
@@ -47,7 +47,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="showUser">
+<cffunction access="public" output="false" returntype="string" name="showUser">
 	<cfargument name="userID" type="numeric" default="0">
 
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
@@ -67,7 +67,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="void" name="saveUserInfo">
+<cffunction access="public" output="false" returntype="void" name="saveUserInfo">
 
 	<cfdump var="#arguments#">
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>

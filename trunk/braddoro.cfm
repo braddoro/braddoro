@@ -9,7 +9,7 @@
 	</cfif>
 </cflock>
 <cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
-<cfset obj_user = createObject("component","user_logic").init(dsn=session.siteDsn)>
+<cfset obj_user = createObject("component","user.user_logic").init(dsn=session.siteDsn)>
 <cfset q_authenticateUser = obj_user.authenticateUser(userGUID=session.userGUID)>
 <cfset session.userID = q_authenticateUser.userID>
 <cfset session.siteName = q_authenticateUser.siteName>
@@ -33,13 +33,14 @@
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
-<cfset obj_post_logic = createObject("component","post_logic").Init(dsn=session.siteDsn)>
-<div id="div_main" class="divright">#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</div>
+<cfset obj_post_logic = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=session.userID)>
+#obj_post_logic.javascriptTask()#
+<div id="div_main" class="divright">#obj_post_logic.displayPosts()#</div>
 </cfoutput>
 </body>
 </html>
 <cfcatch type="any">
-	<cfset obj_error = createObject("component","error_logic").init(dsn=session.siteDsn)>
+	<cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn,userID=session.userID)>
 	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 </cfcatch>
 </cftry>

@@ -77,98 +77,6 @@
 	</cfsavecontent>
 </cfif>
 <!---------------------------------------------------------------------------------
--- search tasks 
----------------------------------------------------------------------------------->
-<!--- searchPost --->
-<cfif form.task EQ "searchPost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.showSearch()#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- getSearch --->
-<cfif form.task EQ "getSearch">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.getSearch(userID=val(session.userID),topicID=form.topicID,filterString=form.Filter,showCount="Yes")#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!---------------------------------------------------------------------------------
--- post tasks 
----------------------------------------------------------------------------------->
-<!--- showPost --->
-<cfif form.task EQ "showPost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- composePost --->
-<cfif form.task EQ "composePost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.postInput(getNone=true,userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- addPost --->
-<cfif form.task EQ "addPost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.postUpdate(userID=val(session.userID),topicID=form.TopicID,title=form.Subject,post=form.Post)#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- editPost --->
-<cfif form.task EQ "editPost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.postInput(userID=val(session.userID),postID=val(form.itemID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- updatePost --->
-<cfif form.task EQ "updatePost">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.postUpdate(postID=form.itemID,userID=val(session.userID),topicID=form.TopicID,title=form.Subject,post=form.Post)#</cfoutput>
-	</cfsavecontent>
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!---------------------------------------------------------------------------------
--- reply tasks 
----------------------------------------------------------------------------------->
-<!--- addReply --->
-<cfif form.task EQ "addReply">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.replyInput(postID=int(form.itemID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- editReply --->
-<cfif form.task EQ "editReply">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.replyInput(replyID=int(form.itemID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- saveReply --->
-<cfif form.task EQ "saveReply">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfset x = obj_post_logic.saveReply(reply=form.replyText,postID=val(form.itemID),userID=val(session.userID))>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!--- updateReply --->
-<cfif form.task EQ "updateReply">
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfset x = obj_post_logic.saveReply(reply=form.replyText,replyID=val(form.replyID),userID=val(session.userID))>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<!---------------------------------------------------------------------------------
 -- message tasks 
 ---------------------------------------------------------------------------------->
 <!--- showMessages --->
@@ -200,7 +108,7 @@
 
 </cfif>
 <cfcatch type="any">
-	<cfset obj_error = createObject("component","error_logic").init(dsn=session.siteDsn)>
+	<cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn,userID=session.userID)>
 	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 </cfcatch>
 </cftry>

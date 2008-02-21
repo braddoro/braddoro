@@ -18,25 +18,9 @@ function js_buildRequest(Task, container, itemID) {
 	var sPostString = "";
 	sPostString += "Task=" + Task + "&";
 	sPostString += "itemID=" + itemID + "&";
-	if (Task == "addPost" || Task == "updatePost") {
-		sPostString += "TopicID=" + document.getElementById("topicID").value + "&";
-		sPostString += "Subject=" + document.getElementById("subject").value + "&";
-		sPostString += "Post=" + document.getElementById("post").value.replace(/\r\n/g,"<br>") + "&";
-	}
-	if (Task == "getSearch") {
-		sPostString += "TopicID=" + document.getElementById("topicFilter").value + "&";
-		sPostString += "Filter=" + document.getElementById("filter").value + "&";
-	}
 	if (Task == "authenticateUser") {
 		sPostString += "userName=" + document.getElementById("username").value + "&";
 		sPostString += "password=" + hex_md5(document.getElementById("password").value) + "&";
-	}
-	if (Task == "saveReply") {
-		sPostString += "replyText=" + document.getElementById("replytext_"+itemID).value.replace(/\r\n/g,"<br>") + "&";
-	}
-	if (Task == "updateReply") {
-		sPostString += "replyText=" + document.getElementById("replytext_"+itemID).value.replace(/\r\n/g,"<br>") + "&";
-		sPostString += "replyID=" + document.getElementById("postReplyID_"+itemID).value + "&";
 	}
 	if (Task == "saveMessage") {
 		sPostString += "messageText=" + document.getElementById("messageText").value.replace(/\r\n/g,"<br>") + "&";
@@ -55,15 +39,14 @@ function js_buildRequest(Task, container, itemID) {
 		sPostString += "dateOfBirth=" + document.getElementById("dateOfBirth").value + "&";
 		sPostString += "zipCode=" + document.getElementById("zipCode").value + "&";
 	}
-
 	sPostString = sPostString.replace("%","%25");
 	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
 }
 </script>
-<script type="text/javascript" src="/braddoro/md5.js"></script>
+<script type="text/javascript" src="/braddoro/user/md5.js"></script>
 <script type="text/javascript" src="/braddoro/ajax.js"></script>
-<script type="text/javascript" src="/braddoro/utility.js"></script>
+<script type="text/javascript" src="/braddoro/utility/utility.js"></script>
 	</cfoutput>
 	</cfsavecontent>
 	<cfreturn s_showJavascript>
@@ -96,10 +79,10 @@ function js_buildRequest(Task, container, itemID) {
 		<cfif arguments.userID LT 2>
 		<input type="button" id="logIn" name="logIn" value="log in" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		</cfif>
-		<input type="button" id="showPost" name="showPost" value="show posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
-		<input type="button" id="searchPost" name="searchPost" value="search posts" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">	
+		<input type="button" id="showPost" name="showPost" value="show posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
+		<input type="button" id="searchPost" name="searchPost" value="search posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">	
 		<cfif arguments.userID GT 1>
-		<input type="button" id="composePost" name="composePost" value="compose post" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="composePost" name="composePost" value="compose post" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
 		<input type="button" id="showMessages" name="showMessages" value="messages" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		<input type="button" id="showUserInfo" name="showUserInfo" value="user info" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
 		</cfif>

@@ -42,7 +42,7 @@
 <cffunction access="package" output="false" returntype="string" name="banner">
 	<cfargument name="userID" type="numeric" required="true">
 
-	<cfset obj_user_logic = createObject("component","user_logic").init(dsn=module_dsn)>
+	<cfset obj_user_logic = createObject("component","user.user_logic").init(dsn=module_dsn)>
 	<cfset q_selectUserInfo = obj_user_logic.selectUserInfo(userID=arguments.userID)>
 	<cfset lcl_siteName = q_selectUserInfo.siteName>
 	<cfset obj_application_display = createObject("component","application_display")>
