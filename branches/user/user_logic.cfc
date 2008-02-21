@@ -8,6 +8,50 @@
 	<cfreturn this>
 </cffunction>
 
+<!--- Begin Function --->
+<cffunction access="public" output="false" returntype="string" name="javascriptTask">
+	
+	<cfsavecontent variable="s_javascript">
+		<cfoutput><script type="text/javascript" src="/braddoro/user/user.js"></script></cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_javascript>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="string" name="ajaxTask">
+	<cfargument required="true" type="string" name="task">
+	
+	<cfsavecontent variable="s_ajaxTask">
+		<cfoutput>
+
+<cfif arguments.task EQ "authenticateUser">
+	<cfset q_authenticateUser = this.authenticateUser(username=arguments.userName,password=arguments.password,remoteIP=cgi.REMOTE_ADDR)>
+	<cfset session.userID = q_authenticateUser.userID>
+	<cfset session.siteName = q_authenticateUser.siteName>
+	<cfset cookie.userGUID = q_authenticateUser.userGUID>
+	
+	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
+	<cfsavecontent variable="_html">
+	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
+	</cfsavecontent>
+</cfif>
+<cfif arguments.task EQ "logIn">#this.logIn()#</cfif>
+<cfif arguments.task EQ "showUserInfo">#this.showUser(userID=session.userID)#</cfif>
+<cfif arguments.task EQ "register">#this.showUser(userID=0)#</cfif>
+<cfif arguments.task EQ "saveUserInfo">
+	<cfset x = this.saveUserInfo(argumentCollection=form)>
+	#this.showUser(userID=session.userID)#
+</cfif>
+
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_ajaxTask>
+</cffunction>
+<!--- End Function --->
+
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="logIn">
 	

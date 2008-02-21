@@ -16,9 +16,9 @@
 		<legend>log in</legend>
 		<input type="text" id="username" name="username" value="" class="navButtons" style="">
 		<input type="password" id="password" name="password" value="" class="navButtons" style="">
-		<input type="button" id="authenticateUser" name="authenticateUser" alt="log in" value="log in" title="log in" class="navButtons" onclick="js_buildRequest('authenticateUser','div_main',0);js_buildRequest('showBanner','div_banner',0);;js_buildRequest('showPost','div_main',0);">
+		<input type="button" id="authenticateUser" name="authenticateUser" alt="log in" value="log in" title="log in" class="navButtons" onclick="js_requestUser('authenticateUser','div_main',0);js_requestUser('showBanner','div_banner',0);js_requestUser('showPost','div_main',0);">
 		<!--- <hr>
-		<a id="register" name="register" href="javascript:js_buildRequest('register','div_main',0);">register</a>&nbsp;&nbsp;<a id="resetPassword" name="resetPassword" href="javascript:js_buildRequest('resetPassword','div_main',0);">lost password</a> --->
+		<a id="register" name="register" href="javascript:js_requestUser('register','div_main',0);">register</a>&nbsp;&nbsp;<a id="resetPassword" name="resetPassword" href="javascript:js_requestUser('resetPassword','div_main',0);">lost password</a> --->
 		</fieldset>
 		</cfoutput>
 	</cfsavecontent>
@@ -51,7 +51,7 @@
 		Zip Code<input type="text" size="5" title="This is not displayed on the site and will be used for password recovery." id="zipCode" name="zipCode" value="#lcl_zipCode#" class="navButtons" style="display:block;">
 		Password<input type="text" size="5" title="" id="password" name="password" value="" class="navButtons" style="display:block;">
 		<br>
-		<input type="button" id="saveUserInfo" name="saveUserInfo" value="save" class="navButtons" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="saveUserInfo" name="saveUserInfo" value="save" class="navButtons" onclick="js_requestUser(this.id,'div_main',0);">
 		</fieldset>
 		</cfoutput>
 	</cfsavecontent>
