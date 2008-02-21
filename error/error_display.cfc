@@ -23,7 +23,7 @@
 	<cfsavecontent variable="s_fail">
 	<cfoutput>
 	<fieldset>
-	<legend><strong>you fail!</strong></legend>
+	<legend><strong>the moose has arrived</strong></legend>
 	<img src="http://lh5.google.com/braddoro/R60a3SciJXI/AAAAAAAAAHI/bfIezPTzpP0/s400/you_fail_016.jpg" /><br>
 	<hr>
 	#dateFormat(now(),"mm/dd/yyyy")# #timeFormat(now(),"hh:mm TT")#<br>
