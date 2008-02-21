@@ -20,9 +20,9 @@
 <cfparam name="_html" type="string" default="">
 <cfparam name="form.task" type="string" default="">
 
-<cfset obj_quote_logic = createObject("component","quote_logic").init(dsn=session.siteDsn)>
+<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn,userID=session.userID)>
 <cfsavecontent variable="_html">
-<cfoutput>#obj_quote_logic.ajaxTask(argumentCollection=form)#</cfoutput>
+<cfoutput>#obj_post_logic.ajaxTask(argumentCollection=form)#</cfoutput>
 </cfsavecontent>
 
 <cfcatch type="any">

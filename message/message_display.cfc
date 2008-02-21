@@ -30,7 +30,7 @@
 	<cfargument name="userID" type="numeric" required="true">
 	<cfargument name="userQuery" type="query" required="true">
 	
-	<cfset obj_utility_display = createObject("component","utility_display")>
+	<cfset obj_utility_display = createObject("component","braddoro.utility.utility_display")>
 	<cfsavecontent variable="s_messageInput">
 		<cfoutput>
 		<fieldset>

@@ -1,14 +1,14 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction name="init" displayname="init" access="package" output="false">
+<cffunction name="init" displayname="init" access="public" output="false">
 
 	<cfreturn this>
 </cffunction>
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="String" name="queryDropdown">
+<cffunction access="public" output="false" returntype="String" name="queryDropdown">
 <cfargument name="selectName" type="string" default="topicID">
 <cfargument name="dataQuery" type="query" required="true">
 <cfargument name="currentID" type="numeric" default="0">

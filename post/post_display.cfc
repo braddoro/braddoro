@@ -33,10 +33,10 @@
 			#post#
 			<br>
 			<cfif variables.post_userID EQ arguments.userID or arguments.userID eq 12>
-				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_buildRequest('editPost','div_main',#postID#);">edit post</a>
+				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>
 			</cfif>
 			<cfif arguments.userID GT 1>
-				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_buildRequest('addReply','div_main',#postID#);">add reply</a>
+				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>
 			</cfif>
 			
 			<!--- BEGIN: move this --->
@@ -51,7 +51,7 @@
 			#reply#
 			<br>
 			<cfif variables.reply_userID EQ arguments.userID>
-			<a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_buildRequest('editReply','div_main',#replyID#);">edit reply</a>
+			<a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_requestPost('editReply','div_main',#replyID#);">edit reply</a>
 			</cfif>
 			<cfif currentRow LT recordCount><hr></cfif>
 			</cfloop>
@@ -75,13 +75,13 @@
 	<cfargument name="search_topicID" type="numeric" default="0">
 	<cfargument name="searchString" type="string" default="">
 
-	<cfset obj_utility_display = createObject("component","utility_display")>
+	<cfset obj_utility_display = createObject("component","braddoro.utility.utility_display")>
 	<cfsavecontent variable="s_showSearch">
 		<cfoutput>
 			<fieldset>
 			<legend>search</legend>
 			#obj_utility_display.queryDropdown(selectName="topicFilter",dataQuery=topicList,currentID=arguments.search_topicID)#&nbsp;<INPUT type="text" name="filter" id="filter" value="#arguments.searchString#" size="20" maxlength="50">&nbsp;
-			<input type="button" id="saveMe" name="saveMe" alt="search" value="search" title="search" class="navButtons" style="" onclick="js_buildRequest('getSearch', 'div_main',0);">
+			<input type="button" id="saveMe" name="saveMe" alt="search" value="search" title="search" class="navButtons" style="" onclick="js_requestPost('getSearch', 'div_main',0);">
 			</fieldset>
 		</cfoutput>
 	</cfsavecontent>
@@ -121,7 +121,7 @@
 --->
 <!--- move this --->
 
-<cfset obj_utility_display = createObject("component","utility_display")>
+<cfset obj_utility_display = createObject("component","braddoro.utility.utility_display")>
 <cfsavecontent variable="s_showPostInput">
 	<cfoutput>
 		<fieldset>
@@ -141,7 +141,7 @@
 				<TR>
 					<TD>
 					<cfif arguments.userID GT 1>
-						<input type="button" id="saveMe" name="saveMe" alt="save" value="save" title="#lcl_displayWord#" class="navButtons" style="" onclick="js_buildRequest('#lcl_task#','div_main',#lcl_postID#);">
+						<input type="button" id="saveMe" name="saveMe" alt="save" value="save" title="#lcl_displayWord#" class="navButtons" style="" onclick="js_requestPost('#lcl_task#','div_main',#lcl_postID#);">
 					</cfif>
 					</TD>
 				</TR>
@@ -171,7 +171,7 @@
 		<input type="hidden" id="postReplyID_#arguments.PostID#" value="#arguments.replyID#">
 		<textarea id="replytext_#arguments.PostID#" name="replytext_#arguments.PostID#" cols="80" rows="20">#arguments.reply#</textarea>
 		<br>
-		<input type="button" id="saveReply_#arguments.PostID#" name="saveReply_#arguments.PostID#" alt="save reply" value="save reply" title="save reply" class="navButtons" style="" onclick="js_buildRequest('#lcl_task#','div_main',#arguments.postID#);">
+		<input type="button" id="saveReply_#arguments.PostID#" name="saveReply_#arguments.PostID#" alt="save reply" value="save reply" title="save reply" class="navButtons" style="" onclick="js_requestPost('#lcl_task#','div_main',#arguments.postID#);">
 		</cfoutput>
 	</cfsavecontent>
 	

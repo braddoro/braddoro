@@ -1,15 +1,19 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction name="init" displayname="init" access="package" output="false">
+<cffunction name="init" displayname="init" access="public" output="false">
 	<cfargument required="true" type="string" name="dsn">
+	<cfargument required="true" type="numeric" name="userID">
+	
 	<cfset module_dsn = arguments.dsn>
+	<cfset module_userID = arguments.userID>
+	
 	<cfreturn this>
 </cffunction>
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="fail">
+<cffunction access="public" output="false" returntype="string" name="fail">
 	<cfargument name="userID" type="numeric" default="0">
 	<cfargument name="message" type="string" default="">
 	<cfargument name="detail" type="string" default="">
@@ -39,7 +43,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="showErrors">
+<cffunction access="public" output="false" returntype="string" name="showErrors">
 	<cfargument name="numberToGet" type="numeric" default="20">
 	
 	<cfset obj_error_sql = createObject("component","error_sql").init(dsn=module_dsn)>
