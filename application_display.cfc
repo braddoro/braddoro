@@ -9,7 +9,6 @@
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="string" name="showJavascript">
-	<cfargument name="showDebug" type="boolean" default="false">
 
 	<cfsavecontent variable="s_showJavascript">
 	<cfoutput>
@@ -18,12 +17,7 @@ function js_buildRequest(Task, container, itemID) {
 	var sPostString = "";
 	sPostString += "Task=" + Task + "&";
 	sPostString += "itemID=" + itemID + "&";
-	if (Task == "saveMessage") {
-		sPostString += "messageText=" + document.getElementById("messageText").value.replace(/\r\n/g,"<br>") + "&";
-		sPostString += "message_userID=" + document.getElementById("message_userID").value + "&";
-	}
 	sPostString = sPostString.replace("%","%25");
-	<cfif arguments.showDebug EQ true>alert(sPostString);</cfif>
 	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
 }
 </script>
@@ -66,7 +60,7 @@ function js_buildRequest(Task, container, itemID) {
 		<input type="button" id="searchPost" name="searchPost" value="search posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">	
 		<cfif arguments.userID GT 1>
 		<input type="button" id="composePost" name="composePost" value="compose post" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
-		<input type="button" id="showMessages" name="showMessages" value="messages" class="navButtons" style="" onclick="js_buildRequest(this.id,'div_main',0);">
+		<input type="button" id="showMessages" name="showMessages" value="messages" class="navButtons" style="" onclick="js_requestMessage(this.id,'div_main',0);">
 		<input type="button" id="showUserInfo" name="showUserInfo" value="user info" class="navButtons" style="" onclick="js_requestUser(this.id,'div_main',0);">
 		</cfif>
 		</cfoutput>

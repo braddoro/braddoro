@@ -154,12 +154,13 @@
 	<cfsavecontent variable="s_replyInput">
 		<cfoutput>#obj_post_display.showReplyInput(replyID=arguments.replyID,postID=lcl_postID,reply=lcl_reply)#</cfoutput>
 	</cfsavecontent>
+	
 	<cfreturn s_replyInput>
 </cffunction>
 <!--- End Function --->  
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="void" name="saveReply">
+<cffunction access="package" output="false" returntype="string" name="saveReply">
 	<cfargument name="postID" type="numeric" default="0"> 
 	<cfargument name="replyID" type="numeric" default="0">
 	<cfargument name="reply" type="string" default="">
