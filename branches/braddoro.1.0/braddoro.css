@@ -1,0 +1,66 @@
+.body {
+    background-color: #E7E7E7;
+}
+
+.divtop {
+    top: 2px;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    color: #000000;
+    width: 100%;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.divleft {
+    top: 54px;
+    left: 7px;
+    width: 150px;
+    position: absolute;
+    overflow: hidden;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: 0.85em;
+}
+
+.divright {
+    margin-right: 5px;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: 0.85em;
+    display: block;
+}
+
+.banner {
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: 1.5em;
+    font-weight: bold
+}
+
+.tiny {
+    background-color: #DCDCDC;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: .75em;
+    text-decoration: underline;
+}
+
+.tight {
+    margin: 1px;
+}
+
+.indented {
+    background-color: #EFEFEF;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.navButtons {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.mediumtext {
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: .8em;
+    font-weight: normal;
+}
