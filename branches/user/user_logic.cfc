@@ -113,7 +113,6 @@
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="void" name="saveUserInfo">
 
-	<cfdump var="#arguments#">
 	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
 	<cfif arguments.userID EQ 0>
 		<cfset x = obj_user_sql.insertUser(argumentCollection=arguments)>
@@ -121,6 +120,16 @@
 		<cfset x = obj_user_sql.updateUser(argumentCollection=arguments)>
 	</cfif>
 	
+</cffunction>
+<!--- End Function --->  
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="query" name="getUserList">
+
+	<cfset obj_user_sql = createObject("component","user_sql").init(dsn=module_dsn)>
+	<cfset q_getUserList = obj_user_sql.getUsers()>	
+
+	<cfreturn q_getUserList>	
 </cffunction>
 <!--- End Function --->  
 	

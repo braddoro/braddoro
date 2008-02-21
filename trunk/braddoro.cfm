@@ -21,8 +21,10 @@
 <title>#obj_application.getSiteTitle()#</title>
 <head>
 <link href="#obj_application.getCSSfile()#" rel="stylesheet" type="text/css">
-<div id="js_div">#obj_application.showJavascript(showDebug=false)#</div>
+<div id="js_div">#obj_application.showJavascript()#</div>
 #obj_user.javascriptTask()#
+<cfset obj_message = createObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=session.userID)>
+#obj_message.javascriptTask()#
 </head>
 <body class="body">
 <div id="div_top" class="divtop">

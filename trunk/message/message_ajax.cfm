@@ -20,13 +20,13 @@
 <cfparam name="_html" type="string" default="">
 <cfparam name="form.task" type="string" default="">
 
-<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn,userID=session.userID)>
+<cfset obj_message = createObject("component","message_logic").init(dsn=session.siteDsn,userID=session.userID)>
 <cfsavecontent variable="_html">
-<cfoutput>#obj_post_logic.ajaxTask(argumentCollection=form)#</cfoutput>
+<cfoutput>#obj_message.ajaxTask(argumentCollection=form)#</cfoutput>
 </cfsavecontent>
 
 <cfcatch type="any">
-	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn,userID=session.userID)>
 	<cfoutput>#obj_error.fail(userID=val(session.userID),message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 </cfcatch>
 </cftry>
