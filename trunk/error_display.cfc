@@ -26,7 +26,8 @@
 	<legend><strong>you fail!</strong></legend>
 	<img src="http://lh5.google.com/braddoro/R60a3SciJXI/AAAAAAAAAHI/bfIezPTzpP0/s400/you_fail_016.jpg" /><br>
 	<hr>
-	#remoteIP#
+	#dateFormat(now(),"mm/dd/yyyy")# #timeFormat(now(),"hh:mm TT")#<br>
+	#remoteIP#<br>
 	<cfif arguments.showError>
 		#arguments.message#<br>
 		#arguments.type#<br>

@@ -10,5 +10,5 @@ function js_requestQuote(Task, container, itemID) {
 		sPostString += "quote=" + document.getElementById("quoteText").value.replace(/\r\n/g,"<br>") + "&";
 	}
 	sPostString = sPostString.replace("%","%25");
-	document.getElementById(container).innerHTML = http_post_request("/braddoro/quote_ajax.cfm",sPostString);
+	document.getElementById(container).innerHTML = http_post_request("/braddoro/quote/quote_ajax.cfm",sPostString);
 }
