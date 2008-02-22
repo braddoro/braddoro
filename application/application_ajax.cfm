@@ -2,9 +2,9 @@
 <cfparam name="_html" type="string" default="">
 <cfparam name="form.task" type="string" default="">
 
-<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+<cfset obj_application = createObject("component","application_logic").init(dsn=session.siteDsn)>
 <cfsavecontent variable="_html">
-<cfoutput>#obj_post_logic.ajaxTask(argumentCollection=form)#</cfoutput>
+<cfoutput>#obj_application.ajaxTask(argumentCollection=form,userID=val(session.userID))#</cfoutput>
 </cfsavecontent>
 
 <cfcatch type="any">

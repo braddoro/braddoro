@@ -3,10 +3,8 @@
 <!--- Begin Function  --->
 <cffunction name="init" displayname="init" access="public" output="false">
 	<cfargument required="true" type="string" name="dsn">
-	<cfargument required="true" type="numeric" name="userID">
 	
 	<cfset module_dsn = arguments.dsn>
-	<cfset module_userID = arguments.userID>
 	
 	<cfreturn this>
 </cffunction>

@@ -57,8 +57,8 @@
 		<cfif arguments.messageQuery.recordCount GT 0>
 		<cfloop query="arguments.messageQuery">
 			<strong>from #from# to #to# on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong><br>
-			#message#<br>
-			<a id="message_#messageID#" name="message_#messageID#" href="javascript:js_requestMessage('deleteMessage','div_main',#messageID#);">delete message</a>
+			#replace(message,chr(10),"<br>","All")#<br>
+			<div align="right"><a id="message_#messageID#" name="message_#messageID#" href="javascript:js_requestMessage('deleteMessage','div_main',#messageID#);">delete message</a></div>
 			<cfif currentRow LT recordCount><hr size="1"></cfif>
 		</cfloop>
 		</fieldset>
