@@ -10,6 +10,34 @@
 </cffunction>
 <!--- End Function --->
 
+<!--- Begin Function --->
+<cffunction access="public" output="false" returntype="string" name="javascriptTask">
+	
+	<cfsavecontent variable="s_javascript">
+		<cfoutput>
+<script type="text/javascript" src="/braddoro/error/error.js"></script>
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_javascript>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="string" name="ajaxTask">
+	<cfargument required="true" type="string" name="task">
+	
+	<cfsavecontent variable="s_ajaxTask">
+		<cfoutput>
+			<cfif arguments.task EQ "showErrors">#this.showErrors()#</cfif>
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_ajaxTask>
+</cffunction>
+<!--- End Function --->
+
+
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="fail">
 	<cfargument name="userID" type="numeric" default="0">

@@ -2,6 +2,7 @@
 <cfset obj_application = createObject("component","braddoro.application.application_logic").init(dsn=session.siteDsn)>
 <cfset obj_message = createObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
 <cfset obj_quote = createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
+<cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn)>
 <cfset obj_user = createObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
 <cfset obj_post = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
 <cfoutput>
@@ -23,6 +24,7 @@
 #obj_application.javascriptTask()#
 #obj_message.javascriptTask()#
 #obj_quote.javascriptTask()#
+#obj_error.javascriptTask()#
 #obj_user.javascriptTask()#
 #obj_post.javascriptTask()#
 </body>
