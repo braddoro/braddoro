@@ -12,7 +12,9 @@
 <cffunction access="public" output="false" returntype="string" name="javascriptTask">
 	
 	<cfsavecontent variable="s_javascript">
-		<cfoutput><script type="text/javascript" src="/braddoro/user/user.js"></script></cfoutput>
+		<cfoutput>
+<script type="text/javascript" src="/braddoro/user/user.js"></script>
+		</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_javascript>
@@ -25,7 +27,6 @@
 	
 	<cfsavecontent variable="s_ajaxTask">
 		<cfoutput>
-
 <cfif arguments.task EQ "authenticateUser">
 	<cfset q_authenticateUser = this.authenticateUser(username=arguments.userName,password=arguments.password,remoteIP=cgi.REMOTE_ADDR)>
 	<cfset session.userID = q_authenticateUser.userID>
@@ -44,7 +45,6 @@
 	<cfset x = this.saveUserInfo(argumentCollection=form)>
 	#this.showUser(userID=session.userID)#
 </cfif>
-
 		</cfoutput>
 	</cfsavecontent>
 	

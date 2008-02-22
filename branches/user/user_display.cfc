@@ -16,7 +16,7 @@
 		<legend>log in</legend>
 		<input type="text" id="username" name="username" value="" class="navButtons" style="">
 		<input type="password" id="password" name="password" value="" class="navButtons" style="">
-		<input type="button" id="authenticateUser" name="authenticateUser" alt="log in" value="log in" title="log in" class="navButtons" onclick="js_requestUser('authenticateUser','div_main',0);js_requestUser('showBanner','div_banner',0);js_requestUser('showPost','div_main',0);">
+		<input type="button" id="authenticateUser" name="authenticateUser" alt="log in" value="log in" title="log in" class="navButtons" onclick="js_requestUser('authenticateUser','div_main',0);js_requestApplication('showBanner','div_banner',0);js_requestPost('showPost','div_main',0);">
 		<!--- <hr>
 		<a id="register" name="register" href="javascript:js_requestUser('register','div_main',0);">register</a>&nbsp;&nbsp;<a id="resetPassword" name="resetPassword" href="javascript:js_requestUser('resetPassword','div_main',0);">lost password</a> --->
 		</fieldset>

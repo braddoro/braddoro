@@ -8,30 +8,6 @@
 <!--- End Function  --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="showJavascript">
-
-	<cfsavecontent variable="s_showJavascript">
-	<cfoutput>
-<script language="javascript" type="text/javascript">
-function js_buildRequest(Task, container, itemID) {
-	var sPostString = "";
-	sPostString += "Task=" + Task + "&";
-	sPostString += "itemID=" + itemID + "&";
-	sPostString = sPostString.replace("%","%25");
-	document.getElementById(container).innerHTML = http_post_request("/braddoro/braddoro_ajax.cfm",sPostString);
-}
-</script>
-<script type="text/javascript" src="/braddoro/user/md5.js"></script>
-<script type="text/javascript" src="/braddoro/utility/ajax.js"></script>
-<script type="text/javascript" src="/braddoro/utility/utility.js"></script>
-	</cfoutput>
-	</cfsavecontent>
-	<cfreturn s_showJavascript>
-	
-</cffunction>	
-<!--- End Function --->
-
-<!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="string" name="showBanner">
 <cfargument type="string" name="siteName" default="">
 <cfargument type="string" name="siteTitle" default="">
@@ -51,9 +27,9 @@ function js_buildRequest(Task, container, itemID) {
 	<cfsavecontent variable="s_showNavMenu">
 		<cfoutput>
 		<cfif arguments.userID EQ 12>
-		<input type="button" id="quoteStuff" name="quoteStuff" value="quote stuff" class="navButtons" style="" onclick="js_requestQuote(this.id,'div_main',0);">
+		<input type="button" id="quoteStuff" name="quoteStuff" value="quotes" class="navButtons" style="" onclick="js_requestQuote(this.id,'div_main',0);">
 		</cfif>
-		<cfif arguments.userID LT 2>
+		<cfif arguments.userID LT 2 or arguments.userID EQ 12>
 		<input type="button" id="logIn" name="logIn" value="log in" class="navButtons" style="" onclick="js_requestUser(this.id,'div_main',0);">
 		</cfif>
 		<input type="button" id="showPost" name="showPost" value="show posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">

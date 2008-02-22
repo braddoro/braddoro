@@ -16,7 +16,9 @@
 <cffunction access="public" output="false" returntype="string" name="javascriptTask">
 	
 	<cfsavecontent variable="s_javascript">
-		<cfoutput><script type="text/javascript" src="/braddoro/message/message.js"></script></cfoutput>
+		<cfoutput>
+<script type="text/javascript" src="/braddoro/message/message.js"></script>
+		</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_javascript>

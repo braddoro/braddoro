@@ -30,15 +30,16 @@
 					<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm TT")# :: #title#</strong><br>posted by #siteName# to #topic#
 			</legend>
 			<div id="div_post#postID#" style="display:block;">
-			#post#
+			#replace(post,chr(10),"<br>","All")#
 			<br>
+			<div align="right">
 			<cfif variables.post_userID EQ arguments.userID or arguments.userID eq 12>
 				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>
 			</cfif>
 			<cfif arguments.userID GT 1>
 				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>
 			</cfif>
-			
+			</div>
 			<!--- BEGIN: move this --->
 			<cfset q_getReplies = obj_post_sql.getReplies(postID=postID)>
 			<cfif q_getReplies.recordCount GT 0>
@@ -48,10 +49,10 @@
 			<cfloop query="q_getReplies">
 			<cfset variables.reply_userID = q_getReplies.userID>
 			<strong>#dateformat(addedDate,"long")# #timeformat(addedDate,"hh:mm tt")# by #siteName#</strong><br>
-			#reply#
+			#replace(reply,chr(10),"<br>","All")#
 			<br>
 			<cfif variables.reply_userID EQ arguments.userID>
-			<a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_requestPost('editReply','div_main',#replyID#);">edit reply</a>
+			<div align="right"><a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_requestPost('editReply','div_main',#replyID#);">edit reply</a></div>
 			</cfif>
 			<cfif currentRow LT recordCount><hr></cfif>
 			</cfloop>
