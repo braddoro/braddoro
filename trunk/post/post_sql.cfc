@@ -1,7 +1,7 @@
 <cfcomponent output="false">
 
 <!--- Begin Function --->
-<cffunction name="init" displayname="init" access="package" output="false">
+<cffunction access="package" output="false" returntype="any" name="init">
 	<cfargument required="true" type="string" name="dsn">
 	
 	<cfset module_dsn = arguments.dsn>
@@ -17,8 +17,9 @@
 	<cfargument name="topicID" type="numeric" default="0">
 	<cfargument name="filterString" type="string" default="">
 	<cfargument name="getNone" type="boolean" default="false">
-	
-	<cfquery name="q_getPosts" datasource="#module_dsn#">
+
+	<cfsavecontent variable="_sql">
+	<cfoutput>
 		select  
 		P.postID,
 		T.topicID,
@@ -44,15 +45,24 @@
 	<cfif arguments.topicID GT 0>
 		and T.topicID = #arguments.topicID#
 	</cfif>
-	<cfif arguments.filterString GT "">
+	<cfif arguments.filterString NEQ "">
 		and P.post like '%#arguments.filterString#%'
 	</cfif>
 		order by P.addedDate desc
 	<cfif arguments.numberToGet GT 0>
 		limit #arguments.numberToGet#
 	</cfif>
-	</cfquery>
+	</cfoutput>
+	</cfsavecontent>
+	<cfquery name="q_getPosts" datasource="#module_dsn#">#preserveSingleQuotes(_sql)#</cfquery>
 
+	<!--- debug code --->	
+	<!--- 
+	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn)>
+	<cfset myArray = arrayNew(1)>
+	<cfoutput>#obj_error.fail(userID=val(session.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
+	 --->
+	 
   <cfreturn q_getPosts>
 </cffunction>
 <!--- End Function --->

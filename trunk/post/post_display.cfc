@@ -75,13 +75,16 @@
 	<cfargument type="query" name="topicList" required="true">
 	<cfargument name="search_topicID" type="numeric" default="0">
 	<cfargument name="searchString" type="string" default="">
+	<cfargument name="postID" type="numeric" default="0">
 
 	<cfset obj_utility_display = createObject("component","braddoro.utility.utility_display")>
 	<cfsavecontent variable="s_showSearch">
 		<cfoutput>
 			<fieldset>
 			<legend>search</legend>
-			#obj_utility_display.queryDropdown(selectName="topicFilter",dataQuery=topicList,currentID=arguments.search_topicID)#&nbsp;<INPUT type="text" name="filter" id="filter" value="#arguments.searchString#" size="20" maxlength="50">&nbsp;
+			#obj_utility_display.queryDropdown(selectName="topicFilter",dataQuery=topicList,currentID=arguments.search_topicID)#&nbsp;
+			<input type="text" name="filter" id="filter" value="#arguments.searchString#" size="20" maxlength="50">&nbsp;
+			<input type="text" name="postID" id="postID" value="#arguments.postID#" size="5" maxlength="5" onblur="">&nbsp;
 			<input type="button" id="saveMe" name="saveMe" alt="search" value="search" title="search" class="navButtons" style="" onclick="js_requestPost('getSearch', 'div_main',0);">
 			</fieldset>
 		</cfoutput>

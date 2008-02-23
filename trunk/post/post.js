@@ -10,6 +10,7 @@ function js_requestPost(Task, container, itemID) {
 	if (Task == "getSearch") {
 		sPostString += "TopicID=" + document.getElementById("topicFilter").value + "&";
 		sPostString += "Filter=" + document.getElementById("filter").value + "&";
+		sPostString += "postID=" + document.getElementById("postID").value + "&";
 	}
 	if (Task == "saveReply") {
 		sPostString += "replyText=" + document.getElementById("replytext_"+itemID).value.replace(/\r\n/g,"<br>") + "&";
