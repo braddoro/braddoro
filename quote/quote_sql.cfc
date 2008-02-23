@@ -60,11 +60,6 @@
 	</cfsavecontent>
 	<cfquery name="q_getQuoteData" datasource="#module_dsn#">#preserveSingleQuotes(_sql)#</cfquery>
 	
-	<!--- debug code --->	
-	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn)>
-	<cfset myArray = arrayNew(1)>
-	<cfoutput>#obj_error.fail(userID=val(session.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
-	
 	<cfreturn q_getQuoteData>
 </cffunction>
 <!--- End Function --->

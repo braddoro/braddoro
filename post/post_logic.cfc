@@ -34,7 +34,7 @@
 	<cfsavecontent variable="s_ajaxTask">
 		<cfoutput>
 			<cfif arguments.task EQ "searchPost">#this.showSearch()#</cfif>
-			<cfif arguments.task EQ "getSearch">#this.getSearch(topicID=val(arguments.topicID),filterString=arguments.Filter,showCount="Yes")#</cfif>
+			<cfif arguments.task EQ "getSearch">#this.getSearch(postID=val(arguments.postID),topicID=val(arguments.topicID),filterString=arguments.Filter,showCount="Yes")#</cfif>
 			<cfif arguments.task EQ "showPost">#this.displayPosts()#</cfif>
 			<cfif arguments.task EQ "composePost">#this.postInput(getNone=true)#</cfif>
 			<cfif arguments.task EQ "addPost">#this.postUpdate(userID=module_userID,topicID=val(arguments.TopicID),title=arguments.Subject,post=arguments.post)#</cfif>
@@ -84,14 +84,15 @@
 <cffunction access="package" output="false" returntype="string" name="getSearch">
 	<cfargument name="topicID" type="numeric" default="0">
 	<cfargument name="filterString" type="string" default="">
+	<cfargument name="postID" type="numeric" default="0">
 
 	<cfset obj_post_sql = createObject("component","post_sql").init(dsn=module_dsn)>
-	<cfset q_getPosts = obj_post_sql.getPosts(topicID=arguments.topicID,filterString=arguments.filterString)>
+	<cfset q_getPosts = obj_post_sql.getPosts(topicID=arguments.topicID,filterString=arguments.filterString,postID=arguments.postID)>
 	<cfset q_topics = obj_post_sql.getTopics()>
 	<cfset obj_post_display = createObject("component","post_display")>
 	<cfsavecontent variable="s_getSearch">
 	<cfoutput>
-	#obj_post_display.showSearch(topicList=q_topics,search_topicID=arguments.topicID,searchString=arguments.filterString)#
+	#obj_post_display.showSearch(topicList=q_topics,search_topicID=arguments.topicID,searchString=arguments.filterString,postID=arguments.postID)#
 	#obj_post_display.showPosts(postQuery=q_getPosts,userID=module_userID)#
 	</cfoutput>
 	</cfsavecontent>
