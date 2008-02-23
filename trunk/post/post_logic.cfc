@@ -52,11 +52,24 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="public" output="false" returntype="string" name="displayPosts">
-	<cfargument name="showCount" type="string" default="No">
+<cffunction access="public" output="false" returntype="query" name="postQuery">
+	<cfargument name="numberToGet" type="numeric" default="20">
 
 	<cfset obj_post_sql = createObject("component","post_sql").init(dsn=module_dsn)>
-	<cfset q_getPosts = obj_post_sql.getPosts(numberToGet=module_postsToShow)>
+	<cfset q_postQuery = obj_post_sql.getPosts(numberToGet=numberToGet)>
+	
+	<cfreturn q_postQuery>
+</cffunction>
+<!--- End Function --->
+
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="string" name="displayPosts">
+	<cfargument name="showCount" type="string" default="No">
+	<cfargument name="postID" type="numeric" default="0">
+
+	<cfset obj_post_sql = createObject("component","post_sql").init(dsn=module_dsn)>
+	<cfset q_getPosts = obj_post_sql.getPosts(numberToGet=module_postsToShow,postID=arguments.postID)>
 	<cfset obj_post_display = createObject("component","post_display")>	
 	<cfsavecontent variable="s_displayPosts">
 	<cfoutput>#obj_post_display.showPosts(postQuery=q_getPosts,userID=module_userID,showCount=arguments.showCount)#</cfoutput>
@@ -81,7 +94,7 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
-<cffunction access="package" output="false" returntype="string" name="getSearch">
+<cffunction access="public" output="false" returntype="string" name="getSearch">
 	<cfargument name="topicID" type="numeric" default="0">
 	<cfargument name="filterString" type="string" default="">
 	<cfargument name="postID" type="numeric" default="0">

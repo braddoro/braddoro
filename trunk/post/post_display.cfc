@@ -9,7 +9,7 @@
 
 <!--- Begin Function  --->
 <!--- this function needs work --->
-<cffunction access="package" output="false" returntype="String" name="showPosts">
+<cffunction access="public" output="false" returntype="String" name="showPosts">
 	<cfargument name="postQuery" type="query" required="true">
 	<cfargument name="userID" type="numeric" required="true">
 	<cfargument name="showCount" type="string" default="No">
@@ -34,11 +34,12 @@
 			<br>
 			<div align="right">
 			<cfif variables.post_userID EQ arguments.userID or arguments.userID eq 12>
-				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>
+				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>&nbsp;
 			</cfif>
 			<cfif arguments.userID GT 1>
-				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>
+				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>&nbsp;
 			</cfif>
+			<a id="link_#postID#" name="link_#postID#" href="http://braddoro.com/show.cfm?n=#postID#" target="_top">link this</a>
 			</div>
 			<!--- BEGIN: move this --->
 			<cfset q_getReplies = obj_post_sql.getReplies(postID=postID)>
