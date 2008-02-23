@@ -33,6 +33,9 @@
 			<cfif arguments.task EQ "quoteStuff">#this.showQuoteList(argumentCollection=arguments)#</cfif>
 			<cfif arguments.task EQ "viewQuote">#this.viewQuote(argumentCollection=arguments)#</cfif>
 			<cfif arguments.task EQ "saveQuote">#this.saveQuote(argumentCollection=arguments)#</cfif>
+			<cfif arguments.task EQ "nav_First" or arguments.task EQ "nav_Prev" or arguments.task EQ "nav_Next" or arguments.task EQ "nav_Last">
+				#this.showQuoteList(argumentCollection=arguments)#
+			</cfif>
 		</cfoutput>
 	</cfsavecontent>
 	
@@ -56,11 +59,20 @@
 
 <!--- Begin Function  --->
 <cffunction access="package" output="false" name="showQuoteList">
-	<cfargument required="true" type="string" name="outputDiv">
+	<cfargument name="outputDiv" type="string" required="true">
+	<cfargument name="quoteID" type="numeric" default="0">
+	<cfargument name="active" type="string" default="">
+	<cfargument name="getNone" type="string" default="No">
+	<cfargument name="firstRow" type="numeric" default="0">
+	<cfargument name="numRows" type="numeric" default="20">
 	
 	<cfset obj_quote_sql = createObject("component","quote_sql").init(dsn=module_dsn)>
-	<cfset q_getQuoteData = obj_quote_sql.getQuoteData()>
-
+	<cfset q_getQuoteData = obj_quote_sql.getQuoteData(
+				quoteID=0,
+				active="",
+				getNone="No",
+				firstRow=val(arguments.firstRow),
+				numRows=val(arguments.numRows))>
 	<cfset obj_quote_display = createObject("component","quote_display").init()>
 	<cfsavecontent variable="s_showQuoteList">
 	<cfoutput>#obj_quote_display.quoteList(quoteQuery=q_getQuoteData,displayWord="quote list",action="viewQuote",outputDiv=arguments.outputDiv)#</cfoutput>

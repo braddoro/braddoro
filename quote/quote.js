@@ -3,6 +3,11 @@ function js_requestQuote(Task, container, itemID) {
 	sPostString += "Task=" + Task + "&";
 	sPostString += "quoteID=" + itemID + "&";
 	sPostString += "outputDiv=" + "div_main" + "&";
+	if (Task == "nav_First" || Task == "nav_Prev" || Task == "nav_Next" || Task == "nav_Last") {
+		sPostString += "firstRow=" + document.getElementById("firstRow").value + "&";
+		sPostString += "numRows=" + document.getElementById("numRows").value + "&";
+		sPostString += "outputDiv=" + container + "&";
+	}
 	if (Task == "saveQuote") {
 		sPostString += "quoteBy=" + document.getElementById("quoteBy").value + "&";
 		sPostString += "quoteWhen=" + document.getElementById("quoteWhen").value + "&";
