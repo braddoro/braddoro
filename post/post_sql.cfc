@@ -29,12 +29,15 @@
 		U.siteName,
 		P.title, 
 		P.post, 
-		P.addedDate
+		P.addedDate,
+		count(distinct R.postID) as 'replies'
 		from braddoro.dyn_posts P
 		inner join braddoro.dyn_users U
 		on U.userID = P.userID
 		inner join braddoro.cfg_topics T
 		on T.topicID = P.topicID
+		left join braddoro.dyn_replies R
+		on P.postID = R.postID
 		where P.active = 'Y'
 	<cfif arguments.getNone>
 		and 0=1
@@ -48,6 +51,16 @@
 	<cfif arguments.filterString NEQ "">
 		and P.post like '%#arguments.filterString#%'
 	</cfif>
+		group by
+		P.postID,
+		T.topicID,
+		T.topic,
+		T.description,
+		P.userID, 
+		U.siteName,
+		P.title, 
+		P.post, 
+		P.addedDate		
 		order by P.addedDate desc
 	<cfif arguments.numberToGet GT 0>
 		limit #arguments.numberToGet#
