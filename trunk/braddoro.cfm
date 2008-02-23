@@ -5,6 +5,7 @@
 <cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn)>
 <cfset obj_user = createObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
 <cfset obj_post = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+<cfset obj_date = createObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
 <cfoutput>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -20,6 +21,8 @@
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
+<div id="div_date" class="divright">#obj_date.showDates()#</div>
+<br>
 <div id="div_main" class="divright">#obj_post.displayPosts()#</div>
 #obj_application.javascriptTask()#
 #obj_message.javascriptTask()#
@@ -27,6 +30,7 @@
 #obj_error.javascriptTask()#
 #obj_user.javascriptTask()#
 #obj_post.javascriptTask()#
+#obj_date.javascriptTask()#
 </body>
 </html>
 </cfoutput>

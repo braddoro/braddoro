@@ -25,11 +25,21 @@
 	<cfargument name="displayWord" type="string" required="true">
 	<cfargument name="action" type="string" required="true">
 	<cfargument name="outputDiv" type="string" required="true">
+	<cfargument name="firstRow" type="numeric" default="0">
 	
+	<cfset lcl_newFirstRow = arguments.quoteQuery.recordcount + arguments.firstRow>
 	<cfsavecontent variable="s_quoteList">
 		<cfoutput>
 		<br>
 		<input type="button" id="add_viewQuote" name="viewQuote" value="add quote" class="navButtons" onclick="js_requestQuote('viewQuote','#arguments.outputDiv#',0);"><br>
+		<!--- <div align="center">
+		<input type="text" id="firstRow" name="firstRow" size="3" value="#lcl_newFirstRow#">&nbsp;
+		<input type="button" id="navFirst" name="navFirst" value="First" class="navButtons" onclick="js_requestQuote(this.id,'#arguments.outputDiv#',0);">&nbsp;
+		<input type="button" id="navPrev" name="navPrev" value="Prev" class="navButtons" onclick="js_requestQuote(this.id,'#arguments.outputDiv#',0);">&nbsp;
+		<input type="button" id="navNext" name="navNext" value="Next" class="navButtons" onclick="js_requestQuote(this.id,'#arguments.outputDiv#',0);">&nbsp;
+		<input type="button" id="nav_Last" name="navLast" value="Last" class="navButtons" onclick="js_requestQuote(this.id,'#arguments.outputDiv#',0);">&nbsp;
+		<input type="text" id="numRows" name="numRows" size="3" value="#arguments.quoteQuery.recordcount#">
+		</div> --->
 		<br>
 		<fieldset>
 		<legend>#arguments.displayWord#</legend>

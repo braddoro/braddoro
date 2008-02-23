@@ -35,8 +35,11 @@
 	<cfargument name="quoteID" type="numeric" default="0">
 	<cfargument name="active" type="string" default="">
 	<cfargument name="getNone" type="string" default="No">
+	<cfargument name="firstRow" type="numeric" default="0">
+	<cfargument name="numRows" type="numeric" default="20">
 	
-	<cfquery name="q_getQuoteData" datasource="#module_dsn#">
+	<cfsavecontent variable="_sql">
+	<cfoutput>
 		select quoteID, quote, quoteby, quoteWhen, active 
 		from braddoro.cfg_quotes
 		where
@@ -52,7 +55,15 @@
 		and active = '#arguments.active#'
 	</cfif>
 		order by quoteID desc
-	</cfquery>
+	</cfoutput>
+	<!--- 		limit #arguments.firstRow#, #arguments.numRows#; --->
+	</cfsavecontent>
+	<cfquery name="q_getQuoteData" datasource="#module_dsn#">#preserveSingleQuotes(_sql)#</cfquery>
+	
+	<!--- debug code --->	
+	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn)>
+	<cfset myArray = arrayNew(1)>
+	<cfoutput>#obj_error.fail(userID=val(session.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 	
 	<cfreturn q_getQuoteData>
 </cffunction>
