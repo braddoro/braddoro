@@ -1,4 +1,4 @@
-.body {
+body {
     background-color: #E7E7E7;
 }
 
@@ -63,4 +63,9 @@
     font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
     font-size: .8em;
     font-weight: normal;
+}
+
+.padded {
+    padding-right: 3px;
+    padding-bottom: 2px;
 }

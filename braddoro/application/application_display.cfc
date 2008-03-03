@@ -28,6 +28,7 @@
 		<cfoutput>
 		<cfif arguments.userID EQ 12>
 		<input type="button" id="quoteStuff" name="quoteStuff" value="quotes" class="navButtons" style="" onclick="js_requestQuote(this.id,'div_main',0);">
+		<input type="button" id="showDateList" name="showDateList" value="dates" class="navButtons" style="" onclick="js_requestDate(this.id,'div_main',0);">
 		<input type="button" id="showErrors" name="showErrors" value="errors" class="navButtons" style="" onclick="js_requestError(this.id,'div_main',0);">
 		</cfif>
 		<cfif arguments.userID LT 2 or arguments.userID EQ 12>

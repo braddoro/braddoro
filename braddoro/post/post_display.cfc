@@ -34,12 +34,12 @@
 			<br>
 			<div align="right">
 			<cfif variables.post_userID EQ arguments.userID or arguments.userID eq 12>
-				<a id="editPost_#postID#" name="editPost_#postID#" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>&nbsp;
+				<a id="editPost_#postID#" name="editPost_#postID#" class="padded" href="javascript:js_requestPost('editPost','div_main',#postID#);">edit post</a>&nbsp;
 			</cfif>
 			<cfif arguments.userID GT 1>
-				<a id="addReply_#postID#" name="addReply_#postID#" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>&nbsp;
+				<a id="addReply_#postID#" name="addReply_#postID#" class="padded" href="javascript:js_requestPost('addReply','div_main',#postID#);">add reply</a>&nbsp;
 			</cfif>
-			<a id="link_#postID#" name="link_#postID#" href="http://braddoro.com/show.cfm?n=#postID#" target="_top">link this</a>
+			<a id="link_#postID#" name="link_#postID#" class="padded" href="http://braddoro.com/show.cfm?n=#postID#" target="_top">link this</a>
 			</div>
 			<!--- BEGIN: move this --->
 			<cfset q_getReplies = obj_post_sql.getReplies(postID=postID)>
@@ -53,7 +53,7 @@
 			#replace(reply,chr(10),"<br>","All")#
 			<br>
 			<cfif variables.reply_userID EQ arguments.userID>
-			<div align="right"><a id="editReply_#replyID#" name="editReply_#replyID#" href="javascript:js_requestPost('editReply','div_main',#replyID#);">edit reply</a></div>
+			<div align="right"><a id="editReply_#replyID#" name="editReply_#replyID#" class="padded" href="javascript:js_requestPost('editReply','div_main',#replyID#);">edit reply</a></div>
 			</cfif>
 			<cfif currentRow LT recordCount><hr></cfif>
 			</cfloop>
