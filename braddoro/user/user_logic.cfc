@@ -27,21 +27,21 @@
 	
 	<cfsavecontent variable="s_ajaxTask">
 		<cfoutput>
-<cfif arguments.task EQ "authenticateUser">
-	<cfset q_authenticateUser = this.authenticateUser(username=arguments.userName,password=arguments.password,remoteIP=cgi.REMOTE_ADDR)>
-	<cfset session.userID = q_authenticateUser.userID>
-	<cfset session.siteName = q_authenticateUser.siteName>
-	<cfset cookie.userGUID = q_authenticateUser.userGUID>
-	
-	<cfset obj_post_logic = createObject("component","post_logic").init(dsn=session.siteDsn)>
-	<cfsavecontent variable="_html">
-	<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow),userID=val(session.userID))#</cfoutput>
-	</cfsavecontent>
-</cfif>
-<cfif arguments.task EQ "logIn">#this.logIn()#</cfif>
-<cfif arguments.task EQ "showUserInfo">#this.showUser(userID=session.userID)#</cfif>
-<cfif arguments.task EQ "register">#this.showUser(userID=0)#</cfif>
-<cfif arguments.task EQ "saveUserInfo">
+	<cfif arguments.task EQ "authenticateUser">
+		<cfset q_authenticateUser = this.authenticateUser(username=arguments.userName,password=arguments.password,remoteIP=cgi.REMOTE_ADDR)>
+		<cfset session.userID = q_authenticateUser.userID>
+		<cfset session.siteName = q_authenticateUser.siteName>
+		<cfset cookie.userGUID = q_authenticateUser.userGUID>
+		
+		<cfset obj_post_logic = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+		<cfsavecontent variable="_html">
+		<cfoutput>#obj_post_logic.displayPosts(numberToGet=val(session.postsToShow))#</cfoutput>
+		</cfsavecontent>
+	</cfif>
+	<cfif arguments.task EQ "logIn">#this.logIn()#</cfif>
+	<cfif arguments.task EQ "showUserInfo">#this.showUser(userID=session.userID)#</cfif>
+	<cfif arguments.task EQ "register">#this.showUser(userID=0)#</cfif>
+	<cfif arguments.task EQ "saveUserInfo">
 	<cfset x = this.saveUserInfo(argumentCollection=form)>
 	#this.showUser(userID=session.userID)#
 </cfif>
