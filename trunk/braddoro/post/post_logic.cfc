@@ -62,7 +62,6 @@
 </cffunction>
 <!--- End Function --->
 
-
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="displayPosts">
 	<cfargument name="showCount" type="string" default="No">

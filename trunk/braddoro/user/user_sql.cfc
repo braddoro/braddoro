@@ -81,13 +81,15 @@
 	<cftry>
 	<cfquery name="q_updateUser" datasource="#module_dsn#">
 		update braddoro.dyn_Users set
-		userName = '#arguments.userName#',
-		realName = '#arguments.realName#',
-		siteName = '#arguments.siteName#',
-		emailAddress = '#arguments.emailAddress#',
-		webSite = '#arguments.webSite#',
+		userName = '#left(arguments.userName,50)#',
+		realName = '#left(arguments.realName,50)#',
+		siteName = '#left(arguments.siteName,50)#',
+		emailAddress = '#left(arguments.emailAddress,100)#',
+		webSite = '#left(arguments.webSite,200)#',
+	<cfif isdate(arguments.dateOfBirth)>
 		dateOfBirth = '#dateformat(arguments.dateOfBirth,"yyyy-mm-dd")#',
-		zipCode = '#arguments.zipCode#'
+	</cfif>
+		zipCode = '#left(val(arguments.zipCode),5)#'
 		where userID = #val(arguments.userID)#
 	</cfquery>
 	<cfcatch type="database">
