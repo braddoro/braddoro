@@ -52,4 +52,16 @@
 </cffunction>
 <!--- End Function --->
 
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="query" name="getMessageCount">
+	<cfargument name="userID" type="numeric" required="true">
+	
+	<cfquery name="q_getMessageCount" datasource="#module_dsn#">
+		select count(*) as 'messageCount' from braddoro.dyn_messages where to_userID = #arguments.userID#
+	</cfquery>
+	
+	<cfreturn q_getMessageCount>
+</cffunction>
+<!--- End Function --->
+
 </cfcomponent>

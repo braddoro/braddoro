@@ -77,4 +77,15 @@
 </cffunction>
 <!--- End Function --->  
 
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="numeric" name="getMessageCount">
+	<cfargument name="userID" type="numeric" required="true">
+
+	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn,userID=arguments.userID)>
+	<cfset i_messageCount = obj_message_sql.getMessageCount(userID=arguments.userID).messageCount>
+
+	<cfreturn i_messageCount>
+</cffunction>
+<!--- End Function --->  
+
 </cfcomponent>

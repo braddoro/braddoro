@@ -49,6 +49,7 @@
 	<cfset obj_user_logic = createObject("component","braddoro.user.user_logic").init(dsn=module_dsn)>
 	<cfset lcl_siteName = obj_user_logic.selectUserInfo(userID=arguments.userID).siteName>
 	<cfset obj_application_display = createObject("component","application_display")>
+	
 	<!--- this is custom crab code. --->
 	<cfif arguments.userID EQ 157>
 		<cfset lcl_showlogo = true>
@@ -66,11 +67,14 @@
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="string" name="navMenu">
 	<cfargument name="userID" type="numeric" default="1"> 
+
+	<cfset obj_message_logic = createObject("component","braddoro.message.message_logic").init(dsn=module_dsn,userID=arguments.userID)>
+	<cfset lcl_MessageCount = obj_message_logic.getMessageCount(userid=arguments.userID)>
 	
 	<cfset obj_application_display = createObject("component","application_display")>
 	<cfsavecontent variable="s_navMenu">
 	<cfoutput>
-	<cfoutput>#obj_application_display.showNavMenu(userID=arguments.userID)#</cfoutput>
+	<cfoutput>#obj_application_display.showNavMenu(userID=arguments.userID,messageCount=val(lcl_MessageCount))#</cfoutput>
 	</cfoutput>
 	</cfsavecontent>
 

@@ -27,7 +27,8 @@
 <!--- Begin Function  --->
 <cffunction access="package" output="false" returntype="String" name="showNavMenu">
 	<cfargument name="userID" type="numeric" default="1">
-	
+	<cfargument name="messageCount" type="numeric" default="0">
+		
 	<cfsavecontent variable="s_showNavMenu">
 		<cfoutput>
 		<cfif arguments.userID EQ 12>
@@ -42,7 +43,12 @@
 		<input type="button" id="searchPost" name="searchPost" value="search posts" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">	
 		<cfif arguments.userID GT 1>
 		<input type="button" id="composePost" name="composePost" value="compose post" class="navButtons" style="" onclick="js_requestPost(this.id,'div_main',0);">
-		<input type="button" id="showMessages" name="showMessages" value="messages" class="navButtons" style="" onclick="js_requestMessage(this.id,'div_main',0);">
+		<cfif arguments.messageCount GT 0>
+			<cfset lcl_messageText = "messages (#arguments.messageCount#)">
+		<cfelse>	
+			<cfset lcl_messageText = "messages">
+		</cfif>
+		<input type="button" id="showMessages" name="showMessages" value="#lcl_messageText#" class="navButtons" style="" onclick="js_requestMessage(this.id,'div_main',0);">
 		<input type="button" id="showUserInfo" name="showUserInfo" value="user info" class="navButtons" style="" onclick="js_requestUser(this.id,'div_main',0);">
 		</cfif>
 		</cfoutput>
