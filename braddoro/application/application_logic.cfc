@@ -49,8 +49,14 @@
 	<cfset obj_user_logic = createObject("component","braddoro.user.user_logic").init(dsn=module_dsn)>
 	<cfset lcl_siteName = obj_user_logic.selectUserInfo(userID=arguments.userID).siteName>
 	<cfset obj_application_display = createObject("component","application_display")>
+	<!--- this is custom crab code. --->
+	<cfif arguments.userID EQ 157>
+		<cfset lcl_showlogo = true>
+	<cfelse>
+		<cfset lcl_showlogo = false>
+	</cfif>
 	<cfsavecontent variable="s_banner">
-	<cfoutput>#obj_application_display.showBanner(siteName=lcl_siteName,siteTitle=arguments.siteTitle)#</cfoutput>
+	<cfoutput>#obj_application_display.showBanner(siteName=lcl_siteName,siteTitle=arguments.siteTitle,showLogo=lcl_showlogo)#</cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_banner>

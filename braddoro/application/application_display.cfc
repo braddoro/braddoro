@@ -11,9 +11,13 @@
 <cffunction access="package" output="false" returntype="string" name="showBanner">
 <cfargument type="string" name="siteName" default="">
 <cfargument type="string" name="siteTitle" default="">
+<cfargument type="string" name="showLogo" default="false">
 
 	<cfsavecontent variable="s_showBanner">
-		<cfoutput>#siteTitle#<cfif arguments.siteName NEQ ""><span class="mediumtext"> - #arguments.siteName#</span></cfif></cfoutput>
+		<cfoutput>
+			<!--- this is custom crab code. --->
+			<cfif arguments.showLogo><img style="display:block;margin-left:auto;margin-right:auto;margin-bottom:0px;" title="Just for the Crab" src="../images/buff.png" border="0"><br></cfif>
+			#siteTitle#<cfif arguments.siteName NEQ ""><span class="mediumtext"> - #arguments.siteName#</span></cfif></cfoutput>
 	</cfsavecontent>
 	
 	<cfreturn s_showBanner>
