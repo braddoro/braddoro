@@ -12,7 +12,7 @@
 }
 .panelHeader {
 	border-bottom: 1px solid #999999;
-	background-color: navy;
+	background-color: #003366;
 	color: #FFFFFF;
 	padding: 2px;
 	font-weight: bold;
@@ -27,7 +27,7 @@
 .panelFooter {
 	border-top: 1px solid #999999;
 	background-color: #DCDCDC;
-	padding: 1px;"
+	padding: 1px;
 }
 .searchInput {
 	border-bottom: 1px solid #999999;
