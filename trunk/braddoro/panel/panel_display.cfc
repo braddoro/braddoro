@@ -83,7 +83,7 @@
 	<cfargument name="searchBarText" type="string" default="">
 	
 	<cfargument name="relatedBarText" type="string" required="true">
-	<cfargument name="relatedQuery" type="query" required="true">
+	<cfargument name="relatedHTML" type="string" default="">
 	
 	<cfargument name="useHistory" type="string" required="true">
 	<cfargument name="historyBarText" type="string" default="">
@@ -98,7 +98,7 @@
 	</cfif>	
 	<cfsavecontent variable="s_panelMain">
 		<cfoutput>
-			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer">
+			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer" style="display:block;">
 				<div id="div_RDP_header_#arguments.uniqueName#" class="panelHeader" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">
 				    #arguments.headerBarText#<cfif arguments.relatedQuery.recordCount GT 0>&nbsp;(#arguments.relatedQuery.recordCount#)</cfif>
 				</div>
@@ -106,7 +106,7 @@
 					<cfif arguments.useSearch EQ "Yes">
 						#this.searchPart(uniqueName=arguments.uniqueName,searchBarText=arguments.searchBarText)#
 					</cfif>
-					#this.relatedPart(uniqueName=arguments.uniqueName,display=showRelated,relatedQuery=arguments.relatedQuery,relatedBarText=arguments.relatedBarText)#
+					#this.relatedPart(uniqueName=arguments.uniqueName,display=showRelated,relatedHTML=arguments.relatedHTML,relatedBarText=arguments.relatedBarText)#
 					<cfif arguments.useHistory EQ "Yes">
 						#this.historyPart(uniqueName=arguments.uniqueName,display="none",historyQuery=arguments.historyQuery,historyBarText=arguments.historyBarText)#
 					</cfif>
@@ -154,7 +154,7 @@
 <cffunction name="relatedPart" access="package" output="false">
 	<cfargument name="uniqueName" type="string" required="true">
 	<cfargument name="relatedBarText" type="string" required="true">
-	<cfargument name="relatedQuery" type="query" required="true">
+	<cfargument name="relatedHTML" type="string" default="">
 	<cfargument name="display" type="string" required="true">
 	
 	
@@ -162,9 +162,8 @@
 		<cfoutput>
 			<div id="div_relatedHead_#arguments.uniqueName#" class="panelFooter" onclick="js_collapseMe('div_relatedBody_#arguments.uniqueName#');">#arguments.relatedBarText#</div>
 			<div id="div_relatedBody_#arguments.uniqueName#" class="panelBody" style="display:#arguments.display#;">
-				<cfloop query="arguments.relatedQuery">
-				
-				</cfloop>
+				<!--- <cfloop query="arguments.relatedQuery"></cfloop> --->
+				#relatedHTML#
 			</div>
 		</cfoutput>
 	</cfsavecontent>
@@ -206,6 +205,34 @@
 	</cfsavecontent>
 	
 	<cfreturn s_footerPart>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction name="buildRelatedHTML" access="package" output="false">
+	<cfargument name="uniqueName" type="string" required="true">
+
+	<cfsavecontent variable="s_buildRelatedHTML">
+		<cfoutput>
+			
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_buildRelatedHTML>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
+<cffunction name="buildCustomHTML" access="package" output="false">
+	<cfargument name="uniqueName" type="string" required="true">
+
+	<cfsavecontent variable="s_buildCustomHTML">
+		<cfoutput>
+			
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_buildCustomHTML>
 </cffunction>
 <!--- End Function --->
 
