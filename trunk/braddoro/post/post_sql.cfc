@@ -30,14 +30,14 @@
 		P.title, 
 		P.post, 
 		P.addedDate,
-		count(distinct R.postID) as 'replies'
+		count(R.postID) as 'replies'
 		from braddoro.dyn_posts P
 		inner join braddoro.dyn_users U
-		on U.userID = P.userID
+			on P.userID = U.userID 
 		inner join braddoro.cfg_topics T
-		on T.topicID = P.topicID
+			on P.topicID = T.topicID
 		left join braddoro.dyn_replies R
-		on P.postID = R.postID
+			on P.postID = R.postID
 		where P.active = 'Y'
 	<cfif arguments.getNone>
 		and 0=1
@@ -73,8 +73,8 @@
 	<!--- 
 	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn)>
 	<cfset myArray = arrayNew(1)>
-	<cfoutput>#obj_error.fail(userID=val(session.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
-	 --->
+	<cfoutput>#obj_error.fail(userID=val(session.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR)#</cfoutput> 
+	--->
 	 
   <cfreturn q_getPosts>
 </cffunction>
