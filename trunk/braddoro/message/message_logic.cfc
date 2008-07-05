@@ -33,6 +33,7 @@
 		<cfoutput>
 			<cfif arguments.task EQ "saveMessage"><cfset x = this.saveMessage(to_userID=val(arguments.message_userID),messageText=arguments.messageText)></cfif>
 			<cfif arguments.task EQ "deleteMessage"><cfset x = this.deleteMessage(messageID=val(arguments.itemID))></cfif>
+			<cfif arguments.task EQ "markMessage"><cfset x = this.updateMessage(messageID=val(arguments.itemID))></cfif>
 			#this.showMessages()#
 		</cfoutput>
 	</cfsavecontent>
@@ -48,9 +49,9 @@
 	<cfset q_getUsers = obj_user.getUserList()>
 	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
 	<cfset q_getMessages = obj_message_sql.getMessages(userID=module_userID)>
-	<cfset obj_message_display = createObject("component","message_display")>
+	<cfset obj_message_display = CreateObject("component","message_display")>
 	<cfsavecontent variable="s_showMessages">
-		<cfoutput>#obj_message_display.messageMain(userID=module_userID,messageQuery=q_getMessages,userQuery=q_getUsers)#</cfoutput>
+		<cfoutput>#obj_message_display.messageMain(userID=module_userID,messageQuery=q_getMessages,userQuery=q_getUsers,dsn=module_dsn)#</cfoutput>
 	</cfsavecontent>
 	<cfreturn s_showMessages>
 </cffunction>
@@ -73,6 +74,16 @@
 
 	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
 	<cfset x = obj_message_sql.deleteMessage(messageID=arguments.messageID)>
+
+</cffunction>
+<!--- End Function --->  
+
+<!--- Begin Function  --->
+<cffunction access="public" output="false" returntype="void" name="updateMessage">
+	<cfargument name="messageID" type="numeric" required="true">
+
+	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
+	<cfset x = obj_message_sql.updateMessage(messageID=arguments.messageID)>
 
 </cffunction>
 <!--- End Function --->  

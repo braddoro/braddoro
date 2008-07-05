@@ -20,7 +20,8 @@
 		INNER JOIN braddoro.dyn_users U0 ON U0.userID = M.from_userID
 		INNER JOIN braddoro.dyn_users U1 ON U1.userID = M.to_userID
 		AND (M.to_userID = #arguments.userID# OR M.from_userID = #arguments.userID#)
-		ORDER BY M.sentDate DESC 
+		AND threadID = 0
+		ORDER BY M.sentDate desc
 	</cfquery>
 	
 	<cfreturn q_getMessages>
@@ -57,10 +58,21 @@
 	<cfargument name="userID" type="numeric" required="true">
 	
 	<cfquery name="q_getMessageCount" datasource="#module_dsn#">
-		select count(*) as 'messageCount' from braddoro.dyn_messages where to_userID = #arguments.userID#
+		select count(*) as 'messageCount' from braddoro.dyn_messages where to_userID = #arguments.userID# and readDate is null
 	</cfquery>
 	
 	<cfreturn q_getMessageCount>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function --->
+<cffunction access="package" output="false" returntype="void" name="updateMessage">
+	<cfargument name="messageID" type="numeric" required="true">
+	
+	<cfquery name="q_updateMessage" datasource="#module_dsn#">
+    	update braddoro.dyn_messages set readDate = now() where messageID = #arguments.messageID#
+	</cfquery>
+	
 </cffunction>
 <!--- End Function --->
 
