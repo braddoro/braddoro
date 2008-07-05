@@ -14,6 +14,14 @@
 <link href="braddoro/utility/braddoro.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="braddoro rss feed" href="http://braddoro.com/braddoro/rss.cfm" />
 </head>
+<!-- BEGIN: google tracking -->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-4903214-1";
+urchinTracker();
+</script>
+<!-- END: google tracking -->
 <body class="body">
 <div id="div_top" class="divtop">
 <fieldset>
