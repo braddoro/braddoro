@@ -20,7 +20,7 @@
 
 	<cfsavecontent variable="_sql">
 	<cfoutput>
-		select  
+		select distinct
 		P.postID,
 		T.topicID,
 		T.topic,
