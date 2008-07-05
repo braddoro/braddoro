@@ -21,8 +21,7 @@
 		<cfloop query="arguments.postQuery">
 			<cfset variables.post_userID = arguments.postQuery.userID>
 			<fieldset>
-			<legend 
-					id="legend_post#postID#" 
+			<legend id="legend_post#postID#" 
 					onmouseover="js_changeBG(this.id,'##AB9448');" 
 					onmouseout="js_changeBG(this.id,'##E7E7E7');" 
 					onclick="js_collapseThis('div_post#postID#');" 

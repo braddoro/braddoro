@@ -3,6 +3,7 @@
 <cfset obj_quote = createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
 <cfset obj_post = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
 <cfoutput>
+#obj_application.javascriptTask()#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <title>braddoro.com</title>
