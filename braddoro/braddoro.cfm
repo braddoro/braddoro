@@ -1,17 +1,18 @@
 <cftry>
-<cfset obj_application = createObject("component","braddoro.application.application_logic").init(dsn=session.siteDsn)>
-<cfset obj_message = createObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
-<cfset obj_quote = createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
-<cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn)>
-<cfset obj_user = createObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
-<cfset obj_post = createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
-<cfset obj_date = createObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+<cfset obj_application = CreateObject("component","braddoro.application.application_logic").init(dsn=session.siteDsn)>
+<cfset obj_message = CreateObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfset obj_quote = CreateObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
+<cfset obj_error = CreateObject("component","error.error_logic").init(dsn=session.siteDsn)>
+<cfset obj_user = CreateObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
+<cfset obj_post = CreateObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfset obj_date = CreateObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
 <cfoutput>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <title>braddoro.com</title>
 <head>
 <link href="braddoro/utility/braddoro.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="braddoro rss feed" href="http://braddoro.com/braddoro/rss.cfm" />
 </head>
 <body class="body">
 <div id="div_top" class="divtop">
@@ -35,12 +36,12 @@
 </html>
 </cfoutput>
 <cfcatch type="any">
-	<cfif isdefined("session.userID")>
-		<cfset lcl_userID = val(session.userID)>
+	<cfif IsDefined("session.userID")>
+		<cfset lcl_userID = Val(session.userID)>
 	<cfelse>
 		<cfset lcl_userID = 0>
 	</cfif>
-	<cfset obj_error = createObject("component","error.error_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
+	<cfset obj_error = CreateObject("component","error.error_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
 	<cfoutput>#obj_error.fail(userID=lcl_userID,message=cfcatch.message,detail=cfcatch.detail,type=cfcatch.type,tagContext=cfcatch.tagContext,remoteIP=cgi.REMOTE_ADDR)#</cfoutput>
 </cfcatch>
 </cftry>
