@@ -70,9 +70,7 @@
 	<cfset obj_post_sql = createObject("component","post_sql").init(dsn=module_dsn)>
 	<cfset q_getPosts = obj_post_sql.getPosts(numberToGet=module_postsToShow,postID=arguments.postID)>
 	<cfset obj_post_display = createObject("component","post_display")>	
-	<cfsavecontent variable="s_displayPosts">
-	<cfoutput>#obj_post_display.showPosts(postQuery=q_getPosts,userID=module_userID,showCount=arguments.showCount)#</cfoutput>
-	</cfsavecontent>
+	<cfset s_displayPosts = obj_post_display.showPosts(postQuery=q_getPosts,userID=module_userID,showCount=arguments.showCount)>
 	
 	<cfreturn s_displayPosts>
 </cffunction>
@@ -84,9 +82,7 @@
 	<cfset obj_post_sql = createObject("component","post_sql").init(dsn=module_dsn)>
 	<cfset q_topics = obj_post_sql.getTopics()>
 	<cfset obj_post_display = createObject("component","post_display")>
-	<cfsavecontent variable="s_showSearch">
-	<cfoutput>#obj_post_display.showSearch(topicList=q_topics)#</cfoutput>
-	</cfsavecontent>
+	<cfset s_showSearch = obj_post_display.showSearch(topicList=q_topics)>
 	
 	<cfreturn s_showSearch>
 </cffunction>
@@ -122,9 +118,7 @@
 	<cfset q_topics = obj_post_sql.getTopics()>
 	<!--- Loop over the recordset and put the values into an array and pass the array downhill. --->
 	<cfset obj_post_display = createObject("component","post_display")>
-	<cfsavecontent variable="s_postInput">
-	<cfoutput>#obj_post_display.showPostInput(topicList=q_topics,postData=q_getPosts,userID=module_userID)#</cfoutput>
-	</cfsavecontent>
+	<cfset s_postInput = obj_post_display.showPostInput(topicList=q_topics,postData=q_getPosts,userID=module_userID)>
 
 	<cfreturn s_postInput>
 </cffunction>
@@ -145,9 +139,7 @@
 	<cfelse>
 		<cfset q_insertPost = obj_post_sql.insertPost(argumentCollection=arguments)>
 	</cfif>
-	<cfsavecontent variable="s_postUpdate">
-		<cfoutput>#this.displayPosts()#</cfoutput>
-	</cfsavecontent>
+	<cfset s_postUpdate = this.displayPosts()>
 
 	<cfreturn s_postUpdate>
 </cffunction>
@@ -166,9 +158,7 @@
 		<cfset lcl_postID = arguments.postID>
 	</cfif>
 	<cfset obj_post_display = createObject("component","post_display")>
-	<cfsavecontent variable="s_replyInput">
-		<cfoutput>#obj_post_display.showReplyInput(replyID=arguments.replyID,postID=lcl_postID,reply=lcl_reply)#</cfoutput>
-	</cfsavecontent>
+	<cfset s_replyInput = obj_post_display.showReplyInput(replyID=arguments.replyID,postID=lcl_postID,reply=lcl_reply)>
 	
 	<cfreturn s_replyInput>
 </cffunction>
@@ -186,9 +176,7 @@
 	<cfelse>
 		<cfset x = obj_post_sql.updateReply(replyID=arguments.replyID,reply=arguments.reply)>
 	</cfif>
-	<cfsavecontent variable="s_saveReply">
-		<cfoutput>#this.displayPosts()#</cfoutput>
-	</cfsavecontent>
+	<cfset s_saveReply = this.displayPosts()>
 
 	<cfreturn s_saveReply>
 </cffunction>
