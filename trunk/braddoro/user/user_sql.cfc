@@ -18,9 +18,11 @@
 	<cfargument name="password" type="string" default="">
 	<cfargument name="remoteIP" type="string" default="">
 	
-	<cfquery name="q_checkUser" datasource="#module_dsn#">
-	    select * from braddoro.dyn_Users where 
-		active = 'Y'
+	<cfsavecontent variable="_sql">
+		<cfoutput>
+	    select * 
+	    from braddoro.dyn_Users 
+	    where active = 'Y'
 	<cfif arguments.userID GT 0>
 		and userID = #arguments.userID#
 	</cfif>
@@ -32,8 +34,13 @@
 		and password = '#arguments.password#'
 	</cfif>
 		limit 1
-	 </cfquery>
-	 
+		</cfoutput>
+	</cfsavecontent>
+	<cfquery name="q_checkUser" datasource="#module_dsn#">#preserveSingleQuotes(_sql)#</cfquery>
+	<cfset obj_error = createObject("component","braddoro.error.error_logic").init(dsn=session.siteDsn)>
+	<cfset myArray = arrayNew(1)>
+	<cfoutput>#obj_error.fail(userID=val(arguments.userID),message="sql query",detail=_sql,type="debugging",tagContext=myArray,remoteIP=cgi.REMOTE_ADDR,showOutput=false)#</cfoutput> 
+
 	<cfquery name="q_insert" datasource="#module_dsn#">
 		update braddoro.dyn_Users set lastVisit = now() where userID = #val(q_checkUser.userID)# 
 	</cfquery>
