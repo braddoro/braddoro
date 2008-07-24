@@ -43,7 +43,6 @@
 			<!--- BEGIN: move this --->
 			<cfset q_getReplies = obj_post_sql.getReplies(postID=postID)>
 			<cfif q_getReplies.recordCount GT 0>
-			<br>
 			<fieldset class="indented">
 			<legend><strong>replies: #q_getReplies.recordCount#</strong></legend>
 			<cfloop query="q_getReplies">
