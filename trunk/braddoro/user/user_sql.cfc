@@ -33,6 +33,9 @@
 		and userName = '#arguments.userName#'
 		and password = '#arguments.password#'
 	</cfif>
+	<cfif arguments.userID EQ 0 and arguments.userGUID EQ "" and arguments.userName EQ "">
+		and 0=1
+	</cfif>
 		limit 1
 		</cfoutput>
 	</cfsavecontent>
