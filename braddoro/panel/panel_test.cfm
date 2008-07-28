@@ -12,7 +12,7 @@
 <body class="body">
 <div id="div_left" class="divleft">
 	#obj_panel.showPanel(
-		uniqueString="dfdfg",
+		uniqueName=obj_utility.createString(),
 		headerBarText="Simple Panel (1)",
 		relatedHTML="This is some foo. To display the text in the body."
 		)#
@@ -37,7 +37,7 @@
 		headerBarText="searchy (3)"
 		)# --->
 	#obj_panel.showPanel(
-		uniqueString="sdafasd",
+		uniqueName=obj_utility.createString(),
 		useSearch="Yes",
 		searchBarText="Search Something",
 		searchHTML="<input type='text' size='25' value='search'>

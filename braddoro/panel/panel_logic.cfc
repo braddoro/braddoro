@@ -70,7 +70,6 @@
 	<cfset obj_display = createObject("component","panel_display").init()>
 	<cfsavecontent variable="s_showPanel">
 		<cfoutput>
-			#arguments.uniqueName#
 			#obj_display.panelMain(
 				uniqueName=arguments.uniqueName,
 				headerBarText=arguments.headerBarText, 
