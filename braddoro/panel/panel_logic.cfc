@@ -11,6 +11,18 @@
 <!--- End Function --->
 
 <!--- Begin Function  --->
+<cffunction name="writeScripts" access="public" output="false" returntype="string">
+	
+	<cfset obj_display = createObject("component","panel_display").init()>
+	<cfsavecontent variable="s_writeScripts">
+		<cfoutput>#obj_display.writeScripts()#</cfoutput>
+	</cfsavecontent>
+	
+	<cfreturn s_writeScripts>
+</cffunction>
+<!--- End Function --->
+
+<!--- Begin Function  --->
 <cffunction name="showRelatedPanels" access="public" output="false">
 	
 	<!--- configuration lookupie stuff --->
@@ -32,6 +44,7 @@
 	<cfreturn s_showRelatedPanels>
 </cffunction>
 <!--- End Function --->
+
 
 <!--- Begin Function  --->
 <cffunction name="showPanel" access="public" output="false">
@@ -57,7 +70,7 @@
 	<cfset obj_display = createObject("component","panel_display").init()>
 	<cfsavecontent variable="s_showPanel">
 		<cfoutput>
-			#obj_display.writeScripts()#
+			#arguments.uniqueName#
 			#obj_display.panelMain(
 				uniqueName=arguments.uniqueName,
 				headerBarText=arguments.headerBarText, 

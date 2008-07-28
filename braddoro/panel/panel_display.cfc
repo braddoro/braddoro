@@ -22,38 +22,42 @@
 		width: 200px;
 		margin-bottom: 8px;
 	}
-	.panelHeader {
+	.panelBar {
 		border-bottom: 1px solid ##999999;
 		background-color: ##647878;
 		color: ##FFFFFF;
 		padding: 2px;
 		font-weight: bold;
-		font-size: 1em;
+		font-size: .90em;
 	}
 	.panelBody {
 		display: block;
 		background-color: white;
 		padding: 2px;
-		height: 250px;
+		height: 200px;
 		overflow:auto;
+		font-size: .85em;
 	}
 	.panelFooter {
 		border-top: 1px solid ##999999;
 		background-color: ##DCDCDC;
-		padding: 1px;"
+		padding: 1px;
+		font-size: .85em;
 	}
 	.searchInput {
 		border-bottom: 1px solid ##999999;
 		background-color: white;
 		padding: 1px;
-		height: 75px;
+		height: auto;
+		font-size: .85em;
 	}
 	.searchOutput {
 		border-bottom: 1px solid ##999999;
 		background-color: white;
 		padding: 1px;
-		height: 175px;
+		height: auto;
 		overflow: auto;
+		font-size: .85em;
 	}
 	</style>
 	<script language="javascript" type="text/javascript">
@@ -96,7 +100,7 @@
 	<cfsavecontent variable="s_panelMain">
 		<cfoutput>
 			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer" style="display:block;">
-				<div id="div_RDP_header_#arguments.uniqueName#" class="panelHeader" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">#arguments.headerBarText#</div>
+				<div id="div_RDP_header_#arguments.uniqueName#" class="panelBar" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">#arguments.headerBarText#</div>
 				<div id="div_RDP_body_#arguments.uniqueName#" style="display:#arguments.panelVisibility#;">
 					<cfif arguments.useSearch EQ "Yes">
 						#this.searchPart(uniqueName=arguments.uniqueName,barText=arguments.searchBarText,HTML=arguments.searchHTML)#
@@ -130,8 +134,7 @@
 			<div id="div_searchHead_#arguments.uniqueName#" class="panelFooter" onclick="js_collapseMe('div_searchBody_#arguments.uniqueName#');">#arguments.barText#</div>
 			<div id="div_searchBody_#arguments.uniqueName#" class="panelBody" style="display:block;">
 				<div id="div_searchInput_#arguments.uniqueName#" class="searchInput">#arguments.HTML#</div>
-				<div id="div_searchOutput_#arguments.uniqueName#" class="searchOutput">
-				</div>
+				<div id="div_searchOutput_#arguments.uniqueName#" class="searchOutput">output here</div>
 			</div>		
 		</cfoutput>
 	</cfsavecontent>
@@ -187,7 +190,7 @@
 
 	<cfsavecontent variable="s_footerPart">
 		<cfoutput>
-			<div id="div_footer_#arguments.uniqueName#" class="panelHeader">&nbsp;&raquo;&nbsp;#arguments.HTML#</div>
+			<div id="div_footer_#arguments.uniqueName#" class="panelBar">&nbsp;&raquo;&nbsp;#arguments.HTML#</div>
 		</cfoutput>
 	</cfsavecontent>
 	
