@@ -36,7 +36,7 @@
 		relatedHTML="This is some foo. To display the text in the body.",
 		headerBarText="searchy (3)"
 		)# --->
-	<!--- #obj_panel.showPanel(
+	#obj_panel.showPanel(
 		useSearch="Yes",
 		searchBarText="Search Something",
 		searchHTML="<input type='text' size='25' value='search'>
@@ -54,7 +54,7 @@
 		headerBarText="all (4)",
 		useFooter="Yes",
 		footerHTML="<a href='http://braddoro.com'>braddoro</a>"
-		)# --->
+		)#
 </div>
 <br>
 <div id="div_main" class="divright"></div>
