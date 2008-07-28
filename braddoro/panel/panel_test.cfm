@@ -37,6 +37,7 @@
 		headerBarText="searchy (3)"
 		)# --->
 	#obj_panel.showPanel(
+		uniqueString=obj_utility.createString(),
 		useSearch="Yes",
 		searchBarText="Search Something",
 		searchHTML="<input type='text' size='25' value='search'>
