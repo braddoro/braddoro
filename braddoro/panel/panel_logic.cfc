@@ -25,21 +25,44 @@
 <!--- Begin Function  --->
 <cffunction name="showRelatedPanels" access="public" output="false">
 	
-	<!--- configuration lookupie stuff --->
+	<cfset s_showRelatedPanels = "">
+	<!--- loop related data panels (get all panels) --->
 	
-	<!--- logicky stuff --->
-	<cfif arguments.useCustomHTML EQ "Yes">
-		lcl_relatedHTML = display.buildCustomHTML()
-	<cfelse>
-		lcl_relatedHTML = display.buildRelatedHTML()
-	</cfif>
-	
-	<!--- showie stuff --->
-	<cfsavecontent variable="s_showRelatedPanels">
-		<cfoutput>
-			#display.panelMain(arguments=lots,relatedHTML=lcl_relatedHTML)#
-		</cfoutput>
-	</cfsavecontent>
+		<!--- configuration lookupie stuff (for one panel) --->
+
+		<!--- formatie stuff --->
+		<!--- <cfif arguments.useCustomHTML EQ "Yes">
+			lcl_relatedHTML = display.buildCustomHTML()
+		<cfelse>
+			lcl_relatedHTML = display.buildRelatedHTML()
+		</cfif> --->
+		
+		<!--- showie stuff --->
+		<!--- <cfsavecontent variable="s_showRelatedPanels">
+			<cfoutput>
+				<!--- #this.showPanel(
+				uniqueName=obj_utility.createString(),
+				useSearch="Yes",
+				searchBarText="Search Something",
+				searchHTML="<input type='text' size='25' value='search'>
+						<select>
+							<option value='0'>select an option</option>
+							<option value='1'>option 1</option>
+							<option value='1'>option 2</option>
+						</select>
+						<button value='go'>go</button>",
+				relatedBarText="Related Foo",
+				relatedHTML="This is some foo. To display the text in the body.",
+				useHistory="Yes",
+				historyHTML="this is some history",
+				historyBarText="history",
+				headerBarText="all (4)",
+				useFooter="Yes",
+				footerHTML="<a href='http://braddoro.com'>braddoro</a>"
+				)# --->
+			</cfoutput>
+		</cfsavecontent> --->
+	<!--- loop related data panels --->
 	
 	<cfreturn s_showRelatedPanels>
 </cffunction>
