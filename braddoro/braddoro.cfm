@@ -11,7 +11,7 @@
 <html>
 <title>braddoro.com</title>
 <head>
-<link href="braddoro/utility/braddoro.css" rel="stylesheet" type="text/css">
+<link href="braddoro/braddoro.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="braddoro rss feed" href="http://braddoro.com/braddoro/rss.cfm" />
 </head>
 <body class="body">
@@ -22,8 +22,9 @@
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
-<div id="div_date" class="divright">#obj_date.showDates()#</div>
+<!--- <div id="div_date" class="divright">#obj_date.showDates()#</div> --->
 <br>
+<!--- <div id="div_left" class="divleft">this is the left div</div> --->
 <div id="div_main" class="divright">#obj_post.displayPosts()#</div>
 #obj_application.javascriptTask()#
 #obj_message.javascriptTask()#

@@ -74,7 +74,7 @@
                     <a id="markMessage_#messageID#" name="markMessage_#messageID#" href="javascript:js_requestMessage('markMessage','div_main',#messageID#);">mark as read</a> 
                 </cfif>
             </cfif>
-            <cfif arguments.userID EQ from_userID>
+            <cfif arguments.userID EQ from_userID or arguments.userID EQ to_userID>
                 <a id="message_#messageID#" name="message_#messageID#" href="javascript:js_requestMessage('deleteMessage','div_main',#messageID#);">delete message</a>
             </cfif>
             </div>
