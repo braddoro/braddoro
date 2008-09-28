@@ -29,15 +29,19 @@
 <cffunction access="package" output="false" returntype="string" name="ajaxTask">
 	<cfargument required="true" type="string" name="task">
 	
+	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
 	<cfsavecontent variable="s_ajaxTask">
 		<cfoutput>
-			<cfif arguments.task EQ "saveMessage"><cfset x = this.saveMessage(to_userID=val(arguments.message_userID),messageText=arguments.messageText)></cfif>
-			<cfif arguments.task EQ "deleteMessage"><cfset x = this.deleteMessage(messageID=val(arguments.itemID))></cfif>
-			<cfif arguments.task EQ "markMessage"><cfset x = this.updateMessage(messageID=val(arguments.itemID))></cfif>
-			#this.showMessages()#
+			<cfif arguments.task EQ "saveMessage"><cfset this.saveMessage(to_userID=val(arguments.message_userID),threadID=arguments.threadID,messageText=arguments.messageText)></cfif>
+			<cfif arguments.task EQ "deleteMessage"><cfset this.deleteMessage(messageID=val(arguments.itemID))></cfif>
+			<cfif arguments.task EQ "markMessage"><cfset this.updateMessage(messageID=val(arguments.itemID))></cfif>
+			<cfif arguments.task NEQ "replyTo">
+				#this.showMessages()#
+			</cfif>
 		</cfoutput>
 	</cfsavecontent>
-	
+	<cfif arguments.task EQ "replyTo"><cfset s_ajaxTask = obj_message_sql.getMessage(messageID=val(arguments.itemID)).from_userID></cfif>
+		
 	<cfreturn s_ajaxTask>
 </cffunction>
 <!--- End Function --->
@@ -48,7 +52,7 @@
 	<cfset obj_user = createObject("component","braddoro.user.user_logic").init(dsn=module_dsn)>
 	<cfset q_getUsers = obj_user.getUserList()>
 	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
-	<cfset q_getMessages = obj_message_sql.getMessages(userID=module_userID)>
+	<cfset q_getMessages = obj_message_sql.getMessage(userID=0)>
 	<cfset obj_message_display = CreateObject("component","message_display")>
 	<cfsavecontent variable="s_showMessages">
 		<cfoutput>#obj_message_display.messageMain(userID=module_userID,messageQuery=q_getMessages,userQuery=q_getUsers,dsn=module_dsn)#</cfoutput>
@@ -60,10 +64,11 @@
 <!--- Begin Function  --->
 <cffunction access="public" output="false" returntype="void" name="saveMessage">
 	<cfargument name="to_userID" type="numeric" required="true">
+	<cfargument name="threadID" type="numeric" required="true">
 	<cfargument name="messageText" type="string" required="true">
 
 	<cfset obj_message_sql = createObject("component","message_sql").init(dsn=module_dsn)>
-	<cfset x = obj_message_sql.insertMessage(from_userID=module_userID,to_userID=arguments.to_userID,message=arguments.messageText)>
+	<cfset x = obj_message_sql.insertMessage(from_userID=module_userID,to_userID=arguments.to_userID,threadID=arguments.threadID,message=arguments.messageText)>
 
 </cffunction>
 <!--- End Function --->  
