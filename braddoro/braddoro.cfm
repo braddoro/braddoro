@@ -33,6 +33,7 @@
 #obj_user.javascriptTask()#
 #obj_post.javascriptTask()#
 #obj_date.javascriptTask()#
+</div>
 <div id="div_bottom" align="center" class="divbottom">
 #cgi.REMOTE_ADDR#
 </div>

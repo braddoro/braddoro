@@ -3,10 +3,7 @@
 <cfparam name="form.task" type="string" default="">
 
 <cfset obj_message = createObject("component","message_logic").init(dsn=session.siteDsn,userID=val(session.userID))>
-<cfsavecontent variable="_html">
-<cfoutput>#obj_message.ajaxTask(argumentCollection=form)#</cfoutput>
-</cfsavecontent>
-
+<cfset _html = obj_message.ajaxTask(argumentCollection=form)>
 <cfcatch type="any">
 	<cfif isdefined("session.userID")>
 		<cfset lcl_userID = val(session.userID)>
