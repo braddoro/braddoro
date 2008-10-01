@@ -46,6 +46,7 @@
 			<textarea id="messageText" name="messageText" class="navButtons" rows="10" cols="80"></textarea><br>
 			<input type="button" id="saveMessage" name="saveMessage" value="save" class="navButtons" onclick="js_requestMessage(this.id,'div_main',0);">
 		</fieldset>
+		<div id="messageLink" align="center"><img src="../images/chain_nicu_buculei_00.png" border="0" title="refresh message list" onclick="js_requestMessage('refresh','div_main',0);"></div>
 		</cfoutput>
 	</cfsavecontent>
 
@@ -65,12 +66,12 @@
 		<cfif arguments.messageQuery.recordCount GT 0>
 		<cfloop query="arguments.messageQuery">
 	    	<cfif from_userID EQ arguments.userID>
-		    	<cfset lcl_float = "left">
+		    	<cfset s_float = "left">
 			<cfelse>
-				<cfset lcl_float = "right">
+				<cfset s_float = "right">
 			</cfif>
 	    	<fieldset>
-		    <legend style="float:#lcl_float#;"><strong>from #from# to #to# on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong></legend>
+		    <legend style="float:#s_float#;"><strong>from #from# to #to# on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong></legend>
 			#replace(message,chr(10),"<br>","All")#<br>
 			<div align="right">
             <cfif readDate NEQ "">
@@ -111,12 +112,11 @@
 			<cfif arguments.threadID GT 0></cfif>
 			<cfloop query="q_getMessages">
 		    	<!--- <cfif from_userID EQ arguments.userID>
-			    	<cfset lcl_float = "left">
+			    	<cfset s_float = "left">
 				<cfelse>
-					<cfset lcl_float = "right">
+					<cfset s_float = "right">
 				</cfif> --->
 				<cfif arguments.threadID EQ 0>
-					<cfset lcl_float = "left">
 					<br>
 			    	<fieldset>
 				    <legend id="legend_messageGroup_#messageID#"
@@ -125,15 +125,20 @@
 					onclick="js_collapseThis('div_messageGroup_#messageID#');" 
 					style="cursor:default;"><strong>sent by #from# to #to# on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong></legend>
 					<div id="div_messageGroup_#messageID#" style="display:block;">
+					<img src="../images/comment.gif" border="0" title="reply to this message" onclick="js_requestMessage('replyTo','div_inputMessage',#messageID#);">&nbsp;
 				  <cfelse>
-				   	<strong>#from# replied on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#</strong><br>
+				  	<div id="div_messageGroup_#messageID#" style="margin-left:20px;">
+					<cfif readDate EQ "" and from_userID NEQ arguments.userID>
+						<img src="../images/rh_checkbox.gif" border="0" title="mark message as read" onclick="js_requestMessage('markMessage','div_main',#messageID#);">&nbsp;
+					</cfif>				  	
+					&nbsp;<img src="../images/comment.gif" border="0" title="reply to this message" onclick="js_requestMessage('replyTo','div_inputMessage',#messageID#);">&nbsp;<strong>#from#</strong> said to <strong>#to#</strong> on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#
 			    </cfif>
-			    <cfif readDate NEQ "">read by #to# on #dateformat(readDate,"mm/dd/yyyy")# at #timeformat(readDate,"hh:mm TT")#<br></cfif>
-				<a id="thread_#messageID#" name="thread_#messageID#" href="javascript:js_requestMessage('replyTo','div_inputMessage',#messageID#);">reply to this</a>&nbsp;
-	            <cfif readDate EQ "">
-                   <a id="markMessage_#messageID#" name="markMessage_#messageID#" href="javascript:js_requestMessage('markMessage','div_main',#messageID#);">mark as read</a>&nbsp; 
+		        <cfif from_userID EQ arguments.userID>
+		            &nbsp;<img src="../images/del.gif" border="0" title="delete this message" onclick="js_requestMessage('deleteMessage','div_main',#messageID#);">
 	            </cfif>
-	            <a id="message_#messageID#" name="message_#messageID#" href="javascript:js_requestMessage('deleteMessage','div_main',#messageID#);">delete message</a><br>
+				<br>
+			    <cfif readDate NEQ "">read on #dateformat(readDate,"mm/dd/yyyy")# at #timeformat(readDate,"hh:mm TT")#<br></cfif>
+	            <br>
 				#replace(message,chr(10),"<br>","All")#<br><br>
 	            <div>
 					#messageOutput_threaded(userID=arguments.userID,dsn=arguments.dsn,threadID=messageID)#
@@ -141,6 +146,8 @@
 				<cfif arguments.threadID EQ 0>
 					</div>
 	    			</fieldset>
+	    		<cfelse>
+	    			</div>
 	    		</cfif>
 			</cfloop>
 		<cfelse>
