@@ -133,16 +133,15 @@
 					</cfif>				  	
 					&nbsp;<img src="../images/comment.gif" border="0" title="reply to this message" onclick="js_requestMessage('replyTo','div_inputMessage',#messageID#);">&nbsp;<strong>#from#</strong> said to <strong>#to#</strong> on #dateFormat(sentDate,"long")# at #timeFormat(sentDate,"hh:mm TT")#
 			    </cfif>
-		        <cfif from_userID EQ arguments.userID>
+				<cfset s_output = messageOutput_threaded(userID=arguments.userID,dsn=arguments.dsn,threadID=messageID)>
+		        <cfif trim(s_output) EQ "" and from_userID EQ arguments.userID>
 		            &nbsp;<img src="../images/del.gif" border="0" title="delete this message" onclick="js_requestMessage('deleteMessage','div_main',#messageID#);">
 	            </cfif>
 				<br>
 			    <cfif readDate NEQ "">read on #dateformat(readDate,"mm/dd/yyyy")# at #timeformat(readDate,"hh:mm TT")#<br></cfif>
 	            <br>
 				#replace(message,chr(10),"<br>","All")#<br><br>
-	            <div>
-					#messageOutput_threaded(userID=arguments.userID,dsn=arguments.dsn,threadID=messageID)#
-				</div>
+	            #s_output#
 				<cfif arguments.threadID EQ 0>
 					</div>
 	    			</fieldset>
