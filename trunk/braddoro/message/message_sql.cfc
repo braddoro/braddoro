@@ -32,10 +32,7 @@
 		FROM braddoro.dyn_messages M
 		INNER JOIN braddoro.dyn_users U0 ON U0.userID = M.from_userID
 		INNER JOIN braddoro.dyn_users U1 ON U1.userID = M.to_userID
-		AND (
-		M.to_userID = #arguments.userID#
-		OR M.from_userID = #arguments.userID#
-		)
+		AND (M.to_userID = #arguments.userID# or M.from_userID = #arguments.userID#)
 		AND threadID = #arguments.threadID#
 		ORDER BY M.sentDate
 		<cfif arguments.threadID EQ 0> DESC</cfif>
