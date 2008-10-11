@@ -9,6 +9,7 @@
 
 <!--- Begin Function  --->
 <!--- this function needs work --->
+<!--- AB9448 --->
 <cffunction access="public" output="false" returntype="String" name="showPosts">
 	<cfargument name="postQuery" type="query" required="true">
 	<cfargument name="userID" type="numeric" required="true">
@@ -22,7 +23,7 @@
 			<cfset variables.post_userID = arguments.postQuery.userID>
 			<fieldset>
 			<legend id="legend_post#postID#" 
-					onmouseover="js_changeBG(this.id,'##AB9448');" 
+					onmouseover="js_changeBG(this.id,'##F5F5F5');" 
 					onmouseout="js_changeBG(this.id,'##E7E7E7');" 
 					onclick="js_collapseThis('div_post#postID#');" 
 					style="cursor:default;" title="<cfif description neq ''>#description#</cfif>">
