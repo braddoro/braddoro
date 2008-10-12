@@ -1,13 +1,6 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction name="init" access="public" output="false">
-	
-	<cfreturn this>
-</cffunction>
-<!--- End Function --->
-
-<!--- Begin Function  --->
 <cffunction name="writeScripts" access="package" output="false">
 
 	<cfsavecontent variable="s_writeScripts">
@@ -78,6 +71,7 @@
 
 <!--- Begin Function  --->
 <cffunction name="panelMain" access="public" output="false">
+	<cfargument name="containerVisibility" type="string" default="">
 	<cfargument name="useSearch" type="string" default="No">
 	<cfargument name="useRelated" type="string" default="Yes">
 	<cfargument name="useFooter" type="string" default="No">
@@ -96,12 +90,14 @@
 	<cfargument name="headerBarText" type="string" default="">
 	<cfargument name="uniqueName" type="string" default="">
 	<cfargument name="panelVisibility" type="string" default="block">
-
+	<cfargument name="panelHeight" type="numeric" default="0">
+	<cfargument name="panelWidth" type="numeric" default="0">
+	
 	<cfsavecontent variable="s_panelMain">
 		<cfoutput>
-			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer" style="display:block;">
+			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer" style="<cfif arguments.containerVisibility NEQ "">display:#arguments.containerVisibility#;</cfif><cfif arguments.panelheight GT 0>width=#arguments.panelwidth#;</cfif>">
 				<div id="div_RDP_header_#arguments.uniqueName#" class="panelBar" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">#arguments.headerBarText#</div>
-				<div id="div_RDP_body_#arguments.uniqueName#" style="display:#arguments.panelVisibility#;">
+				<div id="div_RDP_body_#arguments.uniqueName#" style="display:#arguments.panelVisibility#;<cfif arguments.panelheight GT 0>height=#arguments.panelheight#;</cfif>overflow:auto;">
 					<cfif arguments.useSearch EQ "Yes">
 						#this.searchPart(uniqueName=arguments.uniqueName,barText=arguments.searchBarText,HTML=arguments.searchHTML)#
 					</cfif>
@@ -195,34 +191,6 @@
 	</cfsavecontent>
 	
 	<cfreturn s_footerPart>
-</cffunction>
-<!--- End Function --->
-
-<!--- Begin Function  --->
-<cffunction name="buildRelatedHTML" access="package" output="false">
-	<cfargument name="uniqueName" type="string" required="true">
-
-	<cfsavecontent variable="s_buildRelatedHTML">
-		<cfoutput>
-			this is a test
-		</cfoutput>
-	</cfsavecontent>
-	
-	<cfreturn s_buildRelatedHTML>
-</cffunction>
-<!--- End Function --->
-
-<!--- Begin Function  --->
-<cffunction name="buildCustomHTML" access="package" output="false">
-	<cfargument name="uniqueName" type="string" required="true">
-
-	<cfsavecontent variable="s_buildCustomHTML">
-		<cfoutput>
-			
-		</cfoutput>
-	</cfsavecontent>
-	
-	<cfreturn s_buildCustomHTML>
 </cffunction>
 <!--- End Function --->
 

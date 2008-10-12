@@ -1,7 +1,6 @@
 body {
     background-color: #E7E7E7;
 }
-
 .divtop {
     top: 2px;
     font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
@@ -11,19 +10,33 @@ body {
     margin-bottom: 10px;
     display: block;
 }
-
+.divinfo {
+    margin-right: 5px;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: 0.85em;
+    display: block;
+}
 .divleft {
+	top: 100px;
+    margin-right: 5px;
+    font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
+    font-size: 0.85em;
+    display: inline;
+    width:250px;
+}
+.divright {
+	top: 100px;
     margin-right: 5px;
     font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
     font-size: 0.85em;
     display: inline;
 }
-
-.divright {
+.divbottom {
     margin-right: 5px;
     font-family: "MS Sans Serif", Geneva, sans-serif, Arial;
     font-size: 0.85em;
-    display: inline;
+    display: block;
+    text-align: center;
 }
 
 .banner {

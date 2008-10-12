@@ -1,14 +1,13 @@
 <cfcomponent output="false">
 
 <!--- Begin Function  --->
-<cffunction access="public" name="init" output="false">
-	<cfargument required="true" type="string" name="dsn">
-	<cfargument required="true" type="numeric" name="userID">
+<cffunction access="package" name="runQuery" output="false" returntype="query">
+	<cfargument name="dsn" type="string" required="true">
+	<cfargument name="SQL" type="string" required="true">
 		
-	<cfset module_dsn = arguments.dsn>
-	<cfset module_userID = arguments.userID>
+	<cfquery datasource="#arguments.dsn#" name="q_runQuery">#preserveSingleQuotes(arguments.SQL)#</cfquery>
 	
-	<cfreturn this>
+	<cfreturn q_runQuery>
 </cffunction>
 <!--- End Function --->
 

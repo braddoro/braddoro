@@ -1,11 +1,12 @@
 <cftry>
-<cfset obj_application = CreateObject("component","braddoro.application.application_logic").init(dsn=session.siteDsn)>
-<cfset obj_message = CreateObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
-<cfset obj_quote = CreateObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
-<cfset obj_error = CreateObject("component","error.error_logic").init(dsn=session.siteDsn)>
-<cfset obj_user = CreateObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
-<cfset obj_post = CreateObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
-<cfset obj_date = CreateObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfset obj_application =	createObject("component","braddoro.application.application_logic").init(dsn=session.siteDsn)>
+<cfset obj_message = 		createObject("component","braddoro.message.message_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfset obj_utility = 		createObject("component","braddoro.utility.utility_logic").init(dsn=session.siteDsn)>
+<cfset obj_quote = 			createObject("component","braddoro.quote.quote_logic").init(dsn=session.siteDsn)>
+<cfset obj_error = 			createObject("component","error.error_logic").init(dsn=session.siteDsn)>
+<cfset obj_user = 			createObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
+<cfset obj_post = 			createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfset obj_date = 			createObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -22,9 +23,44 @@
 <div id="menu">#obj_application.navMenu(userID=val(session.userID))#</div>
 </fieldset>
 </div>
-<!--- <div id="div_date" class="divright">#obj_date.showDates()#</div> --->
-<br>
-<!--- <div id="div_left" class="divleft">this is the left div</div> --->
+<div id="div_date" class="divinfo">#obj_date.showDates()#</div>
+<div id="div_left" class="divleft">
+	<cfset obj_panel = createObject("component","braddoro.panel.panel_logic")>
+	<cfset s_sql = "SELECT U.userName, M.message FROM braddoro.dyn_messages M inner join dyn_Users U on M.from_userID = U.userID WHERE M.to_userID = #val(session.userID)# and M.readDate is null">
+	<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
+	<cfsavecontent variable="s_relatedHTML">
+	<cfloop query="q_related">
+		<strong>#userName#</strong><br>
+		#message#<br>
+		<cfif currentrow LT recordCount><hr></cfif>
+	</cfloop>
+	</cfsavecontent>
+	#obj_panel.showPanel(
+		uniqueName=obj_utility.createString(),
+		headerBarText="Unread Messages (#q_related.recordCount#)",
+		relatedHTML=s_relatedHTML,
+		panelVisibility="none",
+		containerVisibility="block",
+		panelHeight=50,
+		writeScript="Yes"
+		)#
+	<cfset s_sql = "SELECT lastVisit, userName FROM dyn_users order by lastVisit desc limit 5">
+	<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
+	<cfsavecontent variable="s_relatedHTML">
+	<cfloop query="q_related">
+		<strong>#userName#: </strong>#dateFormat(lastVisit,"mm/dd/yyyy")#<br>
+		<cfif currentrow LT recordCount><hr></cfif>
+	</cfloop>
+	</cfsavecontent>
+	#obj_panel.showPanel(
+		uniqueName=obj_utility.createString(),
+		headerBarText="Last Logins",
+		relatedHTML=s_relatedHTML,
+		panelVisibility="none",
+		containerVisibility="block",
+		panelHeight=25
+		)#
+</div>
 <div id="div_main" class="divright">#obj_post.displayPosts()#</div>
 #obj_application.javascriptTask()#
 #obj_message.javascriptTask()#
