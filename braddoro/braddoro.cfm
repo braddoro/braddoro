@@ -24,44 +24,52 @@
 </fieldset>
 </div>
 <div id="div_date" class="divinfo">#obj_date.showDates()#</div>
+<table border="0">
+<tr>
+<td valign="top">
 <div id="div_left" class="divleft">
-	<cfset obj_panel = createObject("component","braddoro.panel.panel_logic")>
-	<cfset s_sql = "SELECT U.userName, M.message FROM braddoro.dyn_messages M inner join dyn_Users U on M.from_userID = U.userID WHERE M.to_userID = #val(session.userID)# and M.readDate is null">
-	<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
-	<cfsavecontent variable="s_relatedHTML">
-	<cfloop query="q_related">
-		<strong>#userName#</strong><br>
-		#message#<br>
-		<cfif currentrow LT recordCount><hr></cfif>
-	</cfloop>
-	</cfsavecontent>
-	#obj_panel.showPanel(
-		uniqueName=obj_utility.createString(),
-		headerBarText="Unread Messages (#q_related.recordCount#)",
-		relatedHTML=s_relatedHTML,
-		panelVisibility="none",
-		containerVisibility="block",
-		panelHeight=50,
-		writeScript="Yes"
-		)#
-	<cfset s_sql = "SELECT lastVisit, userName FROM dyn_users order by lastVisit desc limit 5">
-	<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
-	<cfsavecontent variable="s_relatedHTML">
-	<cfloop query="q_related">
-		<strong>#userName#: </strong>#dateFormat(lastVisit,"mm/dd/yyyy")#<br>
-		<cfif currentrow LT recordCount><hr></cfif>
-	</cfloop>
-	</cfsavecontent>
-	#obj_panel.showPanel(
-		uniqueName=obj_utility.createString(),
-		headerBarText="Last Logins",
-		relatedHTML=s_relatedHTML,
-		panelVisibility="none",
-		containerVisibility="block",
-		panelHeight=25
-		)#
+<cfset obj_panel = createObject("component","braddoro.panel.panel_logic")>
+<cfset s_sql = "SELECT U.userName, M.message FROM braddoro.dyn_messages M inner join dyn_Users U on M.from_userID = U.userID WHERE M.to_userID = #val(session.userID)# and M.readDate is null">
+<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
+<cfsavecontent variable="s_relatedHTML">
+<cfloop query="q_related">
+	<strong>#userName#</strong><br>
+	#message#<br>
+	<cfif currentrow LT recordCount><hr></cfif>
+</cfloop>
+</cfsavecontent>
+#obj_panel.showPanel(
+	uniqueName=obj_utility.createString(),
+	headerBarText="Unread Messages (#q_related.recordCount#)",
+	relatedHTML=s_relatedHTML,
+	panelVisibility="block",
+	containerVisibility="block",
+	panelHeight=100,
+	writeScript="Yes"
+	)#
+<cfset s_sql = "SELECT lastVisit, userName FROM dyn_users order by lastVisit desc limit 5">
+<cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
+<cfsavecontent variable="s_relatedHTML">
+<cfloop query="q_related">
+	<strong>#userName#: </strong>#dateFormat(lastVisit,"mm/dd/yyyy")#<br>
+	<cfif currentrow LT recordCount><hr></cfif>
+</cfloop>
+</cfsavecontent>
+#obj_panel.showPanel(
+	uniqueName=obj_utility.createString(),
+	headerBarText="Last Logins",
+	relatedHTML=s_relatedHTML,
+	panelVisibility="block",
+	containerVisibility="block",
+	panelHeight=75
+	)#
 </div>
+</td>
+<td>
 <div id="div_main" class="divright">#obj_post.displayPosts()#</div>
+</td>
+</tr>
+</table>
 #obj_application.javascriptTask()#
 #obj_message.javascriptTask()#
 #obj_quote.javascriptTask()#
