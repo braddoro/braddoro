@@ -92,26 +92,36 @@
 	<cfargument name="panelVisibility" type="string" default="block">
 	<cfargument name="panelHeight" type="numeric" default="0">
 	<cfargument name="panelWidth" type="numeric" default="0">
+	<cfargument name="useFieldSet" type="string" default="Yes">
 	
 	<cfsavecontent variable="s_panelMain">
 		<cfoutput>
+		<cfif arguments.useFieldSet EQ "Yes">
+			<fieldset id="div_RDP_container_#arguments.uniqueName#" style="<cfif arguments.containerVisibility NEQ "">display:#arguments.containerVisibility#;</cfif><cfif arguments.panelheight GT 0>width=#arguments.panelwidth#;</cfif>">
+				<legend id="div_RDP_header_#arguments.uniqueName#" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">#arguments.headerBarText#&nbsp;</legend>
+		<cfelse>
 			<div id="div_RDP_container_#arguments.uniqueName#" class="panelContainer" style="<cfif arguments.containerVisibility NEQ "">display:#arguments.containerVisibility#;</cfif><cfif arguments.panelheight GT 0>width=#arguments.panelwidth#;</cfif>">
 				<div id="div_RDP_header_#arguments.uniqueName#" class="panelBar" onclick="js_collapseMe('div_RDP_body_#arguments.uniqueName#');">#arguments.headerBarText#</div>
-				<div id="div_RDP_body_#arguments.uniqueName#" style="display:#arguments.panelVisibility#;<cfif arguments.panelheight GT 0>height=#arguments.panelheight#;</cfif>overflow:auto;">
-					<cfif arguments.useSearch EQ "Yes">
-						#this.searchPart(uniqueName=arguments.uniqueName,barText=arguments.searchBarText,HTML=arguments.searchHTML)#
-					</cfif>
-					<cfif arguments.useRelated EQ "Yes">
-						#this.relatedPart(uniqueName=arguments.uniqueName,barText=arguments.relatedBarText,HTML=arguments.relatedHTML)#
-					</cfif>
-					<cfif arguments.useHistory EQ "Yes">
-						#this.historyPart(uniqueName=arguments.uniqueName,barText=arguments.historyBarText,HTML=arguments.historyHTML)#
-					</cfif>
-				</div>
-				<cfif arguments.useFooter EQ "Yes">
-					#this.footerPart(uniqueName=arguments.uniqueName,barText=arguments.footerBarText,HTML=arguments.footerHTML)#
-				</cfif>
+		</cfif>
+		<div id="div_RDP_body_#arguments.uniqueName#" style="display:#arguments.panelVisibility#;<cfif arguments.panelheight GT 0>height=#arguments.panelheight#;</cfif>overflow:auto;">
+			<cfif arguments.useSearch EQ "Yes">
+				#this.searchPart(uniqueName=arguments.uniqueName,barText=arguments.searchBarText,HTML=arguments.searchHTML)#
+			</cfif>
+			<cfif arguments.useRelated EQ "Yes">
+				#this.relatedPart(uniqueName=arguments.uniqueName,barText=arguments.relatedBarText,HTML=arguments.relatedHTML)#
+			</cfif>
+			<cfif arguments.useHistory EQ "Yes">
+				#this.historyPart(uniqueName=arguments.uniqueName,barText=arguments.historyBarText,HTML=arguments.historyHTML)#
+			</cfif>
+		</div>
+		<cfif arguments.useFooter EQ "Yes">
+			#this.footerPart(uniqueName=arguments.uniqueName,barText=arguments.footerBarText,HTML=arguments.footerHTML)#
+		</cfif>
+		<cfif arguments.useFieldSet EQ "Yes">
+			</fieldset>
+		<cfelse>
 			</div>
+		</cfif>
 		</cfoutput>
 	</cfsavecontent>
 	

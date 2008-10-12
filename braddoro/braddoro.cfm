@@ -45,9 +45,10 @@
 	panelVisibility="block",
 	containerVisibility="block",
 	panelHeight=100,
+	containerWidth=200,
 	writeScript="Yes"
 	)#
-<cfset s_sql = "SELECT lastVisit, userName FROM dyn_users order by lastVisit desc limit 5">
+<cfset s_sql = "SELECT lastVisit, userName FROM dyn_users order by lastVisit desc limit 3">
 <cfset q_related = obj_panel.runQuery(dsn=session.siteDsn,sql=s_sql)>
 <cfsavecontent variable="s_relatedHTML">
 <cfloop query="q_related">
@@ -61,7 +62,8 @@
 	relatedHTML=s_relatedHTML,
 	panelVisibility="block",
 	containerVisibility="block",
-	panelHeight=75
+	panelHeight=75,
+	containerWidth=200
 	)#
 </div>
 </td>
