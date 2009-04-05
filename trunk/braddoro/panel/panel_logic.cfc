@@ -3,10 +3,7 @@
 <!--- Begin Function  --->
 <cffunction name="writeScripts" access="public" output="false" returntype="string">
 	
-	<cfset obj_display = createObject("component","panel_display")>
-	<cfsavecontent variable="s_writeScripts">
-		<cfoutput>#obj_display.writeScripts()#</cfoutput>
-	</cfsavecontent>
+	<cfset s_writeScripts = createObject("component","panel_display").writeScripts()>
 	
 	<cfreturn s_writeScripts>
 </cffunction>
@@ -72,8 +69,7 @@
 	<cfargument name="dsn" type="string" required="true">
 	<cfargument name="SQL" type="string" required="true">
 	
-	<cfset obj_sql = createObject("component","panel_sql")>
-	<cfset q_runQuery = obj_sql.runQuery(dsn=arguments.dsn,sql=arguments.sql)>
+	<cfset q_runQuery = createObject("component","panel_sql").runQuery(dsn=arguments.dsn,sql=arguments.sql)>
 		
 	<cfreturn q_runQuery>
 </cffunction>
