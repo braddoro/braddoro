@@ -85,10 +85,8 @@
 
 	<cfset obj_date = createObject("component","date_sql").init(dsn=module_dsn)>
 	<cfset q_getDate = obj_date.getDate()>
-	<cfset obj_date = createObject("component","date_display")>
-	<cfsavecontent variable="s_showDates">
-		<cfoutput>#obj_date.dateDisplay(dateQuery=q_getDate)#</cfoutput>
-	</cfsavecontent>
+	<cfset s_showDates = createObject("component","date_display").dateDisplay(dateQuery=q_getDate)>
+
 	<cfreturn s_showDates>
 </cffunction>
 <!--- End Function --->  

@@ -17,7 +17,8 @@
 		SELECT dayName(D.dateData) as 'weekDay', D.dateID, D.userID, D.dateData, D.dateDescription, D.recurring, D.active, D.private
 		FROM braddoro.dyn_dates D
 		where D.active = 'Y'
-		and ((dayOfYear(D.dateData) >= dayOfYear(CURDATE()) and dayOfYear(D.dateData) <= dayOfYear(date_add(CURDATE(), INTERVAL 7 DAY)) and D.recurring = 'Y') or (D.dateData >= CURDATE() and D.dateData <= date_add(CURDATE(), INTERVAL 15 DAY) and D.recurring = 'N'))
+		and ((dayOfYear(D.dateData) >= dayOfYear(CURDATE()) 
+		and dayOfYear(D.dateData) <= dayOfYear(date_add(CURDATE(), INTERVAL 7 DAY)) and D.recurring = 'Y') or (D.dateData >= CURDATE() and D.dateData <= date_add(CURDATE(), INTERVAL 15 DAY) and D.recurring = 'N'))
 		ORDER BY dayOfYear(D.dateData)
 	</cfquery>
 	
