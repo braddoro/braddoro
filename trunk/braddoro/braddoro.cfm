@@ -15,7 +15,7 @@
 <link href="braddoro/braddoro.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="braddoro rss feed" href="http://braddoro.com/braddoro/rss.cfm" />
 </head>
-<body class="body">
+<body id="body_body" class="body">
 <div id="div_top" class="divtop">
 <fieldset>
 <div id="div_banner" class="banner"><cfoutput>#obj_application.banner(userID=val(session.userID),siteTitle=session.siteTitle)#</cfoutput></div>
@@ -90,10 +90,31 @@
 </div>
 <div id="div_bottom" align="center" class="divbottom">
 #cgi.REMOTE_ADDR#
+</cfoutput>
+<script language="JavaScript" type="text/javascript">
+function SetBG(color,fg) {
+   document.getElementById("body_body").style.backgroundColor = color;
+   document.getElementById("body_body").style.color = fg;
+}
+</script>
+<table align="center" cellpadding="0" cellspacing="2" border="0">
+<tr>
+<td bgcolor="#FFFFFF" onmouseover="SetBG('#FFFFFF','#000000')">&diams;</td>
+<td bgcolor="#E5E5E5" onmouseover="SetBG('#E5E5E5','#000000')">&diams;</td>
+<td bgcolor="#CCCCCC" onmouseover="SetBG('#CCCCCC','#000000')">&diams;</td>
+<td bgcolor="#B3B3B3" onmouseover="SetBG('#B3B3B3','#000000')">&diams;</td>
+<td bgcolor="#999999" onmouseover="SetBG('#999999','#000000')">&diams;</td>
+<td bgcolor="#808080" onmouseover="SetBG('#808080','#000000')">&diams;</td>
+<td bgcolor="#666666" onmouseover="SetBG('#666666','#FFFFFF')">&diams;</td>
+<td bgcolor="#4D4D4D" onmouseover="SetBG('#4D4D4D','#FFFFFF')">&diams;</td>
+<td bgcolor="#333333" onmouseover="SetBG('#333333','#FFFFFF')">&diams;</td>
+<td bgcolor="#1A1A1A" onmouseover="SetBG('#1A1A1A','#FFFFFF')">&diams;</td>
+<td bgcolor="#000000" onmouseover="SetBG('#000000','#FFFFFF')">&diams;</td>
+</tr>
+</table>
 </div>
 </body>
 </html>
-</cfoutput>
 <cfcatch type="any">
 	<cfif IsDefined("session.userID")>
 		<cfset lcl_userID = Val(session.userID)>
