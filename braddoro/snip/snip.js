@@ -46,11 +46,11 @@ if (
 	alert("You must enter a category.")
 }
 
-if (isValid && document.getElementById("title").value == "")  {
+if (isValid && document.getElementById("snip_name").value == "")  {
 	isValid = false;
-	alert("You must enter a title.")
+	alert("You must enter a snip_name.")
 }
-if (isValid && document.getElementById("snippet").value == "")  {
+if (isValid && document.getElementById("snippetStart").value == "")  {
 	isValid = false;
 	alert("You must enter a snippet.")
 }
@@ -68,8 +68,10 @@ function js_ajax(Task,snipID,container) {
 			}else{
 				s_ajax += "&category=" + encodeURIComponent(document.getElementById("category").value);
 			}
-			s_ajax += "&title=" + encodeURIComponent(document.getElementById("title").value);
-			s_ajax += "&snippet=" + encodeURIComponent(document.getElementById("snippet").value);
+			s_ajax += "&snip_name=" + encodeURIComponent(document.getElementById("snip_name").value);
+			s_ajax += "&snip_help=" + encodeURIComponent(document.getElementById("snip_help").value); 
+			s_ajax += "&snippetStart=" + encodeURIComponent(document.getElementById("snippetStart").value);
+			s_ajax += "&snippetEnd=" + encodeURIComponent(document.getElementById("snippetEnd").value);
 		}else{
 			b_send = false;
 		}
@@ -83,6 +85,10 @@ function js_ajax(Task,snipID,container) {
 	} 
 	if (Task == "edit") {
 		document.getElementById("div_input").style.display = "block";
+	} 
+	if (Task == "show") {
+		document.getElementById("div_input").style.display = "none";
+		document.getElementById("div_output").style.display = "block";
 	} 
 }
 function js_collapseThis(changeme) {
