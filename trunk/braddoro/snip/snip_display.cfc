@@ -55,7 +55,12 @@
 				<div id="L1_#category#" name="L1_#category#" style="cursor:pointer;display:none;width:100%">
 					<cfoutput>
 						<div id="L2_#snippetID#" name="L2_#snippetID#" style="padding-left:20px;cursor:pointer;display:block;" onclick="js_collapseThis('L3_#snippetID#');"><img src="icon_read.gif">&nbsp;<b>#snip_name#</b></div>
-						<div id="L3_#snippetID#" name="L3_#snippetID#" style="border:1px solid ##333333;cursor:pointer;display:none;width:90%">#replace(HTMLCodeFormat(snippetStart),chr(10),"<br>","All")#<br>#replace(HTMLCodeFormat(snippetEnd),chr(10),"<br>","All")#<span style="float:right;"><img src="misc_new_window.gif" title="Edit snippet. #val(snippetID)#" onclick="js_ajax('edit',#val(snippetID)#,'div_output');"></span></div>
+						<div id="L3_#snippetID#" name="L3_#snippetID#" style="border:1px solid ##333333;cursor:pointer;display:none;width:90%">
+							#replace(HTMLCodeFormat(snippetStart),chr(10),"<br>","All")#<br>#replace(HTMLCodeFormat(snippetEnd),chr(10),"<br>","All")#
+							<span style="float:right;">
+								<img src="misc_new_window.gif" title="Edit snippet." onclick="js_ajax('edit',#val(snippetID)#,'div_output');">
+							</span>
+						</div>
 					</cfoutput>
 				</div>
 			</cfoutput>
