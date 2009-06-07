@@ -7,7 +7,7 @@
 <cfset i_killmailID = 0>
 <cfoutput>
 <h4>Free Worlds Alliance Killmail Posting</h4>
-<form id="myform" name="myform" action="main.cfm" method="post">
+<form id="myform" name="myform" action="post.cfm" method="post">
 <textarea id="killmail" name="killmail" rows="5" cols="40"></textarea><br>
 <input type="submit" id="go" name="go" value="Add Killmail">
 </form>
@@ -237,6 +237,7 @@ SELECT
 	k1.damageTaken, 
 	k1.system, 
 	k1.security as 'killedSecurity', 
+	k1.uniqueID,
 	k2.killerID, 
 	k2.name, 
 	k2.security, 
@@ -264,8 +265,8 @@ ORDER BY
 	<table border='1' style='border-collapse:collapse;font-family:"Microsoft Sans Serif",Verdana,Arial;' cellspacing='0'>
 		<tr>
 		<td bgcolor="navy"><span style="color:white;font-weight:bold;">#dateFormat(killmailDateTime,"mm/dd/yyyy")# #timeFormat(killmailDateTime,"hh:mm TT")#</span></td>
-		<td ><strong>Killers</strong></td>
-		<td ><strong>Items</strong></td>
+		<td><strong>Killers</strong></td>
+		<td><strong>Items</strong></td>
 		</tr>
 		<tr>
 		<td valign="top">
@@ -302,6 +303,13 @@ ORDER BY
 		</td>
 		</tr>
 	</table>
+	<!--- <cfquery name="q_killmail" datasource="braddoro">
+	select uniqueID, killmailText 
+	from braddoro.dyn_killmail_text k2
+	inner join braddoro.dyn_killmail k1
+	on k1.killmailID = k2.killmailID
+	where killmailID = #killmailID#
+	</cfquery> --->
 </cfoutput>
 </body>
 </html>
