@@ -152,7 +152,7 @@ function js_collapseThis(changeme) {
 		<cfif i_totalKills GT 0>
 			Kills: #i_totalKills#
 		<script language="javascript">
-			document.getElementById("total_killMonth_#killYear##killMonth#").innerHTML = "&nbsp;::&nbsp;Kills: #i_totalKills#";
+			document.getElementById("total_killMonth_#killYear##numberFormat(killMonth,'00')#").innerHTML = "&nbsp;::&nbsp;Kills: #i_totalKills#";
 		</script>
 		</cfif>
 		</div>
