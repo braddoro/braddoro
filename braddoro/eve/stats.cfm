@@ -40,7 +40,8 @@ ORDER BY
 SELECT distinct 
 	k1.alliance, 
 	k1.corp, 
-	k1.victim 
+	k1.victim,
+	k1.uniqueID
 FROM braddoro.dyn_killmail k1
 INNER JOIN braddoro.dyn_killmail_killers k2 
 	ON k1.killmailID = k2.killmailID
@@ -139,7 +140,7 @@ Searching for: #url.killed#
 	<cfoutput group="corp">
 		<div class="indent1"><a href="stats.cfm?killedCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
 		<cfoutput>
-			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a></div>
+			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a>&nbsp;<a href="show.cfm?n=#uniqueID#">[view]</a></div>
 		</cfoutput>
 		<br>
 	</cfoutput>
