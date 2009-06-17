@@ -88,7 +88,7 @@ ORDER BY
 <script language="javascript">
 function js_collapseThis(changeme) {
 	if (document.getElementById(changeme).style.display == "block") {
-		document.jasdipgetElementById(changeme).style.display = "none";
+		document.getElementById(changeme).style.display = "none";
 	} else {
 		document.getElementById(changeme).style.display = "block";
 	}
@@ -97,9 +97,9 @@ function js_collapseThis(changeme) {
 <cfoutput query="q_kills" group="killYear">
 	<div class=""><strong>Year: #killYear#</strong></div>	
 	<cfoutput group="killMonth">
-		<fieldset id="killMonth_#killMonth#" name="killMonth_#killMonth#">
-		<legend onclick="js_collapseThis('killMonth_#killYear##killMonth#');">Month: #monthAsString(killMonth)#<span id="total_killMonth_#killYear##killMonth#"></span></legend>
-		<div id="killMonth_#killYear##killMonth#" name="killMonth_#killYear##killMonth#" style="display:none;">
+		<fieldset id="fieldset_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" name="fieldset_killMonth_#val(killYear)##numberFormat(killMonth,'00')#">
+		<legend onclick="js_collapseThis('div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#');" style="cursor:pointer;">Month: #monthAsString(val(killMonth))# <span id="total_killMonth_#killYear##numberFormat(killMonth,'00')#"></span></legend>
+		<div id="div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" name="div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" style="display:none;">
 			<cfset i_totalKills = 0>
 			<cfoutput group="killDay">
 				<!--- <div class="">Day: #killDay#</div> --->	
