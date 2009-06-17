@@ -140,7 +140,7 @@ Searching for: #url.killed#
 	<cfoutput group="corp">
 		<div class="indent1"><a href="stats.cfm?killedCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
 		<cfoutput>
-			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a>&nbsp;<a href="show.cfm?n=#uniqueID#">[view]</a></div>
+			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a>&nbsp;<a href="show.cfm?n=#uniqueID#" target="_blank">[view]</a></div>
 		</cfoutput>
 		<br>
 	</cfoutput>
