@@ -34,14 +34,17 @@ WHERE k1.deleted = 0
 ORDER BY 
 	k2.alliance, 
 	k2.corp, 
-	k2.name 
+	k2.name,
+	k1.killmailDateTime
 </cfquery>
 <cfquery name="q_killed" datasource="braddoro">
 SELECT distinct 
+	k1.killmailDateTime,
 	k1.alliance, 
 	k1.corp, 
 	k1.victim,
-	k1.uniqueID
+	k1.uniqueID,
+	k1.destroyed
 FROM braddoro.dyn_killmail k1
 INNER JOIN braddoro.dyn_killmail_killers k2 
 	ON k1.killmailID = k2.killmailID
@@ -71,10 +74,11 @@ ORDER BY
 </cfquery>
 <style type="text/css">
 .large {font-size 1.2 em;}
-.indent0 {margin-left:0px;}
+.indent0 {margin-left:0px;font-weight:bold;}
 .indent1 {margin-left:10px;}
 .indent2 {margin-left:20px;}
-.indent3 {margin-left:30px;}
+.indent3 {margin-left:40px;font-size:.75em;}
+.indent4 {margin-left:40px;}
 </style>
 <html>
 <head>
@@ -121,11 +125,11 @@ Searching for: #url.killed#
 <div id="div_killers" style="display:block;">
 <hr>
 <cfoutput query="q_killers" group="alliance">
-	<div class="indent0"><a href="stats.cfm?killerAlliance=#URLEncodedFormat(alliance)#">#alliance#</a></div>
+	<div class="indent0">&rsaquo;&nbsp;<a href="stats.cfm?killerAlliance=#URLEncodedFormat(alliance)#">#alliance#</a></div>
 	<cfoutput group="corp">
-		<div class="indent1"><a href="stats.cfm?killerCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
+		<div class="indent1">&raquo;&nbsp;<a href="stats.cfm?killerCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
 		<cfoutput>
-			<div class="indent2">&raquo;&nbsp;<a href="stats.cfm?killer=#URLEncodedFormat(name)#">#name#</a></div>
+			<div class="indent2">&middot;&nbsp;<a href="stats.cfm?killer=#URLEncodedFormat(name)#">#name#</a></div>
 		</cfoutput>
 		<br>
 	</cfoutput>
@@ -136,11 +140,14 @@ Searching for: #url.killed#
 <hr>
 <div id="div_killed" style="display:block;">
 <cfoutput query="q_killed" group="alliance">
-	<div class="indent0"><a href="stats.cfm?killedAlliance=#URLEncodedFormat(alliance)#">#alliance#</a></div>
+	<div class="indent0">&rsaquo;&nbsp;<a href="stats.cfm?killedAlliance=#URLEncodedFormat(alliance)#">#alliance#</a></div>
 	<cfoutput group="corp">
-		<div class="indent1"><a href="stats.cfm?killedCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
-		<cfoutput>
-			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a>&nbsp;<a href="show.cfm?n=#uniqueID#" target="_blank">[view]</a></div>
+		<div class="indent1">&raquo;&nbsp;<a href="stats.cfm?killedCorp=#URLEncodedFormat(corp)#">#corp#</a></div>
+		<cfoutput group="victim">
+			<div class="indent2">&dagger;&nbsp;<a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#victim#</a></div>
+			<cfoutput>
+				<div class="indent3"><a href="stats.cfm?killed=#URLEncodedFormat(victim)#">#dateformat(killmailDateTime,"mm/dd/yyyy")# #timeformat(killmailDateTime,"hh:mm TT")# #destroyed#</a>&nbsp;-&nbsp;<a href="show.cfm?n=#uniqueID#" target="_blank">[view]</a></div>
+			</cfoutput>
 		</cfoutput>
 		<br>
 	</cfoutput>

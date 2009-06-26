@@ -40,6 +40,7 @@ SELECT
 	k1.damageTaken, 
 	k1.system, 
 	k1.security as 'killedSecurity', 
+	k1.uniqueID,
 	k2.killerID, 
 	k2.name, 
 	k2.security, 
@@ -51,7 +52,6 @@ SELECT
 	k2.finalBlow,
 	year(k1.killmailDateTime) as 'killYear',
 	month(k1.killmailDateTime) as 'killMonth',
-	week(k1.killmailDateTime) as 'killWeek',
 	day(k1.killmailDateTime) as 'killDay'
 FROM braddoro.dyn_killmail k1
 INNER JOIN braddoro.dyn_killmail_killers k2 
@@ -78,7 +78,6 @@ WHERE k1.deleted = 0
 <cfif form.killer NEQ "">
 	and k2.name like '%#form.killer#%'
 </cfif>
-
 ORDER BY 
 	k1.killmailDateTime DESC,
 	k2.killmailID,
@@ -96,58 +95,61 @@ function js_collapseThis(changeme) {
 </script>
 <cfoutput query="q_kills" group="killYear">
 	<div class=""><strong>Year: #killYear#</strong></div>	
+	<cfset i_totalKills = 0>
 	<cfoutput group="killMonth">
 		<fieldset id="fieldset_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" name="fieldset_killMonth_#val(killYear)##numberFormat(killMonth,'00')#">
 		<legend onclick="js_collapseThis('div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#');" style="cursor:pointer;">Month: #monthAsString(val(killMonth))# <span id="total_killMonth_#killYear##numberFormat(killMonth,'00')#"></span></legend>
 		<div id="div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" name="div_killMonth_#val(killYear)##numberFormat(killMonth,'00')#" style="display:none;">
-			<cfset i_totalKills = 0>
-			<cfoutput group="killDay">
-				<!--- <div class="">Day: #killDay#</div> --->	
-				<cfoutput group="killmailID">
-					<table border='1' style='border-collapse:collapse;font-family:"Microsoft Sans Serif",Verdana,Arial;' cellspacing='0'>
-						<tr>
-						<td bgcolor="navy"><span style="color:white;font-weight:bold;">#dateFormat(killmailDateTime,"mm/dd/yyyy")# #timeFormat(killmailDateTime,"hh:mm TT")#</span></td>
-						<td ><strong>Killers</strong></td>
-						<td ><strong>Items</strong></td>
-						</tr>
-						<tr>
-						<td valign="top">
-						<strong>#victim#</strong><br>
-						<cfif killedAlliance NEQ "NONE">Alliance: #killedAlliance#<br></cfif>
-						Corp: #killedCorp#<br>
-						System: #system#<br>
-						Ship: #destroyed#<br>
-						</td>
-						<td valign="top">
-						<cfoutput>
-							Name: <strong>#name#</strong> <cfif finalBlow>(laid the final blow)</cfif><br>
-							<cfif alliance NEQ "NONE">Alliance: #alliance#<br></cfif>
-							Corp: #corp#<br>
-							Ship: #ship#<br>
-							Weapon: #weapon#<br>
-							Damage: #numberformat(damageDone)#<br>
-							<br>
-						</cfoutput>
-						</td>
-						<td valign="top">
-						<cfquery datasource="braddoro" name="q_items">
-							select item, quantity, drone, cargo, dropped
-							from braddoro.dyn_killmail_items
-							where killmailID = #killmailID#
-							order by dropped, item
-						</cfquery>
-						<strong>Destroyed</strong><br>
-						<cfset b_dropped = false>
-						<cfloop query="q_items">
-							<cfif dropped and not b_dropped><br><strong>Dropped</strong><br><cfset b_dropped = true></cfif>
-							#item# <cfif quantity GT 1>(#numberformat(quantity)#) </cfif><cfif cargo>(cargo)</cfif><cfif drone>(drone)</cfif><br>
-						</cfloop>
-						</td>
-						</tr>
-					</table>
-					<br>
-				</cfoutput>
-			<cfset i_totalKills = i_totalKills + 1>
+		<strong>Day: #killDay#</strong><br>
+		<cfoutput group="killDay">
+			<cfoutput group="killmailID">
+				<table border='1' style='border-collapse:collapse;font-family:"Microsoft Sans Serif",Verdana,Arial;font-size:.75em;' cellspacing='0'>
+					<tr>
+					<td bgcolor="navy"><span style="color:white;font-weight:bold;">#dateFormat(killmailDateTime,"mm/dd/yyyy")# #timeFormat(killmailDateTime,"hh:mm TT")#</span></td>
+					<td><span onclick="js_collapseThis('div_killers_#killmailID#');" title="Click to display/hide information." style="cursor:hand;"><strong>Killers</strong></span></td>
+					<td><span onclick="js_collapseThis('div_items_#killmailID#');" title="Click to display/hide information." style="cursor:hand;"><strong>Items</strong></span></td>
+					</tr>
+					<tr>
+					<td valign="top">
+					<strong>#victim#</strong><br>
+					<cfif killedAlliance NEQ "NONE">Alliance: #killedAlliance#<br></cfif>
+					Corp: #killedCorp#<br>
+					System: #system#<br>
+					Ship: #destroyed#<br>
+					<a href="show.cfm?n=#uniqueID#" target="_blank">[view killmail]</a>
+					</td>
+					<td valign="top"><span id="div_killers_#killmailID#" style="display:none;">
+					<cfoutput>
+						Name: <strong>#name#</strong> <cfif finalBlow>(laid the final blow)</cfif><br>
+						<cfif alliance NEQ "NONE">Alliance: #alliance#<br></cfif>
+						Corp: #corp#<br>
+						Ship: #ship#<br>
+						Weapon: #weapon#<br>
+						Damage: #numberformat(damageDone)#<br>
+						<br>
+					</cfoutput>
+					</span>
+					</td>
+					<td valign="top"><span id="div_items_#killmailID#" style="display:none;">
+					<cfquery datasource="braddoro" name="q_items">
+						select item, quantity, drone, cargo, dropped
+						from braddoro.dyn_killmail_items
+						where killmailID = #killmailID#
+						order by dropped, item
+					</cfquery>
+					<strong>Destroyed</strong><br>
+					<cfset b_dropped = false>
+					<cfloop query="q_items">
+						<cfif dropped and not b_dropped><br><strong>Dropped</strong><br><cfset b_dropped = true></cfif>
+						#item# <cfif quantity GT 1>(#numberformat(quantity)#) </cfif><cfif cargo>(cargo)</cfif><cfif drone>(drone)</cfif><br>
+					</cfloop>
+					</span>
+					</td>
+					</tr>
+				</table>
+				<br>
+				<cfset i_totalKills = i_totalKills + 1>
+			</cfoutput>
 		</cfoutput>
 		<cfif i_totalKills GT 0>
 			Kills: #i_totalKills#
@@ -157,6 +159,7 @@ function js_collapseThis(changeme) {
 		</cfif>
 		</div>
 		</fieldset>
+		<cfset i_totalKills = 0>
 	</cfoutput>
 </cfoutput>
 </body>
