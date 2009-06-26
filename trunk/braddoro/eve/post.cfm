@@ -84,8 +84,8 @@
 				<cfbreak>
 			</cfif>
 			<cfquery name="q_killmail" datasource="braddoro">
-				insert into braddoro.dyn_killmail (killmailDateTime, victim, alliance, corp, destroyed, damageTaken, system, security)
-				select '#s_killDateTime#', '#trim(s_victim)#', '#trim(s_alliance)#', '#trim(s_corp)#', '#trim(s_destroyed)#', #val(s_damageTaken)#, '#trim(s_system)#', #val(s_security)#;
+				insert into braddoro.dyn_killmail (killmailDateTime, victim, alliance, corp, destroyed, damageTaken, system, security, uniqueID)
+				select '#s_killDateTime#', '#trim(s_victim)#', '#trim(s_alliance)#', '#trim(s_corp)#', '#trim(s_destroyed)#', #val(s_damageTaken)#, '#trim(s_system)#', #val(s_security)#, UUID();
 			</cfquery>
 			<cfif b_debug>
 				select '#s_killDateTime#', '#trim(s_victim)#', '#trim(s_alliance)#', '#trim(s_corp)#', '#trim(s_destroyed)#', #val(s_damageTaken)#, '#trim(s_system)#', #val(s_security)#;
