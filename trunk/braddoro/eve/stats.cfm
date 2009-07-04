@@ -97,9 +97,7 @@ function js_collapseThis(changeme) {
 <body>
 <cfoutput>
 <h4>Free Worlds Alliance Killmail Stats</h4>
-<a href="stats.cfm"><span class="large">Kill Stats</span></a>&nbsp;
-<a href="kills.cfm"><span class="large">Kill History</span></a>&nbsp;
-<a href="post.cfm"><span class="large">Post Kill</span></a><br><br>
+<cfinclude template="links.cfm">
 <b>
 <cfif url.killerAlliance NEQ "">
 Searching for: #url.killerAlliance#
