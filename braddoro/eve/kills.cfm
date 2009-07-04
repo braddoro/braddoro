@@ -5,7 +5,6 @@
 <cfparam name="form.killedCorp" type="string" default="">
 <cfparam name="form.system" type="string" default="">
 <cfparam name="form.killer" type="string" default="">
-
 <html>
 <head>
 <title>Free Worlds Alliance Killmail History</title>
@@ -15,9 +14,7 @@
 <cfset i_killmailID = 0>
 <cfoutput>
 <h4>Free Worlds Alliance Killboard History</h4>
-<a href="stats.cfm"><span class="large">Kill Stats</span></a>&nbsp;
-<a href="kills.cfm"><span class="large">Kill History</span></a>&nbsp;
-<a href="post.cfm"><span class="large">Post Kill</span></a><br><br>
+<cfinclude template="links.cfm">
 <form id="myform" name="myform" action="kills.cfm" method="post">
 Killer Alliance: <input type="text" id="killerAlliance" name="killerAlliance" value="#form.killerAlliance#"><br>
 Killer Corp: <input type="text" id="killerCorp" name="killerCorp" value="#form.killerCorp#"><br>
