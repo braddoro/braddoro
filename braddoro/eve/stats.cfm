@@ -1,3 +1,8 @@
+<cfparam name="s_pageName" default="FWA Intel - Sighting Ad Hoc Query">
+<cfinclude template="head.cfm">
+<!--- Begin Page Content --->
+<cfoutput>
+
 <cfparam name="url.killerAlliance" type="string" default="">
 <cfparam name="url.killerCorp" type="string" default="">
 <cfparam name="url.killer" type="string" default="">
@@ -80,9 +85,6 @@ ORDER BY
 .indent3 {margin-left:40px;font-size:.75em;}
 .indent4 {margin-left:40px;}
 </style>
-<html>
-<head>
-<title>Free Worlds Alliance Killmail Stats</title>
 <!--- <script type="text/javascript" src="utility.js"></script> --->
 <script language="javascript">
 function js_collapseThis(changeme) {
@@ -93,11 +95,7 @@ function js_collapseThis(changeme) {
 	}
 }
 </script>
-</head>
-<body>
-<cfoutput>
-<h4>Free Worlds Alliance Killmail Stats</h4>
-<cfinclude template="links.cfm">
+
 <b>
 <cfif url.killerAlliance NEQ "">
 Searching for: #url.killerAlliance#
@@ -152,5 +150,6 @@ Searching for: #url.killed#
 	<br>
 </cfoutput>
 </div>
-</body>
-</html>
+
+<!--- End Page Content --->
+<cfinclude template="foot.cfm">

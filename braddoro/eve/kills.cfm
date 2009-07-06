@@ -1,3 +1,8 @@
+<cfparam name="s_pageName" default="FWA - Kill History">
+<cfinclude template="head.cfm">
+<!--- Begin Page Content --->
+<cfoutput>
+
 <cfparam name="form.killerAlliance" type="string" default="">
 <cfparam name="form.killerCorp" type="string" default="">
 <cfparam name="form.victim" type="string" default="">
@@ -5,17 +10,12 @@
 <cfparam name="form.killedCorp" type="string" default="">
 <cfparam name="form.system" type="string" default="">
 <cfparam name="form.killer" type="string" default="">
-<html>
-<head>
-<title>Free Worlds Alliance Killmail History</title>
-</head>
-<body>
+
 <cfset b_debug = false>
 <cfset i_killmailID = 0>
-<cfoutput>
-<h4>Free Worlds Alliance Killboard History</h4>
-<cfinclude template="links.cfm">
+
 <form id="myform" name="myform" action="kills.cfm" method="post">
+<input type="hidden" id="pid" name="pid" value="#s_pid#"><br>
 Killer Alliance: <input type="text" id="killerAlliance" name="killerAlliance" value="#form.killerAlliance#"><br>
 Killer Corp: <input type="text" id="killerCorp" name="killerCorp" value="#form.killerCorp#"><br>
 Killer: <input type="text" id="killer" name="killer" value="#form.killer#"><br>
@@ -161,3 +161,6 @@ function js_collapseThis(changeme) {
 </cfoutput>
 </body>
 </html>
+
+<!--- End Page Content --->
+<cfinclude template="foot.cfm">

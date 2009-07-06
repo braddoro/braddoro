@@ -1,13 +1,12 @@
-<html>
-<head>
-<title>Free Worlds Alliance Post Killmail</title>
-</head>
-<body>
+<cfparam name="s_pageName" default="FWA Intel - Sighting Ad Hoc Query">
+<cfinclude template="head.cfm">
+<!--- Begin Page Content --->
+<cfoutput>
+
 <cfset b_debug = false>
 <cfset i_killmailID = 0>
-<cfoutput>
-<h4>Free Worlds Alliance Killmail Posting</h4>
 <form id="myform" name="myform" action="post.cfm" method="post">
+<input type="hidden" id="pid" name="pid" value="#s_pid#"><br>
 <textarea id="killmail" name="killmail" rows="5" cols="40"></textarea><br>
 <input type="submit" id="go" name="go" value="Add Killmail">
 </form>
@@ -311,5 +310,5 @@ ORDER BY
 	where killmailID = #killmailID#
 	</cfquery> --->
 </cfoutput>
-</body>
-</html>
+<!--- End Page Content --->
+<cfinclude template="foot.cfm">
