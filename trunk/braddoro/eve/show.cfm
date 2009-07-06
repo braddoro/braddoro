@@ -4,7 +4,6 @@
 <title>Free Worlds Alliance Killmail Detail</title>
 </head>
 <body>
-<h4>Free Worlds Alliance Killmail Detail</h4>
 <cfquery name="q_kills" datasource="braddoro">
 SELECT 
   	killmailText
