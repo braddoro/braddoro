@@ -21,7 +21,19 @@
 			<cfquery name="q_query" datasource="braddoro">#preserveSingleQuotes(form.sql)#</cfquery>
 </cfif>
 <cfif isdefined("q_query")>
-			<cfdump var="#q_query#">
+<table style=".75em;font-face:arial;border: 1px solid black;">
+  <cfloop list="#q_query.columnList#" index="s_current">
+  <td><strong>#s_current#</strong></td>
+  </cfloop>
+  <tr>
+  <cfloop query="q_query">
+    <tr>
+    <cfloop list="#q_query.columnList#" index="s_current">
+    <td>#evaluate(s_current)#</td>
+    </cfloop>
+    <tr>
+  </cfloop>
+  </table>
 </cfif>
 <cfif not b_validSQL>
 			Invalid reserved words.
