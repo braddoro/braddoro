@@ -1,5 +1,4 @@
 <cfparam name="s_pageName" default="FWA Intel - Sighting Data">
-
 <cfinclude template="head.cfm">
 <!--- Begin Page Content --->
 <cfoutput>
@@ -26,9 +25,9 @@
 <cfset s_activity = "">	
 
 <cfif isdefined("form.go") and form.seen NEQ "" and form.system NEQ "" and form.seenBy NEQ "">
-			<cfif isdefined("sightingID") and val(sightingID) GT 0>
+	<cfif isdefined("sightingID") and val(sightingID) GT 0>
         <cfquery name="q_sighting" datasource="braddoro">
-        update braddoro.dyn_intel_sightings set
+	        update braddoro.dyn_intel_sightings set
 				sightingDate = '#dateformat(form.sightingDate,"yyyy-mm-dd")# #form.hour#:#form.minute#',
 				system = '#trim(form.system)#',
 				seen = '#trim(form.seen)#',
@@ -38,46 +37,43 @@
 				reconType = '#form.reconType#'
 				where sightingID = #val(form.sightingID)#
         </cfquery>
-			<cfelse>
+	<cfelse>
         <cfquery name="q_sighting" datasource="braddoro">
-        insert into braddoro.dyn_intel_sightings (sightingDate, system, seen, seenBy, ship, activity, reconType, deleted)
-        select 
-        			 '#dateformat(form.sightingDate,"yyyy-mm-dd")# #form.hour#:#form.minute#', 
-        			 '#trim(form.system)#',
-        			 '#trim(form.seen)#',
-        			 '#trim(form.seenBy)#',
-        			 '#trim(form.ship)#',
-        			 '#form.activity#',
-							 '#form.reconType#',
-        			 0	 			 			 			 			 
-        </cfquery>
-			</cfif>
+    	    insert into braddoro.dyn_intel_sightings (sightingDate, system, seen, seenBy, ship, activity, reconType, deleted)
+        	select 
+				'#dateformat(form.sightingDate,"yyyy-mm-dd")# #form.hour#:#form.minute#', 
+				'#trim(form.system)#',
+				'#trim(form.seen)#',
+				'#trim(form.seenBy)#',
+				'#trim(form.ship)#',
+				'#form.activity#',
+				'#form.reconType#',
+				0	 			 			 			 			 
+		</cfquery>
+	</cfif>
 </cfif>
-
 <cfif isdefined("sightingID")  and val(sightingID) GT 0 and not isdefined("form.go")>
-  <cfquery name="q_sighting" datasource="braddoro">
-  select sightingID, sightingDate, system, seen, seenBy, ship, activity, reconType from braddoro.dyn_intel_sightings where sightingID = #val(sightingID)#	 			 			 			 			 
-  </cfquery>
+	<cfquery name="q_sighting" datasource="braddoro">
+		select sightingID, sightingDate, system, seen, seenBy, ship, activity, reconType from braddoro.dyn_intel_sightings where sightingID = #val(sightingID)#	 			 			 			 			 
+	</cfquery>
 	<cfloop query="q_sighting">
-	<cfset i_sightingID = sightingID>
-	<cfset s_sightingDate = dateformat(sightingDate,"yyyy-mm-dd")>
-	<cfset i_hour = hour(sightingDate)>
-	<cfset i_minute = minute(sightingDate)>
-	<cfset s_system = system>
-	<cfset s_seen = seen>
-	<cfset s_seenBy = seenBy>			
-	<cfset s_ship = ship>
-	<cfset s_activity = activity>	
-	<cfset s_reconType = reconType>
+		<cfset i_sightingID = sightingID>
+		<cfset s_sightingDate = dateformat(sightingDate,"yyyy-mm-dd")>
+		<cfset i_hour = hour(sightingDate)>
+		<cfset i_minute = minute(sightingDate)>
+		<cfset s_system = system>
+		<cfset s_seen = seen>
+		<cfset s_seenBy = seenBy>			
+		<cfset s_ship = ship>
+		<cfset s_activity = activity>	
+		<cfset s_reconType = reconType>
 	</cfloop> 
 </cfif>
-
 <cfif isdefined("sightingID") and val(sightingID) GT 0 and not isdefined("form.go")>
 	<cfset s_value = "Save">
 <cfelse>
 	<cfset s_value = "Add">
 </cfif>
-
 <form id="myform" name="myform" action="sightings.cfm" method="post">
 (&bull; = required)<br>
 <input type="hidden" id="pid" name="pid" value="#s_pid#"><br>
@@ -89,6 +85,8 @@ Recon Type:
 <option value="Static"<cfif "Static" EQ s_reconType> SELECTED</cfif>>Static</option>
 <option value="Interception"<cfif "Interception" EQ s_reconType> SELECTED</cfif>>Interception</option>
 <option value="Shadow"<cfif "Shadow" EQ s_reconType> SELECTED</cfif>>Shadow</option>
+<option value="Log On"<cfif "Log On" EQ s_reconType> SELECTED</cfif>>Log On</option>
+<option value="Log Off"<cfif "Log Off" EQ s_reconType> SELECTED</cfif>>Log Off</option>
 </select><br>
 Date: <input type="text" id="sightingDate" name="sightingDate" value="#s_sightingDate#" size="10">&nbsp;&bull;<br>
 Time: <select id="hour" name="hour">
@@ -112,32 +110,32 @@ Activity: <textarea rows="3" cols="30" name="activity" id="activity">#s_activity
 </form>
 </cfoutput>
 <cfquery name="q_sighting" datasource="braddoro">
-select sightingID, sightingDate, system, seen, seenBy, ship, activity, reconType
-from braddoro.dyn_intel_sightings
-where deleted = 0
-order by sightingDate desc
+	select sightingID, sightingDate, system, seen, seenBy, ship, activity, reconType
+	from braddoro.dyn_intel_sightings
+	where deleted = 0
+	order by sightingDate desc
 </cfquery>
 <h4>Sightings</h4>
 <table style='font-family:"Microsoft Sans Serif",Verdana,Arial;font-size:.75em;border:1px solid black;' border="0">
 <tr>
-		<td>Date Seen</td>
-		<td>Recon Type</td>
-		<td>System</td>
-		<td>Target</td>
-		<td>Ship</td>
-		<td>Activity</td>															
-		<td>Seen By</td>
+	<td>Date Seen</td>
+	<td>Recon Type</td>
+	<td>System</td>
+	<td>Target</td>
+	<td>Ship</td>
+	<td>Activity</td>															
+	<td>Seen By</td>
 </tr>
 <cfoutput query="q_sighting">
 <tr>
-		<td>#dateFormat(sightingDate,"mm/dd/yyyy")# #timeFormat(sightingDate,"HH:mm")#</td>
-		<td>#reconType#</td>
-		<td>#system#</td>
-		<td>#seen#</td>
-		<td>#ship#&nbsp;</td>
-		<td>#activity#&nbsp;</td>
-		<td>#seenBy#</td>
-		<td><a href="sightings.cfm?sightingID=#sightingID#&pid=#s_pid#">[edit]</a></td>																	
+	<td>#dateFormat(sightingDate,"mm/dd/yyyy")# #timeFormat(sightingDate,"HH:mm")#</td>
+	<td>#reconType#</td>
+	<td>#system#</td>
+	<td>#seen#</td>
+	<td>#ship#&nbsp;</td>
+	<td>#activity#&nbsp;</td>
+	<td>#seenBy#</td>
+	<td><a href="sightings.cfm?sightingID=#sightingID#&pid=#s_pid#">[edit]</a></td>																	
 </tr>
 </cfoutput>
 </table>
