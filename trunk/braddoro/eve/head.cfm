@@ -23,9 +23,10 @@
 <cfoutput>
 <html>
 <head>
+<link href="eve.css" rel="stylesheet" type="text/css" media="screen">
 <title>#s_pageName#</title>
 </head>
-<body>
-<h4>#s_pageName# :: #s_userName#</h4>
+<body class="base">
+<div class="title">#s_pageName# :: #s_userName#</div>
 </cfoutput>
 <cfinclude template="links.cfm">
