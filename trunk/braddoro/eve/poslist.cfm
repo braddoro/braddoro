@@ -7,6 +7,27 @@
 <cfparam name="form.alliance" type="string" default="">
 <cfparam name="form.corporation" type="string" default="">
 <cfparam name="form.constellation" type="string" default="">
+<cfparam name="form.note_input" type="string" default="">
+<cfparam name="form.race_input" type="string" default="">
+<cfparam name="form.size_input" type="string" default="">
+<cfparam name="form.moon_input" type="string" default="">
+<cfparam name="form.planet_input" type="string" default="">
+<cfparam name="form.system_input" type="string" default="">
+<cfparam name="form.faction_input" type="string" default="">
+<cfparam name="form.alliance_input" type="string" default="">
+<cfparam name="form.dateScanned_input" type="string" default="">
+<cfparam name="form.corporation_input" type="string" default="">
+<cfparam name="form.constellation_input" type="string" default="">
+
+<cfif isdefined("form.add")>
+	<cfif form.add EQ "add">
+		<cfquery name="q_add" datasource="braddoro">
+			insert into braddoro.dyn_intel_pos_list (constellation, system, planet, moon, corporation, alliance, race, size, faction, dateScanned, note, deleted)
+			values('#form.constellation_input#', '#form.system_input#', #val(form.planet_input)#, #val(form.moon_input)#, '#form.corporation_input#', '#form.alliance_input#', '#form.race_input#', '#form.size_input#', '#form.faction_input#', '#form.faction_input#', '#form.dateScanned_input#', '#form.note_input#', 0)
+		</cfquery>
+	</cfif>
+</cfif>
+
 <cfquery name="q_constellation" datasource="braddoro">
 	select distinct constellation
 	from braddoro.dyn_intel_pos_list
@@ -49,53 +70,51 @@
 </cfif>
 	order by moon
 </cfquery>
+<cfif NOT isdefined("form.go")>
+	<cfset s_where = "and 0=1">
+<cfelse>
+	<cfset s_where = "">
+</cfif>
+
 <cfoutput>
+<div class="alert">This page is under developement.</div>
 <form id="myform" name="myform" action="poslist.cfm" method="post">
 <input type="hidden" id="pid" name="pid" value="#s_pid#">
+<cf_dropdown displayString="" dropdownName="constellation" itemList="#valueList(q_constellation.constellation)#" selectedValue="#form.constellation#" defaultOption="Constellation">&nbsp;
+<cf_dropdown displayString="" dropdownName="system" itemList="#valueList(q_system.system)#" selectedValue="#form.system#" defaultOption="System">&nbsp;
+<cf_dropdown displayString="" dropdownName="planet" itemList="#valueList(q_planet.planet)#" selectedValue="#form.planet#" defaultOption="Planet">&nbsp;
+<cf_dropdown displayString="" dropdownName="moon" itemList="#valueList(q_moon.moon)#" selectedValue="#form.moon#" defaultOption="Moon">&nbsp;
+<cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_corporation.corporation)#" selectedValue="#form.corporation#" defaultOption="Corporation">&nbsp;
+<cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_alliance.alliance)#" selectedValue="#form.alliance#" defaultOption="Alliance">
+<input type="submit" id="go" name="go" value="go"><br>
+</form>
 
-<select id="constellation" name="constellation">
-<option value="">Constellation</option>
-<cfloop query="q_constellation">
-	<option value="#constellation#"<cfif form.constellation EQ constellation> SELECTED</cfif>>#constellation#</option>
-</cfloop>
-</select>
+<cfset s_constellation = "">
+<cfset s_system = "">
+<cfset s_planet = 0>
+<cfset s_moon = 0>
+<cfset s_corporation = "">
+<cfset s_alliance = "">
+<cfset s_faction = "">
+<cfset s_race = "">
+<cfset s_size = "">
+<cfset s_note = "">
+<cfset s_dateScanned = dateformat(now(),"mm/dd/yyyy")>
 
-<select id="system" name="system">
-<option value="">System</option>
-<cfloop query="q_system">
-	<option value="#system#"<cfif form.system EQ system> SELECTED</cfif>>#system#</option>
-</cfloop>
-</select>
-
-<select id="planet" name="planet">
-<option value="">Planet</option>
-<cfloop query="q_planet">
-	<option value="#planet#"<cfif form.planet EQ planet> SELECTED</cfif>>#planet#</option>
-</cfloop>
-</select>
-
-<select id="moon" name="moon">
-<option value="">Moon</option>
-<cfloop query="q_moon">
-	<option value="#moon#"<cfif form.moon EQ moon> SELECTED</cfif>>#moon#</option>
-</cfloop>
-</select>
-
-<select id="corporation" name="corporation">
-<option value="">Corporation</option>
-<cfloop query="q_corporation">
-	<option value="#corporation#"<cfif form.corporation EQ corporation> SELECTED</cfif>>#corporation#</option>
-</cfloop>
-</select>
-
-<select id="alliance" name="alliance">
-<option value="">Alliance</option>
-<cfloop query="q_alliance">
-	<option value="#alliance#"<cfif form.alliance EQ alliance> SELECTED</cfif>>#alliance#</option>
-</cfloop>
-</select>
-
-<input type="submit" id="go" name="go" value="go">&nbsp;<a href="sightings.cfm?pid=#s_pid#">clear</a><br>
+<form id="myform" name="myform" action="poslist.cfm" method="post">
+<input type="hidden" id="pid" name="pid" value="#s_pid#">
+Scan Date: <input type="text" id="dateScanned_input" name="dateScanned_input" value="#dateFormat(s_dateScanned,'mm/dd/yyyy')#" size="10"><br>
+Constellation: <input type="text" id="constellation_input" name="constellation_input" value="#s_constellation#"><br>
+System: <input type="text" id="system_input" name="system_input" value="#s_system#"><br>
+Planet: <input type="text" id="planet_input" name="planet_input" value="#s_planet#" size="5"><br>
+Moon: <input type="text" id="moon_input" name="moon_input" value="#s_moon#" size="5"><br>
+Corporation: <input type="text" id="corporation_input" name="corporation_input" value="#s_corporation#"><br>
+Alliance: <input type="text" id="alliance_input" name="alliance_input" value="#s_alliance#"><br>
+Faction: <input type="text" id="faction_input" name="faction_input" value="#s_faction#"><br>
+<cf_dropdown displayString="Race: " dropdownName="race_input" itemList="Amarr,Caldari,Gallente,Minmitar" selectedValue="#s_race#" defaultOption=""><br>
+<cf_dropdown displayString="Size: " dropdownName="size_input" itemList="Small,Medium,Large" selectedValue="#s_size#" defaultOption=""><br>
+Note: <textarea rows="3" cols="30" name="note_input" id="note_input">#s_note#</textarea><br>
+<input type="submit" id="add" name="add" value="add"><br>
 </form>
 </cfoutput>
 <cfquery name="q_sighting" datasource="braddoro">
@@ -103,7 +122,7 @@
 	distinct
 	posListID, constellation, system, planet, moon, corporation, alliance, race, size, faction, dateScanned, note 
 	from braddoro.dyn_intel_pos_list
-	where deleted = 0
+	where deleted = 0 #s_where#
 <cfif form.constellation NEQ "">
 	and constellation = '#form.constellation#'
 </cfif>

@@ -77,3 +77,8 @@
 	font-size: 14px;
 	font-weight:bold;
 }
+.alert {
+	color: red;
+	font-size: 12px;
+	font-weight: bold;
+}
