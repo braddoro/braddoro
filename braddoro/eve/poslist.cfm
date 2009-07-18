@@ -18,12 +18,30 @@
 <cfparam name="form.dateScanned_input" type="string" default="">
 <cfparam name="form.corporation_input" type="string" default="">
 <cfparam name="form.constellation_input" type="string" default="">
+<cfparam name="form.posListID" type="numeric" default="0">
 
 <cfif isdefined("form.add")>
 	<cfif form.add EQ "add">
 		<cfquery name="q_add" datasource="braddoro">
 			insert into braddoro.dyn_intel_pos_list (constellation, system, planet, moon, corporation, alliance, race, size, faction, dateScanned, note, deleted)
-			values('#form.constellation_input#', '#form.system_input#', #val(form.planet_input)#, #val(form.moon_input)#, '#form.corporation_input#', '#form.alliance_input#', '#form.race_input#', '#form.size_input#', '#form.faction_input#', '#form.faction_input#', '#form.dateScanned_input#', '#form.note_input#', 0)
+			values('#form.constellation_input#', '#form.system_input#', #val(form.planet_input)#, #val(form.moon_input)#, '#form.corporation_input#', '#form.alliance_input#', '#form.race_input#', '#form.size_input#', '#form.faction_input#', '#form.faction_input#', '#dateFormat(form.dateScanned_input,"yyyy-mm-dd")#', '#form.note_input#', 0)
+		</cfquery>
+	</cfif>
+	<cfif form.add EQ "save">
+		<cfquery name="q_save" datasource="braddoro">
+			update braddoro.dyn_intel_pos_list set
+			constellation = '#form.constellation_input#',
+			system = '#form.system_input#',
+			planet = #val(form.planet_input)#, 
+			moon = #val(form.moon_input)#,
+			corporation = '#form.corporation_input#', 
+			alliance = '#form.alliance_input#',
+			race = '#form.race_input#', 
+			size = '#form.size_input#', 
+			faction = '#form.faction_input#', 
+			dateScanned = '#dateFormat(form.dateScanned_input,"yyyy-mm-dd")#', 
+			note = '#form.note_input#'
+			where posListID = #val(posListID)# 
 		</cfquery>
 	</cfif>
 </cfif>
@@ -89,20 +107,28 @@
 <input type="submit" id="go" name="go" value="go"><br>
 </form>
 
-<cfset s_constellation = "">
-<cfset s_system = "">
-<cfset s_planet = 0>
-<cfset s_moon = 0>
-<cfset s_corporation = "">
-<cfset s_alliance = "">
-<cfset s_faction = "">
-<cfset s_race = "">
-<cfset s_size = "">
-<cfset s_note = "">
-<cfset s_dateScanned = dateformat(now(),"mm/dd/yyyy")>
+<cfquery name="q_edit" datasource="braddoro">
+	select * 
+	from braddoro.dyn_intel_pos_list
+	where posListID = #val(form.posListID)#
+</cfquery>
+
+<cfset i_posListID = #val(form.posListID)#>
+<cfset s_constellation = q_edit.constellation>
+<cfset s_system = q_edit.system>
+<cfset s_planet = val(q_edit.planet)>
+<cfset s_moon = val(q_edit.moon)>
+<cfset s_corporation = q_edit.corporation>
+<cfset s_alliance = q_edit.alliance>
+<cfset s_faction = q_edit.faction>
+<cfset s_race = q_edit.race>
+<cfset s_size = q_edit.size>
+<cfset s_note = q_edit.note>
+<cfset s_dateScanned = dateformat(q_edit.dateScanned,"mm/dd/yyyy")>
 
 <form id="myform" name="myform" action="poslist.cfm" method="post">
 <input type="hidden" id="pid" name="pid" value="#s_pid#">
+<input type="hidden" id="pid" name="pid" value="#i_posListID#">
 Scan Date: <input type="text" id="dateScanned_input" name="dateScanned_input" value="#dateFormat(s_dateScanned,'mm/dd/yyyy')#" size="10"><br>
 Constellation: <input type="text" id="constellation_input" name="constellation_input" value="#s_constellation#"><br>
 System: <input type="text" id="system_input" name="system_input" value="#s_system#"><br>
