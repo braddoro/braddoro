@@ -1,0 +1,84 @@
+/*eve css*/
+.base {
+	font: Arial;
+	color: #A5964F;
+	font-size: 12px;
+}
+.table {
+	background-color: #BFBDB8;
+	color: 000000;
+	border-collapse: collapse;
+	padding: 2px;
+	font: Arial;
+}
+.camel {
+	background-color: #F1EDC2;
+	color: 000000;
+	padding: 5px;
+}
+.greentan {
+	background-color: #A5A54F;
+	color: 000000;
+	padding: 5px;
+}
+.lighttan {
+	background-color: #F8F5D4;
+	color: 000000;
+}
+.reddish {
+	background-color: #843F66;
+	color: 000000;
+}
+.tan {
+	background-color: #A5964F;
+	color: 000000;
+}
+.green {
+	background-color: #7F9A49;
+	color: 000000;
+}
+.darkgray {
+	background-color: #BOB2AC;
+	color: 000000;
+}
+.mediumgray {
+	background-color: #BFBDB8;
+	color: 000000;
+}
+.lightgray {
+	background-color: #E9EDE2;
+	color: 000000;
+}
+.offwhite {
+	background-color: #F3F6ED;
+	color: 000000;
+}
+.odd {
+	background-color: #444444;
+	color: #00ff00;
+	font: Arial;
+}
+.even {
+	background-color: #222222;
+	color: #00ff00;
+	font: Arial;
+}
+.large {
+	color: #843F66;
+	font-size: 12px;
+}
+.title {
+	color: #A5A54F;
+	font-size: 16px;
+	font-weight:bold;
+}
+.subtitle {
+	color: #A5A54F;
+	font-size: 14px;
+	font-weight:bold;
+}
+.alert {
+	color: red;
+	font-size: 12px;
+	font-weight: bold;
+}
