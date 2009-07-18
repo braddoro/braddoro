@@ -3,7 +3,7 @@
 <!--- Begin Page Content --->
 <cfoutput>
 
-<cfparam name="form.sightingDate" type="string" default="#dateformat(now(),"yyyy-mm-dd")#">
+<cfparam name="form.sightingDate" type="date" default="#dateformat(now(),"mm/dd/yyyy")# #timeformat(now(),"HH:mm:ss")#">
 <cfparam name="form.hour" type="numeric" default="#hour(now())#">
 <cfparam name="form.minute" type="numeric" default="#minute(now())#">
 <cfparam name="form.system" type="string" default="">
@@ -102,7 +102,7 @@ Time: <select id="hour" name="hour">
 </cfloop>
 </select>&nbsp;&bull;<br>
 System: <input type="text" id="system" name="system" value="#s_system#">&nbsp;&bull;<br>
-Who Seen: <textarea rows="1" cols="30" name="seen" id="seen">#s_seen#</textarea>&nbsp;&bull;<br>
+Who Seen: <textarea rows="1" cols="30" name="seen" id="seen">#s_seen#</textarea>&nbsp;&bull;&nbsp;(drag and drop name from local, do not link)<br>
 Ship Type: <input type="text" id="ship" name="ship" value="#s_ship#"><br>
 Seen By: <input type="text" id="seenBy" name="seenBy" value="#s_seenBy#">&nbsp;&bull;<br>
 Activity: <textarea rows="3" cols="30" name="activity" id="activity">#s_activity#</textarea><br>
@@ -113,31 +113,39 @@ Activity: <textarea rows="3" cols="30" name="activity" id="activity">#s_activity
 	select sightingID, sightingDate, system, seen, seenBy, ship, activity, reconType
 	from braddoro.dyn_intel_sightings
 	where deleted = 0
+	and sightingDate > '#dateformat(dateAdd("d",-1,now()),"yyyy-mm-dd")# #timeformat(now(),"HH:mm:ss")#'
 	order by sightingDate desc
 </cfquery>
-<h4>Sightings</h4>
-<table style='font-family:"Microsoft Sans Serif",Verdana,Arial;font-size:.75em;border:1px solid black;' border="0">
+<cfoutput>
+<div class="subtitle">Recent Sightings</div>
+</cfoutput>
+<table class="table" border="0">
 <tr>
-	<td>Date Seen</td>
-	<td>Recon Type</td>
-	<td>System</td>
-	<td>Target</td>
-	<td>Ship</td>
-	<td>Activity</td>															
-	<td>Seen By</td>
+	<td class="greentan">Date Seen</td>
+	<td class="greentan">Recon Type</td>
+	<td class="greentan">System</td>
+	<td class="greentan">Target</td>
+	<td class="greentan">Ship</td>
+	<td class="greentan">Activity</td>															
+	<td class="greentan">Seen By</td>
+	<td class="greentan">&nbsp;</td>
 </tr>
 <cfoutput query="q_sighting">
-<tr>
-	<td>#dateFormat(sightingDate,"mm/dd/yyyy")# #timeFormat(sightingDate,"HH:mm")#</td>
-	<td>#reconType#</td>
-	<td>#system#</td>
-	<td>#seen#</td>
-	<td>#ship#&nbsp;</td>
-	<td>#activity#&nbsp;</td>
-	<td>#seenBy#</td>
-	<td><a href="sightings.cfm?sightingID=#sightingID#&pid=#s_pid#">[edit]</a></td>																	
-</tr>
+	<cfif currentRow MOD 2><cfset s_class="even"><cfelse><cfset s_class="odd"></cfif>
+	<tr>
+		<td class="#s_class#">#dateFormat(sightingDate,"mm/dd/yyyy")# #timeFormat(sightingDate,"HH:mm")#</td>
+		<td class="#s_class#">#reconType#</td>
+		<td class="#s_class#">#system#</td>
+		<td class="#s_class#">#seen#</td>
+		<td class="#s_class#">#ship#&nbsp;</td>
+		<td class="#s_class#">#activity#&nbsp;</td>
+		<td class="#s_class#">#seenBy#</td>
+		<td class="#s_class#"><a href="sightings.cfm?sightingID=#sightingID#&pid=#s_pid#">[edit]</a></td>																	
+	</tr>
 </cfoutput>
+<tr>
+	<td class="greentan" colspan="8">Only the last 24 hours is shown to save bandwidth.</td>
+</tr>
 </table>
 <!--- End Page Content --->
 <cfinclude template="foot.cfm">
