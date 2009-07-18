@@ -198,7 +198,6 @@ Note: <textarea rows="5" cols="50" name="note_input" id="note_input">#s_note#</t
 	<td class="greentan">Size</td>
 	<td class="greentan">Faction</td>
 	<td class="greentan">Scan Date</td>
-	<td class="greentan">Note</td>
 	<td class="greentan">&nbsp;</td>
 </tr>
 <cfoutput query="q_posList">
@@ -214,13 +213,17 @@ Note: <textarea rows="5" cols="50" name="note_input" id="note_input">#s_note#</t
 	<td class="#s_class#">#size#</td>
 	<td class="#s_class#">#faction#</td>
 	<td class="#s_class#">#dateFormat(dateScanned,"mm/dd/yyyy")#</td>
-	<td class="#s_class#">#note#</td>
-	<td class="#s_class#"><a href="poslist.cfm?posListID=#posListID#&pid=#s_pid#">[edit]</a></td>																	
+	<td class="#s_class#"><a href="poslist.cfm?posListID=#posListID#&pid=#s_pid#">[edit]</a></td>
 	</tr>
+	<cfif note GT "">
+		<tr>
+		<td class="#s_class#" colspan="11">#replace(note,chr(10),"<br>","All")#</td>
+		</tr>
+	</cfif>
 </cfoutput>
 <cfoutput>
 <tr>
-	<td class="greentan" colspan="12">#q_posList.recordCount# Records</td>
+	<td class="greentan" colspan="11">#q_posList.recordCount# Records</td>
 </tr>
 </table>
 </cfoutput>
