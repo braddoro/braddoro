@@ -1,6 +1,6 @@
 <cfset s_pid = "">
 <cfif isdefined("url.pid")>
-			<cfset s_pid = url.pid>
+	<cfset s_pid = url.pid>
 <cfelse>
   <cfif isdefined("form.pid")>
 	  <cfset s_pid = form.pid>
