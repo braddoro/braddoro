@@ -155,6 +155,7 @@ Note: <textarea rows="5" cols="50" name="note_input" id="note_input">#s_note#</t
 <cf_dropdown displayString="" dropdownName="moon" itemList="#valueList(q_moon.moon)#" selectedValue="#form.moon#" defaultOption="Moon">
 <cf_dropdown displayString="" dropdownName="corporation" itemList="#valueList(q_corporation.corporation)#" selectedValue="#form.corporation#" defaultOption="Corporation">
 <cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_alliance.alliance)#" selectedValue="#form.alliance#" defaultOption="Alliance">
+Hide Empty&nbsp;<input type="checkbox" id="hideEmpty" name="hideEmpty" value="Yes"<cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes"> CHECKED</cfif>>
 <input type="submit" id="go" name="go" value="go"><br>
 <input type="hidden" id="pid" name="pid" value="#s_pid#">
 </form>
@@ -183,6 +184,11 @@ Note: <textarea rows="5" cols="50" name="note_input" id="note_input">#s_note#</t
 <cfif val(form.moon) GT 0>
 	and moon = #val(form.moon)#
 </cfif>
+<cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes">
+	and corporation <> 'None'
+	and moon > 0
+</cfif>
+
 	order by constellation, system, planet, moon
 </cfquery>
 <div class="subtitle">POS List</div>
