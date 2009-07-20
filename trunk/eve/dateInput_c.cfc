@@ -23,18 +23,20 @@
 	<cffunction name="showTime" access="package" output="false" returntype="String">
 		<cfargument name="fieldName" type="string" required="true">
 		<cfargument name="currentDate" type="date" default="">
-		
+		<cfargument name="minuteRange" type="numeric" default="5">
+				
 		<cfset s_currentHour = "">
 		<cfset s_currentMinute = "">
 		<cfif arguments.currentDate NEQ "">
 			<cfset s_currentHour = hour(arguments.currentDate)>
-			<cfset i_mod = val(minute(arguments.currentDate)) MOD 5>
+			<cfset i_mod = val(minute(arguments.currentDate)) MOD val(arguments.minuteRange)>
 			<cfset s_currentMinute = val(minute(arguments.currentDate))-i_mod>
 		</cfif>
 		<cfset s_showTime = createObject("component","dateInput_v").showTime(
 				fieldName=arguments.fieldName,
 				currentHour=s_currentHour,
-				currentMinute=s_currentMinute
+				currentMinute=s_currentMinute,
+				minuteRange=arguments.minuteRange
 				)>
 		
 		<cfreturn s_showTime>
