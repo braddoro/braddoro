@@ -23,7 +23,6 @@
 <cfset s_ship = "">
 <cfset s_reconType = "">
 <cfset s_activity = "">	
-
 <cfif isdefined("form.go") and form.seen NEQ "" and form.system NEQ "" and form.seenBy NEQ "">
 	<cfif isdefined("sightingID") and val(sightingID) GT 0>
         <cfquery name="q_sighting" datasource="braddoro">
@@ -87,9 +86,10 @@ Recon Type:
 <option value="Shadow"<cfif "Shadow" EQ s_reconType> SELECTED</cfif>>Shadow</option>
 <option value="Log On"<cfif "Log On" EQ s_reconType> SELECTED</cfif>>Log On</option>
 <option value="Log Off"<cfif "Log Off" EQ s_reconType> SELECTED</cfif>>Log Off</option>
-</select><br>
-Date: <input type="text" id="sightingDate" name="sightingDate" value="#s_sightingDate#" size="10">&nbsp;&bull;<br>
-Time: <select id="hour" name="hour">
+</select><br><!--- #createObject("component","dateInput_c").showDate(currentDate=s_sightingDate,fieldName="sightingDate")# --->
+Date: <input type="text" id="sightingDate" name="sightingDate" value="#dateformat(s_sightingDate,'mm/dd/yyyy')#" size="10">&nbsp;&bull;<br>
+Time: <!--- #createObject("component","dateInput_c").showTime(currentDate=s_sightingDate,fieldName="sightingDate",minuteRange=5)# ---> 
+<select id="hour" name="hour">
 <cfloop from="0" to="23" index="i_index">
 <option value="#i_index#"<cfif val(i_hour) EQ i_index> SELECTED</cfif>>#numberFormat(i_index,"00")#</option>
 </cfloop>
