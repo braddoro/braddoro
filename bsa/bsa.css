@@ -1,0 +1,63 @@
+.base {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #f1efde;
+}
+.color1 {
+	font-family: inherit;
+	color: #000000;
+	background-color: #708090;
+	padding: 3px;
+}
+.color2 {
+	font-family: inherit;
+	color: #FFFFFF;
+	background-color: #808000;
+	padding: 3px;
+}
+.color3 {
+	font-family: inherit;
+	color: #000000;
+	background-color: #78866B;
+	padding: 3px;
+}
+.color4 {
+	font-family: inherit;
+	color: #000000;
+	background-color: #6B8E23;
+	padding: 3px;
+}
+.color5 {
+	font-family: inherit;
+	color: #000000;
+	background-color: #bdb76b;
+	padding: 3px;
+}
+.banner {
+	font-family: inherit;
+	color: #556b2f;
+	background-color: inherit;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+.alttable {
+	border-collapse: collapse;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .9em;
+}
+.thinborder {
+	border: 1px solid #000000;
+}
+.thinborder_nobottom {
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+.thinborder_notop {
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+.thinborder_sides {
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}

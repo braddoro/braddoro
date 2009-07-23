@@ -23,13 +23,26 @@
 	
 	<cffunction name="showTime" access="package" output="false" returntype="String">
 		<cfargument name="fieldName" type="string" required="true">
-		<cfargument name="currentDate" type="date" default="">
+		<cfargument name="currentDate" type="string" default="">
 		<cfargument name="minuteRange" type="numeric" default="5">
+		<cfargument name="use24" type="boolean" default="No">
+		<cfargument name="serverOffset" type="numeric" default="1">
 				
 		<cfset s_currentHour = "">
 		<cfset s_currentMinute = "">
 		<cfif arguments.currentDate NEQ "">
-			<cfset s_currentHour = hour(arguments.currentDate)>
+			<cfif arguments.use24>
+				<cfset s_currentHour = hour(arguments.currentDate)+arguments.serverOffset>
+				<cfset s_ampm = "">
+			<cfelse>
+				<cfset s_currentHour = (hour(arguments.currentDate)-12)+arguments.serverOffset>
+				<cfif hour(arguments.currentDate) LT 12>
+					<cfset s_ampm = "am">
+				<cfelse>
+					<cfset s_ampm = "pm">
+				</cfif>
+				
+			</cfif>
 			<cfset i_mod = val(minute(arguments.currentDate)) MOD val(arguments.minuteRange)>
 			<cfset s_currentMinute = val(minute(arguments.currentDate))-i_mod>
 		</cfif>
@@ -37,7 +50,9 @@
 				fieldName=arguments.fieldName,
 				currentHour=s_currentHour,
 				currentMinute=s_currentMinute,
-				minuteRange=arguments.minuteRange
+				minuteRange=arguments.minuteRange,
+				use24=arguments.use24,
+				ampm=s_ampm
 				)>
 		
 		<cfreturn s_showTime>
