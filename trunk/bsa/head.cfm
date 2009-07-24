@@ -1,4 +1,5 @@
 <cfset s_title="BSA Troop 18, Newell NC">
+<cfset s_spoofedURL="http://bsatroop18.org/">
 <cfoutput>
 <html>
 <head>

@@ -14,6 +14,9 @@
 <cfparam name="subject" type="string" default="">
 <cfparam name="postText" type="string" default="">
 
+<!--- <cfset ical = createObject("component","ical").init(data)>
+<cfset results = ical.getEvents()> --->
+
 <cfif isdefined("form.searchGo") and isdefined("form.field1") and form.field1 EQ "trustworthy1">
 	<cfif postDate_ampm EQ "pm">
 		<cfset s_hour = postDate_hour+12>
