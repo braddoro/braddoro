@@ -42,7 +42,7 @@
 	<div id="div_#publicID#_text" class="color5 thinborder">#replace(postText,chr(10),"<br>","All")#
 		<div class="color5" align="right" style="font-size:.66em;color:##FFFFFF;">
 		posted: #dateformat(postDate,"dddd")# #dateformat(postDate,"mm/dd/yyyy")# #timeformat(postDate,"hh:mm TT")#
-		<a href="#s_spoofedURL#newpost.cfm?publicID=#publicID#">edit</a>
+		<a href="#s_spoofedURL#newpost.cfm?publicID=#publicID#">edit</a>&nbsp;<a href="#s_spoofedURL#show.cfm?n=#publicID#">print</a>
 		</div>
 	</div>
 	<br>
