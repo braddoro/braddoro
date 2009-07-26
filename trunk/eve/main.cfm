@@ -9,7 +9,9 @@
 		and password = '#form.field2#'
 		and active = 1
 	</cfquery>
-	<cflocation url="menu.cfm?pid=#q_query.publicID#" addToken="No">
+	<cfif q_query.recordcount GT 0>
+		<cflocation url="menu.cfm?pid=#q_query.publicID#" addToken="No">
+	</cfif>
 </cfif>
 <cfoutput>
 <html>
