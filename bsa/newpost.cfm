@@ -71,15 +71,17 @@
 </cfif>
 <form action="#GetFileFromPath(GetCurrentTemplatePath())#" method="post" id="searchForm" name="searchForm">
 <input type="hidden" id="postID" name="postID" value="#val(q_edit.postID)#">
+<div id="div_#publicID#_bar" class="color4 thinborder_nobottom">#s_value# message</div>
+<div id="div_#publicID#_text" class="color5 thinborder">
 <div>Post Date</div><div>
 	#createObject("component","dateInput_c").showDate(currentDate=s_postDate,fieldName="postDate")#
-	<!--- <input type="text" id="postDate" name="postDate" size="10" value="#s_postDate#"> --->
 	#createObject("component","dateInput_c").showTime(currentDate=s_postTime,fieldName="postDate",minuteRange=5,use24=false)#
 </div>
 <div>Title</div><div><input type="text" id="subject" name="subject" size="75" value="#q_edit.subject#"></div>
-<div>Message</div><div><textarea rows="20" cols="60" id="postText" name="postText">#q_edit.postText#</textarea></div>
+<div>Message</div><div><textarea rows="25" cols="120" id="postText" name="postText">#q_edit.postText#</textarea></div>
 <div>Password</div><div><input type="text" id="field1" name="field1" value=""></div>
 <div>&nbsp;</div><div><input type="submit" id="searchGo" name="searchGo" value="#s_value#"></div>
+</div>
 </form>
 
 <!--- End Page Content --->
