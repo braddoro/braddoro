@@ -53,6 +53,8 @@
 </cfif>
 <cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes">
 	and P.corporation <> 'None'
+</cfif>
+<cfif isdefined("form.hideMoonless") and form.hideMoonless EQ "Yes">
 	and P.moon <> 0
 </cfif>
 	order by #orderby# #sortDir#
@@ -126,6 +128,7 @@
 .detail {padding:2px;}
 .inputtable {border:1px solid ##708090;font-size:.9em;border-collapse:collapse;padding:2px;}
 .headerlabel {font-family : Arial , Helvetica , sans-serif;background-color : ##F1EFDE;font-size:1.125em;color: ##708090;font-weight:bold;}
+.headersmall {font-family : Arial , Helvetica , sans-serif;background-color : ##F1EFDE;font-size:.9sem;color: ##708090;font-weight:bold;}
 }
 </style>
 <script language="javascript">
@@ -145,8 +148,9 @@ function js_collapseThis(changeme,showType) {
 <body class="base">
 <div class="headerlabel">POS Information</div><br>
 <form id="frm_filter" name="frm_pass" action="#s_filename#" method="post">
-<div id="div_filter_head" style="cursor: hand;" onclick="js_collapseThis('div_filter_body');" class="toptab" title="Click to show or hide text." style="display:inline;">Filter</div>
+<div id="div_filter_head" style="cursor: hand;" onclick="js_collapseThis('div_filter_body');" class="toptab" title="Click to show or hide text." style="display:inline;">Filter & Sort</div>
 <div id="div_filter_body" style="display:#s_showFilter#;">
+<div class="headersmall">Filter</div>
 <cf_dropdown displayString="" dropdownName="constellation" itemList="#valueList(q_constellation.constellation)#" selectedValue="#form.constellation#" defaultOption="Constellation">
 <cf_dropdown displayString="" dropdownName="system" itemList="#valueList(q_system.system)#" selectedValue="#form.system#" defaultOption="System">
 <cf_dropdown displayString="" dropdownName="planet" itemList="#valueList(q_planet.planet)#" selectedValue="#form.planet#" defaultOption="Planet">
@@ -155,24 +159,14 @@ function js_collapseThis(changeme,showType) {
 <cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_alliance.alliance)#" selectedValue="#form.alliance#" defaultOption="Alliance"><br>
 <cf_dropdown displayString="" dropdownName="rarity" itemList="#valueList(q_rarity.rarity)#" selectedValue="#form.rarity#" defaultOption="Rarity">
 <cf_dropdown displayString="" dropdownName="mineral" itemList="#valueList(q_mineral.mineral)#" selectedValue="#form.mineral#" defaultOption="Mineral"><br>
+Hide Moonless&nbsp;<input type="checkbox" id="hideMoonless" name="hideMoonless" value="Yes"<cfif isdefined("form.hideMoonless") and form.hideMoonless EQ "Yes"> CHECKED</cfif>>
 Hide Empty&nbsp;<input type="checkbox" id="hideEmpty" name="hideEmpty" value="Yes"<cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes"> CHECKED</cfif>>
+<div class="headersmall">Sort</div>
 <cf_dropdown displayString="" dropdownName="orderby" itemList="P.dateScanned,P.constellation,P.system,P.planet,P.moon,P.corporation,P.alliance,P.race,P.size,P.faction,P.dateScanned,P.note,M.mineral,M.rarity" selectedValue="#form.orderby#" defaultOption="Sort Field">
 <cf_dropdown displayString="" dropdownName="sortDir" itemList="ASC,DESC" selectedValue="#form.sortDir#" defaultOption="Sort Dir">
 <input type="submit" id="submit_filter" name="submit_filter" value="Go">
-<!--- <table class="inputtable">
-<tr>
-<td class="leftcol">&nbsp;</td>
-<td></td>
-</tr>
-</table> --->
 </div>
 </form>
-<!--- <cfif sdir EQ "ASC">
-	<cfset sdir = "DESC">
-<cfelse>
-	<cfset sdir = "ASC">
-</cfif> --->
-<!--- <a href="#s_filename#?orderby=dateScanned&sdir=#sdir#"></a> --->
 <cfset i_rows = 0>
 <table class="inputtable">
 	<tr>

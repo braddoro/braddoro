@@ -36,6 +36,7 @@
 			insert into braddoro.dyn_intel_pos_list (constellation, system, planet, moon, corporation, alliance, race, size, faction, dateScanned, note, deleted)
 			values('#form.constellation_input#', '#form.system_input#', #val(form.planet_input)#, #val(form.moon_input)#, '#form.corporation_input#', '#form.alliance_input#', '#form.race_input#', '#form.size_input#', '#form.faction_input#', '#dateFormat(form.dateScanned_input,"yyyy-mm-dd")#', '#form.note_input#', 0)
 		</cfquery>
+		Added...<br>
 	</cfif>
 	<cfif form.add EQ "save">
 		<cfquery name="q_save" datasource="braddoro">
@@ -53,6 +54,7 @@
 			note = '#form.note_input#'
 			where posListID = #val(posListID)# 
 		</cfquery>
+		Saved...<br>
 	</cfif>
 </cfif>
 
