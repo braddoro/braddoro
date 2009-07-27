@@ -1,36 +1,43 @@
 .base {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #f1efde;
+	font-size: .9em;
 }
 .color1 {
 	font-family: inherit;
 	color: #000000;
 	background-color: #708090;
 	padding: 3px;
+	font-size: .9em;
 }
 .color2 {
 	font-family: inherit;
 	color: #FFFFFF;
 	background-color: #808000;
 	padding: 3px;
+	font-size: .9em;
 }
 .color3 {
 	font-family: inherit;
 	color: #000000;
 	background-color: #78866B;
 	padding: 3px;
+	font-size: .9em;
 }
 .color4 {
 	font-family: inherit;
 	color: #000000;
 	background-color: #6B8E23;
 	padding: 3px;
+	font-size:1em;
+	font-weight:bold;
 }
 .color5 {
 	font-family: inherit;
 	color: #000000;
 	background-color: #bdb76b;
 	padding: 3px;
+	font-size: .8em;
 }
 .banner {
 	font-family: inherit;
