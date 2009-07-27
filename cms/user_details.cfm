@@ -3,9 +3,15 @@
 </cfif>
 <cfset i_userID=createObject("component","common.auth_c").getUser(userID=0,publicID=session.publicID,dsn="cmsdb").userID>
 <cfif isdefined("form.submit_password") and form.pass2 NEQ "">
-	<cfif len(trim(form.pass2)) GT 6 and not compare(form.pass2,form.pass3)>
+	<cfif len(trim(form.pass2)) GT 2 and not compare(form.pass2,form.pass3)>
 		<cfset createObject("component","common.auth_c").updatePassword(userID=val(form.userID),password=form.pass2,dsn="cmsdb")>
 	</cfif>
+</cfif>
+<cfif isdefined("form.submit_date")>
+	<cfquery datasource="cmsdb" name="q_test">
+		insert into cms.dyn_user_dates (userID, userDate, recurring, description)
+		values (#val(form.userID)#, '#form.newDate_year#-#numberformat(form.newDate_month,'00')#-#numberformat(form.newDate_day,'00')#', #val(form.recurring)#, '#form.description#')
+	</cfquery>
 </cfif>
 <cfif isdefined("form.submit_name")>
 	<cfif isdefined("form.isActive")>
@@ -55,6 +61,81 @@ function js_collapseThis(changeme,showType) {
 </head> 
 <body class="base">
 <div class="headerlabel">User Information</div><br>
+<table border="0" cellpadding="2px">
+<tr>
+<td width="200px" nowrap="nowrap" valign="top">
+	<cfset obj_panel = createObject("component","common.panel_c")>
+	<cfoutput>#obj_panel.writeScripts()#</cfoutput>
+	<cfquery datasource="cmsdb" name="q_related">
+		select userDateID, userID, userDate, recurring, description from cms.dyn_user_dates
+	</cfquery>
+	<cfsavecontent variable="s_relatedHTML">
+	<cfoutput>
+	<cfloop query="q_related">
+		<strong>#dateformat(userDate,"mm/dd/yyyy")#</strong><br>
+		#description#<br>
+		<cfif currentrow LT recordCount><hr></cfif>
+	</cfloop>
+	</cfoutput>
+	</cfsavecontent>
+	<cfoutput>
+	#obj_panel.showPanel(
+		uniqueName="asdf",
+		headerBarText="Unread Messages (#q_related.recordCount#)",
+		relatedHTML=s_relatedHTML,
+		panelVisibility="block",
+		panelHeight=250,
+		panelWidth=200,
+		useFieldSet="no"
+		)#
+	<br>
+	#obj_panel.showPanel(
+		uniqueName="sfsdf",
+		relatedHTML="sdv sdfgsfd gd",
+		useFooter="Yes",
+		footerHTML="<a href='http://braddoro.com'>braddoro</a>",
+		headerBarText="zods (2)",
+		useFieldSet="no"
+		)#
+		
+	<!--- #obj_panel.showPanel(
+		uniqueName=obj_utility.createString(),
+		useSearch="Yes",
+		searchBarText="Search Something",
+		searchHTML="<input type='text' size='25' value='search'>
+				<select>
+					<option value='0'>select an option</option>
+					<option value='1'>option 1</option>
+					<option value='1'>option 2</option>
+				</select>
+				<button value='go'>go</button>",
+		relatedHTML="This is some foo. To display the text in the body.",
+		headerBarText="searchy (3)"
+		)# --->
+		
+	<!--- #obj_panel.showPanel(
+		uniqueName=obj_utility.createString(),
+		useSearch="Yes",
+		searchBarText="Search Something",
+		searchHTML="<input type='text' size='25' value='search'>
+				<select>
+					<option value='0'>select an option</option>
+					<option value='1'>option 1</option>
+					<option value='1'>option 2</option>
+				</select>
+				<button value='go'>go</button>",
+		relatedBarText="Related Foo",
+		relatedHTML="This is some foo. To display the text in the body.",
+		useHistory="Yes",
+		historyHTML="this is some history",
+		historyBarText="history",
+		headerBarText="all (4)",
+		useFooter="Yes",
+		footerHTML="<a href='http://braddoro.com'>braddoro</a>"
+		)# --->
+		</cfoutput>
+</td>
+<td valign="top">
 <cfoutput>
 <form id="frm_name" name="frm_name" action="#GetFileFromPath(GetCurrentTemplatePath())#" method="post">
 <div id="div_name_head" style="cursor: hand;" onclick="js_collapseThis('div_name_body');" class="toptab" title="Click to show or hide text.">Name</div>
@@ -138,6 +219,9 @@ function js_collapseThis(changeme,showType) {
 	</table>
 </div>
 </form>
+<cfquery datasource="cmsdb" name="q_date">
+	select userDateID, userID, userDate, recurring, description from cms.dyn_user_dates where userDateID = 0 
+</cfquery>
 <form id="frm_date" name="frm_date" action="#GetFileFromPath(GetCurrentTemplatePath())#" method="post">
 <div id="div_date_head" style="cursor: hand;" onclick="js_collapseThis('div_date_body');" class="toptab" title="Click to show or hide text.">Date</div>
 <div id="div_date_body" style="display:inline;">
@@ -149,11 +233,20 @@ function js_collapseThis(changeme,showType) {
 	<td>#createObject("component","common.dateInput_c").showDate(currentDate=dateformat(now(),"mm/dd/yyyy"),fieldName="newDate")#</td>
 	</tr>
 
+	<cfset s_checked = "">
+	<cfif val(q_date.recurring)>
+		<cfset s_checked = "checked">
+	</cfif>
+	<tr>
+	<td class="leftcol">Recurring</td>
+	<td><input type="checkbox" id="recurring" name="recurring" value="1" #s_checked#></td>
+	</tr>
+
 	<tr>
 	<td class="leftcol">Description</td>
-	<td><input type="text" id="description" name="description" value="" size="50"></td>
+	<td><input type="text" id="description" name="description" value="#q_date.description#" size="50"></td>
 	</tr>
-	
+
 	<tr>
 	<td class="leftcol">&nbsp;</td>
 	<td><input type="submit" id="submit_date" name="submit_date" value="Go"></td>
@@ -192,5 +285,8 @@ function js_collapseThis(changeme,showType) {
 </div>
 </form>
 </cfoutput>
+</td>
+</tr>
+</table>
 </body> 
 </html>
