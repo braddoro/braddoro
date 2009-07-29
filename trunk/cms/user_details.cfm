@@ -34,6 +34,11 @@
 </cfif>
 <cfset q_selectUserData = createObject("component","common.user_c").selectUserData(userID=val(i_userID),dsn="cmsdb")>
 <cfset i_userID = q_selectUserData.userID>
+<cfif isdefined("form.submit_filter")>
+	<cfset s_showFilter = "block">
+<cfelse>
+	<cfset s_showFilter = "none">
+</cfif>
 <html> 
 <head> 
 <title>User Information</title>
