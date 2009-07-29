@@ -184,23 +184,24 @@ Hide Empty&nbsp;<input type="checkbox" id="hideEmpty" name="hideEmpty" value="Ye
 	</tr>
 </cfoutput>
 <cfoutput query="q_pos" group="posListID">
+<cfif currentRow MOD 2><cfset s_bgcolor = "##99A68C"><cfelse><cfset s_bgcolor = "##A6A68C"></cfif>
 	<tr>
-	<td class="detail"><a href="poslist.cfm?poslistID=#poslistID#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230" target="_blank">#dateFormat(dateScanned,"mm/dd/yyyy")#</a></td>
-	<td class="detail">#constellation#</td>
-	<td class="detail">#system#</td>
-	<td class="detail">#planet#</td>
-	<td class="detail">#moon#</td>
-	<td class="detail">#corporation#</td>
-	<td class="detail">#alliance#</td>
-	<td class="detail">#size#</td>
-	<td class="detail">#race#</td>
-	<td class="detail">#faction#</td>
+	<td class="detail" bgcolor="#s_bgcolor#"><a href="poslist.cfm?poslistID=#poslistID#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230" target="_blank">#dateFormat(dateScanned,"mm/dd/yyyy")#</a></td>
+	<td class="detail" bgcolor="#s_bgcolor#">#constellation#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#system#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#planet#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#moon#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#corporation#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#alliance#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#size#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#race#</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#faction#</td>
 	<cfset s_mineral = "">
 	<cfoutput><cfset s_mineral = s_mineral & "#mineral# (#rarity#), "></cfoutput>
 	<cfset s_mineral = replace(s_mineral,"()","","All")	>
 	<cfset s_mineral = replace(s_mineral,"None (0),","","All")>
 	<cfif len(s_mineral) GT 2><cfset s_mineral = left(s_mineral,len(s_mineral)-2)></cfif>
-	<td>#s_mineral#&nbsp;</td>
+	<td class="detail" bgcolor="#s_bgcolor#">#s_mineral#&nbsp;</td>
 	</tr>
 	<cfset i_rows++>
 </cfoutput>
