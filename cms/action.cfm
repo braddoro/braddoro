@@ -15,13 +15,14 @@
 			  actionTypeID = #val(form.actionTypeID)#,
 			  actionDateTime = '#s_actionDateTime#',
 			  action = '#form.action#',
-			  description = '#form.description#'
+			  description = '#form.description#',
+			  duration = #val(form.duration)#
 			where actionID = #val(form.actionID)# 
 		</cfquery>
 	<cfelse>
 		<cfquery datasource="cmsdb" name="q_actions">
-			insert into cms.log_actions (actionTypeID, actionDateTime, action, description)
-			values (#val(form.actionTypeID)#, '#s_actionDateTime#', '#form.action#', '#form.description#')
+			insert into cms.log_actions (actionTypeID, actionDateTime, action, description, duration)
+			values (#val(form.actionTypeID)#, '#s_actionDateTime#', '#form.action#', '#form.description#',#val(form.duration)#)
 		</cfquery>
 	</cfif>
 	<cfset task = "home">
@@ -118,6 +119,11 @@ function js_collapseThis(changeme,showType) {
 		</tr>
 
 		<tr>
+		<td class="leftcol">Duration</td>
+		<td><input type="text" id="duration" name="duration" value="#q_edit.duration#" size="5"></td>
+		</tr>
+
+		<tr>
 		<td class="leftcol">Description</td>
 		<td><textarea id="description" name="description" rows="10" cols="60">#q_edit.description#</textarea></td>
 		</tr>
@@ -159,8 +165,9 @@ function js_collapseThis(changeme,showType) {
 	<cfset i_day = 0>
 	<cfset i_Week = 0>
 	<cfset i_year = 0>
+	<cfset i_running = 1>
 	<cfquery datasource="cmsdb" name="q_actions">
-		select A.actionID, A.actionTypeID, A.actionDateTime, A.action, T.actionType, A.description 
+		select A.actionID, A.actionTypeID, A.actionDateTime, A.action, T.actionType, A.description, A.duration 
 		from cms.log_actions A
 		left join cms.cfg_action_types T
 		on A.actionTypeID = T.actionTypeID
@@ -174,15 +181,17 @@ function js_collapseThis(changeme,showType) {
 		<cfif NOT (i_year EQ year(actionDateTime) and i_Week EQ week(actionDateTime))>
 			<tr>
 			<td class="header">&nbsp;</td>
-			<td class="header" colspan="4"><strong>#dateFormat(actionDateTime,"mm/dd/yyyy")#</strong></td>
+			<td class="header" colspan="5"><strong>Week: #i_running# :: #dateFormat(actionDateTime,"mm/dd/yyyy")#</strong></td>
 			</tr>
 			<tr>
 			<td class="header">&nbsp;</td>
 			<td class="header">Action Date</td>
+			<td class="header">Duration</td>
 			<td class="header">Type</td>
 			<td class="header">Action</td>
 			<td class="header">Description</td>
 			</tr>
+			<cfset i_running++>
 			<cfset i_rows = 1>
 		</cfif>
 		<tr>
@@ -190,11 +199,11 @@ function js_collapseThis(changeme,showType) {
 		<td class="detail" bgcolor="#s_bgcolor#" align="right">
 			<cfif i_day EQ day(actionDateTime)>#timeFormat(actionDateTime,"hh:mm TT")#<cfelse>#dateFormat(actionDateTime,"mm/dd/yyyy")# #timeFormat(actionDateTime,"hh:mm TT")#</cfif>
 		</td>
+		<td class="detail" bgcolor="#s_bgcolor#" align="right">#duration#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#actionType#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#action#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#description#</td>
 		</tr>
-		<cfset i_rows++>
 		<cfset i_day = day(actionDateTime)>
 		<cfset i_week = week(actionDateTime)>
 		<cfset i_year = year(actionDateTime)>
