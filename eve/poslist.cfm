@@ -131,6 +131,40 @@
 <cfelse>
 	<cfset s_value = "add">
 </cfif>
+<script language="javascript">
+function js_setRace(faction) {
+	if (faction == "Domination") {
+		document.getElementById("race_input").value = "Minmitar";
+	}
+	if (faction == "Angel") {
+		document.getElementById("race_input").value = "Minmitar";
+	}
+	if (faction == "Serpentis") {
+		document.getElementById("race_input").value = "Gallente";
+	}
+	if (faction == "Shadow") {
+		document.getElementById("race_input").value = "Gallente";
+	}
+	if (faction == "Dread Guristas") {
+		document.getElementById("race_input").value = "Caldari";
+	}
+	if (faction == "Guristas") {
+		document.getElementById("race_input").value = "Caldari";
+	}
+	if (faction == "Blood") {
+		document.getElementById("race_input").value = "Amarr";
+	}
+	if (faction == "Dark Blood") {
+		document.getElementById("race_input").value = "Amarr";
+	}
+	if (faction == "Sansha") {
+		document.getElementById("race_input").value = "Amarr";
+	}
+	if (faction == "True Sansha") {
+		document.getElementById("race_input").value = "Amarr";
+	}
+}
+</script>
 <div class="subtitle">POS Entry</div>
 <form id="myform" name="myform" action="poslist.cfm" method="post">
 Scan Date: <input type="text" id="dateScanned_input" name="dateScanned_input" value="#dateFormat(s_dateScanned,'mm/dd/yyyy')#" size="10"><br>
@@ -140,7 +174,7 @@ Planet: <input type="text" id="planet_input" name="planet_input" value="#s_plane
 Moon: <input type="text" id="moon_input" name="moon_input" value="#s_moon#" size="5">&nbsp;(number)<br>
 Corporation: <input type="text" id="corporation_input" name="corporation_input" value="#s_corporation#"><br>
 Alliance: <input type="text" id="alliance_input" name="alliance_input" value="#s_alliance#"><br>
-<cf_dropdown displayString="Faction: " dropdownName="faction_input" itemList="Angel,Blood,Dark Blood,Domination,Dread Guristas,Guristas,Sansha,Serpentis,Shadow,True Sansha" selectedValue="#s_faction#" defaultOption=""><br>
+<cf_dropdown displayString="Faction: " dropdownName="faction_input" itemList="Angel,Blood,Dark Blood,Domination,Dread Guristas,Guristas,Sansha,Serpentis,Shadow,True Sansha" selectedValue="#s_faction#" defaultOption="" script="js_setRace(this.value);"><br>
 <cf_dropdown displayString="Race: " dropdownName="race_input" itemList="Amarr,Caldari,Gallente,Minmitar" selectedValue="#s_race#" defaultOption=""><br>
 <cf_dropdown displayString="Size: " dropdownName="size_input" itemList="Small,Medium,Large" selectedValue="#s_size#" defaultOption=""><br>
 Note: <textarea rows="5" cols="50" name="note_input" id="note_input">#s_note#</textarea><br>
@@ -190,7 +224,6 @@ Hide Empty&nbsp;<input type="checkbox" id="hideEmpty" name="hideEmpty" value="Ye
 	and corporation <> 'None'
 	and moon > 0
 </cfif>
-
 	order by constellation, system, planet, moon
 </cfquery>
 <div class="subtitle">POS List</div>
