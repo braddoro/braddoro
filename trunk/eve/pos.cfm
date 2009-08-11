@@ -6,6 +6,8 @@
 <cfparam name="form.rarity" type="string" default="">
 <cfparam name="form.mineral" type="string" default="">
 <cfparam name="form.alliance" type="string" default="">
+<cfparam name="form.moonless" type="string" default="">
+<cfparam name="form.emptyMoon" type="string" default="">
 <cfparam name="form.corporation" type="string" default="">
 <cfparam name="form.constellation" type="string" default="">
 <cfset s_filename = GetFileFromPath(GetCurrentTemplatePath())>
@@ -51,14 +53,23 @@
 <cfif form.mineral GT 0>
 	and M.mineral = '#form.mineral#'
 </cfif>
-<cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes">
-	and P.corporation <> 'None'
+<cfif isdefined("form.emptyMoon") and form.emptyMoon NEQ "">
+	<cfif form.emptyMoon EQ "Occupied">
+		and (P.corporation <> 'Empty' and P.corporation <> 'None' and P.corporation <> '')
+	<cfelse>
+		and (P.corporation = 'Empty' or P.corporation = 'None' or P.corporation = '')
+	</cfif>
 </cfif>
-<cfif isdefined("form.hideMoonless") and form.hideMoonless EQ "Yes">
-	and P.moon <> 0
+<cfif isdefined("form.moonless")>
+	<cfif form.moonless EQ "Show Moonless">
+		and P.moon = 0
+	<cfelse>
+		and P.moon > 0
+	</cfif>
 </cfif>
 	order by #orderby# #sortDir#
 </cfquery>
+
 <cfquery name="q_constellation" datasource="braddoro">
 	select distinct constellation
 	from braddoro.dyn_intel_pos_list
@@ -159,8 +170,9 @@ function js_collapseThis(changeme,showType) {
 <cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_alliance.alliance)#" selectedValue="#form.alliance#" defaultOption="Alliance"><br>
 <cf_dropdown displayString="" dropdownName="rarity" itemList="#valueList(q_rarity.rarity)#" selectedValue="#form.rarity#" defaultOption="Rarity">
 <cf_dropdown displayString="" dropdownName="mineral" itemList="#valueList(q_mineral.mineral)#" selectedValue="#form.mineral#" defaultOption="Mineral"><br>
-Hide Moonless&nbsp;<input type="checkbox" id="hideMoonless" name="hideMoonless" value="Yes"<cfif isdefined("form.hideMoonless") and form.hideMoonless EQ "Yes"> CHECKED</cfif>>
-Hide Empty&nbsp;<input type="checkbox" id="hideEmpty" name="hideEmpty" value="Yes"<cfif isdefined("form.hideEmpty") and form.hideEmpty EQ "Yes"> CHECKED</cfif>>
+<div class="headersmall">Moon Status</div>
+<cf_dropdown displayString="" dropdownName="moonless" itemList="Show Moonless,Hide Moonless" selectedValue="#form.moonless#" defaultOption="Any Moons"><br>
+<cf_dropdown displayString="" dropdownName="emptyMoon" itemList="Occupied,Unoccupied" selectedValue="#form.emptyMoon#" defaultOption="Any Occupancy"><br>
 <div class="headersmall">Sort</div>
 <cf_dropdown displayString="" dropdownName="orderby" itemList="P.dateScanned,P.constellation,P.system,P.planet,P.moon,P.corporation,P.alliance,P.race,P.size,P.faction,P.dateScanned,P.note,M.mineral,M.rarity" selectedValue="#form.orderby#" defaultOption="Sort Field">
 <cf_dropdown displayString="" dropdownName="sortDir" itemList="ASC,DESC" selectedValue="#form.sortDir#" defaultOption="Sort Dir">
