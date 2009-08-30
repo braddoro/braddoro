@@ -193,6 +193,7 @@ function js_collapseThis(changeme,showType) {
 	<td class="header">Race</td>
 	<td class="header">Faction</td>
 	<td class="header">Mineral</td>
+	<td class="header">Edit Mins</td>
 	</tr>
 </cfoutput>
 <cfoutput query="q_pos" group="posListID">
@@ -211,9 +212,10 @@ function js_collapseThis(changeme,showType) {
 	<cfset s_mineral = "">
 	<cfoutput><cfset s_mineral = s_mineral & "#mineral# (#rarity#), "></cfoutput>
 	<cfset s_mineral = replace(s_mineral,"()","","All")	>
-	<cfset s_mineral = replace(s_mineral,"None (0),","","All")>
+	<cfset s_mineral = replace(s_mineral,"None (0),","None ","All")>
 	<cfif len(s_mineral) GT 2><cfset s_mineral = left(s_mineral,len(s_mineral)-2)></cfif>
 	<td class="detail" bgcolor="#s_bgcolor#">#s_mineral#&nbsp;</td>
+	<td class="detail" bgcolor="#s_bgcolor#"><a href="moonMins.cfm?system=#system#&planet=#planet#&moon=#moon#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230" target="_blank">Edit</a></td>
 	</tr>
 	<cfset i_rows++>
 </cfoutput>
