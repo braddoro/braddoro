@@ -71,7 +71,7 @@
 </script>
 </head> 
 <body class="base">
-<span class="headerlabel">#s_pageName#</span> <a href="#s_filename#?task=home">home</a><br><br>
+<span class="headerlabel">#s_pageName#</span> <a href="tower_overview.cfm?task=home">home</a><br><br>
 </cfoutput>
 
 <cfswitch expression="#task#">
@@ -147,7 +147,7 @@
 		</cfloop>
 	</cfif>
 	
-	<cflocation url="#s_filename#?task=edit&p=#p#" addtoken="false">
+	<cflocation url="#s_filename#?p=#p#&task=edit" addtoken="false">
 </cfcase>
 
 <cfcase value="home">
@@ -330,7 +330,7 @@ and towerID = 1
 							<cfcase value="Heavy Water">
 								<cfset i_userPerHour = val(q_maxUse.maxuse[2])>
 								<cfset i_default = ((i_userPerHour*24)*i_days)-attributeValue>
-								<cfif i_default NEQ 0 and i_userPerHour NEQ 0>
+								<cfif i_userPerHour NEQ 0 and i_userPerHour NEQ 0>
 									<cfset i_daysLeft = (attributeValue/i_userPerHour)/24>
 								</cfif>
 								<cfset i_volume = i_default*volume>
@@ -338,7 +338,7 @@ and towerID = 1
 							<cfcase value="Liquid Ozone">
 								<cfset i_userPerHour = val(q_maxUse.maxuse[3])>
 								<cfset i_default = ((i_userPerHour*24)*i_days)-attributeValue>
-								<cfif i_default NEQ 0 and i_userPerHour NEQ 0>
+								<cfif i_userPerHour NEQ 0 and i_userPerHour NEQ 0>
 									<cfset i_daysLeft = (attributeValue/i_userPerHour)/24>
 								</cfif>
 								<cfset i_volume = i_default*volume>
@@ -346,7 +346,7 @@ and towerID = 1
 							<cfcase value="Strontium Clathrates">
 								<cfset i_userPerHour = val(usePerHour)>
 								<cfset i_default = (i_userPerHour*i_hours)-attributeValue>
-								<cfif i_default NEQ 0 and i_userPerHour NEQ 0>
+								<cfif i_userPerHour NEQ 0 and i_userPerHour NEQ 0>
 									<cfset i_daysLeft = (attributeValue/i_userPerHour)>
 								</cfif>
 								<cfset i_volume = i_default*volume>
@@ -354,10 +354,11 @@ and towerID = 1
 							<cfdefaultcase>
 								<cfset i_userPerHour = val(usePerHour)>
 								<cfset i_default = (i_userPerHour*24)*i_days-attributeValue>
-								<cfif i_default NEQ 0 and i_userPerHour NEQ 0>
+								<cfif i_userPerHour NEQ 0 and i_userPerHour NEQ 0>
 									<cfset i_daysLeft = (attributeValue/i_userPerHour)/24>
 								</cfif>
 								<cfset i_volume = i_default*volume>
+								<cfset i_daysLeft = (attributeValue/i_userPerHour)/24>
 							</cfdefaultcase>
 							</cfswitch>
 							<cfset i_totalVolume = i_totalVolume+i_volume>
@@ -370,7 +371,7 @@ and towerID = 1
 						<cfelse>
 							<cfset s_class = "example">
 						</cfif>
-						<td align="right"><span class="#s_class#">#numberformat(i_default)#</span></td>
+						<td align="right"><span class="#s_class#"><strong>#numberformat(i_default)#</strong></span></td>
 						<cfif i_daysLeft LT 3 and q_attributes.attribute NEQ "Strontium Clathrates">
 							<cfset s_class = "smallwarn"> 
 						<cfelse>
