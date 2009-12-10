@@ -72,7 +72,7 @@ function js_collapseThis(changeme,showType) {
 	<cfset obj_panel = createObject("component","common.panel_c")>
 	<cfoutput>#obj_panel.writeScripts()#</cfoutput>
 	<cfquery datasource="cmsdb" name="q_related">
-		select userDateID, userID, userDate, recurring, description from cms.dyn_user_dates
+		select userDateID, userID, userDate, recurring, description from cms.dyn_user_dates order by userDate desc
 	</cfquery>
 	<cfsavecontent variable="s_relatedHTML">
 	<cfoutput>
@@ -85,59 +85,14 @@ function js_collapseThis(changeme,showType) {
 	</cfsavecontent>
 	<cfoutput>
 	#obj_panel.showPanel(
-		uniqueName="asdf",
-		headerBarText="Unread Messages (#q_related.recordCount#)",
+		uniqueName="groups",
+		headerBarText="Groups (#q_related.recordCount#)",
 		relatedHTML=s_relatedHTML,
 		panelVisibility="block",
 		panelHeight=250,
 		panelWidth=200,
 		useFieldSet="no"
 		)#
-	<br>
-	#obj_panel.showPanel(
-		uniqueName="sfsdf",
-		relatedHTML="sdv sdfgsfd gd",
-		useFooter="Yes",
-		footerHTML="<a href='http://braddoro.com'>braddoro</a>",
-		headerBarText="zods (2)",
-		useFieldSet="no"
-		)#
-		
-	<!--- #obj_panel.showPanel(
-		uniqueName=obj_utility.createString(),
-		useSearch="Yes",
-		searchBarText="Search Something",
-		searchHTML="<input type='text' size='25' value='search'>
-				<select>
-					<option value='0'>select an option</option>
-					<option value='1'>option 1</option>
-					<option value='1'>option 2</option>
-				</select>
-				<button value='go'>go</button>",
-		relatedHTML="This is some foo. To display the text in the body.",
-		headerBarText="searchy (3)"
-		)# --->
-		
-	<!--- #obj_panel.showPanel(
-		uniqueName=obj_utility.createString(),
-		useSearch="Yes",
-		searchBarText="Search Something",
-		searchHTML="<input type='text' size='25' value='search'>
-				<select>
-					<option value='0'>select an option</option>
-					<option value='1'>option 1</option>
-					<option value='1'>option 2</option>
-				</select>
-				<button value='go'>go</button>",
-		relatedBarText="Related Foo",
-		relatedHTML="This is some foo. To display the text in the body.",
-		useHistory="Yes",
-		historyHTML="this is some history",
-		historyBarText="history",
-		headerBarText="all (4)",
-		useFooter="Yes",
-		footerHTML="<a href='http://braddoro.com'>braddoro</a>"
-		)# --->
 		</cfoutput>
 </td>
 <td valign="top">

@@ -16,13 +16,14 @@
 			  actionDateTime = '#s_actionDateTime#',
 			  action = '#form.action#',
 			  description = '#form.description#',
-			  duration = #val(form.duration)#
+			  duration = #val(form.duration)#,
+			  miles = #val(form.miles)#
 			where actionID = #val(form.actionID)# 
 		</cfquery>
 	<cfelse>
 		<cfquery datasource="cmsdb" name="q_actions">
-			insert into cms.log_actions (actionTypeID, actionDateTime, action, description, duration)
-			values (#val(form.actionTypeID)#, '#s_actionDateTime#', '#form.action#', '#form.description#',#val(form.duration)#)
+			insert into cms.log_actions (actionTypeID, actionDateTime, action, description, duration, miles)
+			values (#val(form.actionTypeID)#, '#s_actionDateTime#', '#form.action#', '#form.description#', #val(form.duration)#, #val(form.miles)#)
 		</cfquery>
 	</cfif>
 	<cfset task = "home">
@@ -124,6 +125,11 @@ function js_collapseThis(changeme,showType) {
 		</tr>
 
 		<tr>
+		<td class="leftcol">Miles</td>
+		<td><input type="text" id="miles" name="miles" value="#q_edit.miles#" size="5"></td>
+		</tr>
+
+		<tr>
 		<td class="leftcol">Description</td>
 		<td><textarea id="description" name="description" rows="10" cols="60">#q_edit.description#</textarea></td>
 		</tr>
@@ -161,13 +167,14 @@ function js_collapseThis(changeme,showType) {
 	</div>
 	</form>
 	<table class="inputtable">
+	<cfset i_cols = 6>
 	<cfset i_rows = 1>
 	<cfset i_day = 0>
 	<cfset i_Week = 0>
 	<cfset i_year = 0>
 	<cfset i_running = 1>
 	<cfquery datasource="cmsdb" name="q_actions">
-		select A.actionID, A.actionTypeID, A.actionDateTime, A.action, T.actionType, A.description, A.duration 
+		select A.actionID, A.actionTypeID, A.actionDateTime, A.action, T.actionType, A.description, A.duration, A.miles
 		from cms.log_actions A
 		left join cms.cfg_action_types T
 		on A.actionTypeID = T.actionTypeID
@@ -181,13 +188,14 @@ function js_collapseThis(changeme,showType) {
 		<cfif NOT (i_year EQ year(actionDateTime) and i_Week EQ week(actionDateTime))>
 			<tr>
 			<td class="header">&nbsp;</td>
-			<td class="header" colspan="5"><strong>Week: #i_running# :: #dateFormat(actionDateTime,"mm/dd/yyyy")#</strong></td>
+			<td class="header" colspan="#i_cols#"><strong>Week: #i_running# :: #dateFormat(actionDateTime,"mm/dd/yyyy")#</strong></td>
 			</tr>
 			<tr>
 			<td class="header">&nbsp;</td>
 			<td class="header">Action Date</td>
 			<td class="header">Duration</td>
 			<td class="header">Type</td>
+			<td class="header">Miles</td>
 			<td class="header">Action</td>
 			<td class="header">Description</td>
 			</tr>
@@ -197,13 +205,15 @@ function js_collapseThis(changeme,showType) {
 		<tr>
 		<td class="detail" bgcolor="#s_bgcolor#"><a href="#s_filename#?task=edit&p=#actionID#">#i_rows#</a></td>
 		<td class="detail" bgcolor="#s_bgcolor#" align="right">
-			<cfif i_day EQ day(actionDateTime)>#timeFormat(actionDateTime,"hh:mm TT")#<cfelse>#dateFormat(actionDateTime,"mm/dd/yyyy")# #timeFormat(actionDateTime,"hh:mm TT")#</cfif>
+			<cfif i_day EQ day(actionDateTime)>#timeFormat(actionDateTime,"hh:mm TT")#<cfelse><strong>#dateFormat(actionDateTime,"mm/dd/yyyy")# #timeFormat(actionDateTime,"hh:mm TT")#</strong></cfif>
 		</td>
 		<td class="detail" bgcolor="#s_bgcolor#" align="right">#duration#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#actionType#</td>
+		<td class="detail" bgcolor="#s_bgcolor#">#val(miles)#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#action#</td>
 		<td class="detail" bgcolor="#s_bgcolor#">#description#</td>
 		</tr>
+		<cfset i_rows = i_rows + 1>
 		<cfset i_day = day(actionDateTime)>
 		<cfset i_week = week(actionDateTime)>
 		<cfset i_year = year(actionDateTime)>
