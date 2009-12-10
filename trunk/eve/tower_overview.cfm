@@ -52,7 +52,7 @@
 			  reserveID = #val(form.reserveID)#,
 			  fuelType = '#form.fuelType#',
 			  amount = #val(form.amount)#,
-			  system = '#form.system#',
+			  system = '#form.systemName#',
 			  destination = '#form.destination#',
 			  fueldate = now()
 			where
@@ -61,7 +61,7 @@
 	<cfelse>
 		<cfquery datasource="braddoro" name="q_sql">
 			insert into dyn_pos_fuel_reserve_location (reserveID, fuelType, amount, system, destination, fuelDate)
-			values (#val(form.reserveID)#, '#form.fuelType#', #val(form.amount)#, '#form.system#', '#form.destination#', now())
+			values (#val(form.reserveID)#, '#form.fuelType#', #val(form.amount)#, '#form.systemName#', '#form.destination#', now())
 		</cfquery>
 	</cfif>
 </cfcase>
@@ -72,7 +72,6 @@
 	<cfset i_fuelLocationID = 0>
 </cfcase>
 </cfswitch>
-
 
 <cfif isdefined("form.reactionID") or i_marketID > 0>
 	<cfswitch expression="#task#">
@@ -182,9 +181,6 @@
 <table class="inputtable">
 	<cfset i_cols = 7>
 	<cfoutput query="q_owner" group="owner">
-		<tr style="cursor:default;" title="click to view">
-			<td colspan="#i_cols#"><strong>#owner#</strong></td>
-		</tr>
 		<tr>
 			<td class="header" style="padding-right:5px;"></td>
 			<td class="header" style="padding-right:5px;">System</td>			
@@ -196,15 +192,17 @@
 		</tr>
 		<cfoutput>
 			<cfset s_url = "tower_info.cfm?task=edit&p=#publicID#">
+			<cfset s_class="">
+			<cfset i_daysLeft = objTower.daysToOffline(towerID=towerID)>
+			<cfif i_daysLeft LT 4><cfset s_class="warn"></cfif>
 			<tr style="cursor:default;" title="click to view">
-				<td style="padding-right:5px;"><a href="tower_info.cfm?p=#publicID#&task=edit"><img src="Button-Play-16x16.png" border="0" height="#i_iconSize#" width="#i_iconSize#" title="edit"></a></td>
-				<td style="padding-right:5px;">#system#</td>			
-				<td style="padding-right:5px;" align="right">#planet#</td>
-				<td style="padding-right:5px;" align="right">#moon#</td>
-				<td style="padding-right:5px;">#race#</td>
-				<td style="padding-right:5px;">#size#</td>
-				<td style="padding-right:5px;" align="right">#fix(objTower.daysToOffline(towerID=towerID))#</td>
-				
+				<td class="#s_class#" style="padding-right:5px;"><a href="tower_info.cfm?p=#publicID#&task=edit"><img src="Button-Play-16x16.png" border="0" height="#i_iconSize#" width="#i_iconSize#" title="edit"></a></td>
+				<td class="#s_class#" style="padding-right:5px;">#system#</td>			
+				<td class="#s_class#" style="padding-right:5px;" align="right">#planet#</td>
+				<td class="#s_class#" style="padding-right:5px;" align="right">#moon#</td>
+				<td class="#s_class#" style="padding-right:5px;">#race#</td>
+				<td class="#s_class#" style="padding-right:5px;">#size#</td>
+				<td class="#s_class#" style="padding-right:5px;" align="right">#fix(i_daysLeft)#</td>
 			</tr>
 		</cfoutput>
 	</cfoutput>
@@ -244,8 +242,8 @@
 <cfset i_ownerID = 1>
 <div id="div_market" name="div_market" style="display:#s_display#;">
 <form id="frm_reaction" name="frm_reaction" action="#s_filename#" method="post">
-	<input type="text" id="task" name="task" value="#task#">
-	<input type="text" id="marketID" name="marketID" value="#val(q_marketItem.marketID)#">
+	<input type="hidden" id="task" name="task" value="#task#">
+	<input type="hidden" id="marketID" name="marketID" value="#val(q_marketItem.marketID)#">
 	<input type="hidden" id="ownerID" name="ownerID" value="#i_ownerID#">
 	<table class="inputtable">
 		
@@ -285,9 +283,10 @@
 </div>
 </cfoutput>
 
+<!--- 
 <div class="headersmall">Market Summary</div>
 <cfquery datasource="braddoro" name="q_owner">
-select O.ownerID, O.owner, C.reaction, D.amount, D.marketPrice, D.location, D.destination, V.volume, D.marketID
+select O.ownerID, O.owner, C.reaction, D.amount, U.min as 'marketPrice', D.location, D.destination, V.volume, D.marketID
 from dyn_pos_market_reactions D
 inner join cfg_pos_reactions C
 	on C.reactionID = D.reactionID
@@ -295,9 +294,11 @@ inner join cfg_pos_volume V
 	on C.eveID = V.eveID
 inner join dyn_pos_owners O
 	on D.ownerID = O.ownerID
-order by O.owner, D.location, C.reaction	
+inner join cfg_eve_market U
+	on C.eveID = U.eveID
+order by O.owner, D.location, (D.amount*U.min)/(D.amount*V.volume) desc, C.reaction	
 </cfquery>
-<div id="div_reaction" name="div_reaction">
+<div id="div_reaction_market" name="div_reaction">
 	<table class="inputtable">
 		<cfset i_value = 0>
 		<cfset i_m3 = 0>
@@ -372,74 +373,142 @@ order by O.owner, D.location, C.reaction
 </div>
 <br>
 <!--- END: Market --->
+ --->
 
 <!--- BEGIN: Reaction --->
 <div class="headersmall">Reaction Summary</div>
 <cfquery datasource="braddoro" name="q_owner">
-select T.towerID, R.reactionID, T.system, T.planet, T.moon, R.reaction, O.owner, TR.lastEmptyDate, R.hoursToFill,
-DATE_ADD(TR.lastEmptyDate, INTERVAL hoursToFill HOUR) as 'emptyBefore',
-dateDiff(DATE_ADD(TR.lastEmptyDate, INTERVAL hoursToFill HOUR),now()) as 'daysLeft',
-case TR.EorF when 'F' then 'Fill' when 'E' then 'Empty' else '' end as 'EorF' 
+select T.towerID, R.reactionID, T.system, T.planet, T.moon, R.reaction, O.owner, TR.lastEmptyDate, R.hoursToFill, silos, 
+DATE_ADD(TR.lastEmptyDate, INTERVAL (hoursToFill*silos) HOUR) as 'emptyBefore',
+dateDiff(DATE_ADD(TR.lastEmptyDate, INTERVAL (hoursToFill*silos) HOUR),now()) as 'daysLeft',
+case TR.EorF when 'F' then 'Fill' when 'E' then 'Empty' else '' end as 'EorF',
+M.min*(R.outputModifier*72000) as 'income' 
 from dyn_pos_tower T
 inner join dyn_pos_tower_reaction TR
     on T.towerID = TR.towerID
 	and T.active = 1
 inner join cfg_pos_reactions R
     on TR.reactionID = R.reactionID
-	inner join dyn_pos_owners O
-		on T.ownerID = O.ownerID
+inner join dyn_pos_owners O
+	on T.ownerID = O.ownerID
+inner join cfg_eve_market M
+	on M.eveID = R.eveID
 order by O.owner, T.system, T.planet, T.moon, R.reaction 	
 </cfquery>
 <div id="div_reaction" name="div_reaction">
 	<table class="inputtable">
-		<cfset i_cols = 8>
+		<cfset i_cols = 6>
+		<cfset i_income = 0>
 		<cfoutput query="q_owner" group="owner">
-			<tr style="cursor:default;" title="click to view">
-				<td colspan="#i_cols#"><strong>#owner#</strong></td>
-			</tr>
 			<tr>
 				<td class="header" style="padding-right:5px;"></td>
 				<td class="header" style="padding-right:5px;">System</td>			
-				<td class="header" style="padding-right:5px;">Planet</td>
 				<td class="header" style="padding-right:5px;">Moon</td>
 				<td class="header" style="padding-right:5px;">Reaction</td>
-				<td class="header" style="padding-right:5px;">Empty Before</td>
 				<td class="header" style="padding-right:5px;">Days Left</td>
-				<td class="header" style="padding-right:5px;">Fill or Empty</td>
+				<td class="header" style="padding-right:5px;">Income</td>
+				
 			</tr>
 			<cfoutput>
 				<cfset s_class="">
-				<cfif daysLeft LT 3><cfset s_class="warn"></cfif>
+				<cfif daysLeft LT 2><cfset s_class="warn"></cfif>
 				<tr style="cursor:default;" title="click to view">
 					<td style="padding-right:5px;" class="#s_class#"><img src="Button-Pause-16x16.png" border="0" height="#i_iconSize#" width="#i_iconSize#" title="Update silo empty date." onclick="js_silo('div_reaction', '#towerID#','#reactionID#');"></td>
 					<td style="padding-right:5px;" class="#s_class#">#system#</td>			
-					<td align="right" style="padding-right:5px;" class="#s_class#">#planet#</td>
-					<td align="right" style="padding-right:5px;" class="#s_class#">#moon#</td>
-					<td style="padding-right:5px;" class="#s_class#">#reaction#</td>
-					<td align="right" style="padding-right:5px;" class="#s_class#">#dateformat(emptyBefore,"mm/dd/yyyy")# #timeformat(emptyBefore,"hh:mm TT")#</td>
+					<td align="right" style="padding-right:5px;" class="#s_class#">#planet#-#moon#</td>
 					<td align="right" style="padding-right:5px;" class="#s_class#">#daysLeft#</td>
-					<td align="right" style="padding-right:5px;" class="#s_class#">#EorF#</td>
+					<td style="padding-right:5px;" class="#s_class#">#reaction#</td>
+					<td align="right" style="padding-right:5px;" class="#s_class#">#dollarFormat(income)#</td>
 				</tr>
+				<cfset i_income = i_income + income>
 			</cfoutput>
 		</cfoutput>
+		<cfoutput>				
+		<tr style="cursor:default;" title="click to view">
+			<td class="header" style="padding-right:5px;" class="#s_class#">&nbsp;</td>
+			<td class="header" style="padding-right:5px;" class="#s_class#">&nbsp;</td>			
+			<td class="header" align="right" style="padding-right:5px;" class="#s_class#">&nbsp;</td>
+			<td class="header" align="right" style="padding-right:5px;" class="#s_class#">&nbsp;</td>
+			<td class="header" style="padding-right:5px;" class="#s_class#"><strong>Monthly Income</strong></td>
+			<td class="header" align="right" style="padding-right:5px;" class="#s_class#"><strong>#dollarFormat(i_income)#</strong></td>
+		</tr>
+		</cfoutput>	
 	</table>
 </div>
 <br>
 <!--- END: Reaction --->
 
+<!--- BEGIN: POS Cost --->
+<div class="headersmall">POS Cost</div>
+<cfquery datasource="braddoro" name="q_fuel">
+SELECT D.attributeGroup, D.attribute, SUM(C.attributeValue) as 'usePerHour', M.min 
+FROM dyn_pos_tower T 
+inner join dyn_pos_tower_attributes D
+    on T.towerID = D.towerID
+    and T.active = 1
+left join cfg_pos_volume V
+    on D.attribute = V.itemName
+inner join cfg_pos_tower_attributes C
+    on D.towerTypeID = C.towerTypeID
+    and D.attributeGroup = C.attributeGroup
+    and D.attribute = C.attribute
+inner join cfg_eve_market M
+    on D.attribute = M.itemName
+WHERE D.attributeGroup = 'Fuel'
+    AND D.attribute <> 'Strontium Clathrates'
+	AND D.attribute <> 'Nitrogen Isotopes'
+	AND D.attribute <> 'Heavy Water'
+	AND D.attribute <> 'Liquid Ozone'
+GROUP by D.attributeGroup, D.attribute, M.min
+order by D.attributeGroup, D.attribute, M.min 
+</cfquery>
+
+<cfset i_cols = 4>
+<table class="inputtable">
+<tr>
+	<td class="header" align="left" style="padding-right:5px;">Type</td>
+	<td class="header" align="right" style="padding-right:5px;">Use per Month</td>
+	<td class="header" align="right" style="padding-right:5px;">Cost</td>
+	<td class="header" align="right" style="padding-right:5px;">Cost per Month</td>
+</tr>
+<cfset i_total = 0>
+<cfoutput query="q_fuel">
+	<cfset i_min = min>
+	<!--- 24 30.41 --->
+	<cfset i_use = (usePerHour*24)*30>
+	<tr>
+		<td align="left" style="padding-right:5px;">#attribute#</td>
+		<td align="right" style="padding-right:5px;">#numberformat(i_use)#</td>
+		<td align="right" style="padding-right:5px;">#dollarformat(i_min)#</td>
+		<td align="right" style="padding-right:5px;">#dollarformat(i_min*i_use)#</td>
+	</tr>
+	<cfset i_total = i_total + (i_min*i_use)>
+</cfoutput>
+<cfoutput>
+	<tr>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;" colspan="2"><strong>Monthly Expense</strong></td>
+		<td class="header" align="right" style="padding-right:5px;"><strong>#dollarformat(i_total)#</strong></td>
+	</tr>
+</cfoutput>	
+</table>
+<br>
+<!--- END: POS Cost --->
 
 <!--- BEGIN: Fuel Reserve --->
 <div class="headersmall">Fuel Summary</div>
 <cfquery datasource="braddoro" name="q_pos">
-	select reserveName, fuelType as 'reserveFuelType', sum(amount) as 'reserveAmount', volume as 'reserveVolume' 
-	from dyn_pos_fuel_reserves R
-	inner join dyn_pos_fuel_reserve_location L 
-	    on R.reserveID = L.reserveID
-	    and R.ownerID = 1
-	inner join cfg_pos_volume V
-		on L.fuelType = V.itemName
-	group by reserveName, fuelType, volume
-	order by reserveName, fuelType
+select reserveName, fuelType as 'reserveFuelType', sum(amount) as 'reserveAmount', V.volume as 'reserveVolume', M.min      
+from dyn_pos_fuel_reserves R
+inner join dyn_pos_fuel_reserve_location L 
+    on R.reserveID = L.reserveID
+    and R.ownerID = 1
+inner join cfg_pos_volume V
+	on L.fuelType = V.itemName
+inner join cfg_eve_market M
+    on fuelType = M.itemName
+group by reserveName, fuelType, V.volume, M.min
+order by reserveName, fuelType
 </cfquery>
 
 <cfquery datasource="braddoro" name="q_fuel">
@@ -463,7 +532,7 @@ order by O.owner, T.system, T.planet, T.moon, R.reaction
 	ORDER BY D.attribute 
 </cfquery>
 
-<cfset i_cols = 5>
+<cfset i_cols = 6>
 <table class="inputtable">
 	<cfoutput>
 	<tr>
@@ -476,15 +545,14 @@ order by O.owner, T.system, T.planet, T.moon, R.reaction
 	</cfoutput>
 <cfoutput query="q_fuel" group="reserveName">
 	<tr>
-		<td colspan="#i_cols#"><strong>#reserveName#</strong></td>
-	</tr>
-	<tr>
 		<td class="header" align="left" style="padding-right:5px;">Fuel Type</td>
 		<td class="header" align="right" style="padding-right:5px;">Needed for #i_days# days</td>
 		<td class="header" align="right" style="padding-right:5px;">In Reserve</td>
 		<td class="header" align="right" style="padding-right:5px;">Shortfall</td>
 		<td class="header" align="right" style="padding-right:5px;">M3</td>
+		<td class="header" align="right" style="padding-right:5px;">Cost</td>
 	</tr>
+	<cfset i_total = 0>
 	<cfoutput group="fuelType">
 		<cfset s_fuelType = "">
 		<cfset i_amount = 0>
@@ -500,11 +568,38 @@ order by O.owner, T.system, T.planet, T.moon, R.reaction
 					<td align="right" style="padding-right:5px;">#numberformat(reserveAmount)#</td>
 					<td align="right" style="padding-right:5px;"><cfif i_amount-reserveAmount LT 0>0<cfelse>#numberformat(i_amount-reserveAmount)#</cfif></td>
 					<td align="right" style="padding-right:5px;"><cfif i_amount-reserveAmount LT 0>0<cfelse>#numberformat((i_amount-reserveAmount)*reserveVolume)#</cfif></td>
+					<td align="right" style="padding-right:5px;">
+					<cfif s_fuelType EQ "Strontium Clathrates" OR 
+						s_fuelType EQ "Nitrogen Isotopes" OR
+						s_fuelType EQ "Heavy Water" OR
+						s_fuelType EQ "Liquid Ozone">
+						<cfif i_amount-reserveAmount GT 0>
+							<cfswitch expression="#s_fuelType#">
+								<cfcase value="Nitrogen Isotopes">#numberFormat((i_amount-reserveAmount)\300)# Ice</cfcase>
+								<cfcase value="Heavy Water">#numberFormat((i_amount-reserveAmount)\1000)# Ice</cfcase>
+								<cfcase value="Liquid Ozone">#numberFormat((i_amount-reserveAmount)\1000)# Ice</cfcase>
+							</cfswitch>
+						</cfif>
+					<cfelse>
+						<cfif i_amount-reserveAmount LT 0>0<cfelse>#dollarformat((i_amount-reserveAmount)*min)#
+							<cfset i_total = i_total + (i_amount-reserveAmount)* min>
+						</cfif>
+					</cfif>
+					</td>
 				</cfif> 
 			</cfloop>
 		</tr>
 	</cfoutput>
 </cfoutput>
+<cfoutput>
+	<tr>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;" colspan="2"><strong>Cash Needed</strong></td>
+		<td class="header" align="right" style="padding-right:5px;"><strong>#dollarformat(i_total)#</strong></td>
+	</tr>
+</cfoutput>	
 </table>
 <br>
 <!--- END: Fuel Reserve --->
@@ -547,7 +642,7 @@ order by O.owner, T.system, T.planet, T.moon, R.reaction
 		
 	<tr>
 	<td class="leftcol">System</td>
-	<td><input type="text" id="system" name="system" value="#q_fuel.system#" size="20"></td>			
+	<td><input type="text" id="systemName" name="systemName" value="#q_fuel.system#" size="20"></td>			
 	</tr>
 
 	<tr>
@@ -573,17 +668,20 @@ order by O.owner, T.system, T.planet, T.moon, R.reaction
 	</table>
 </form>
 </div>
+<cfif task EQ "add" or task EQ "edit">
+	<script language="JavaScript">document.getElementById("systemName").focus();</script>
+</cfif>
 </cfoutput>
 
 <cfquery datasource="braddoro" name="q_owner">
-select R.reserveID, reserveName, fuelLocationID, system, amount, destination, fuelType, volume, fuelDate
-from dyn_pos_fuel_reserves R
-inner join dyn_pos_fuel_reserve_location L 
-    on R.reserveID = L.reserveID
-    and R.ownerID = 1
-inner join cfg_pos_volume V
-	on L.fuelType = V.itemName
-order by reserveName, system, fuelType
+	select R.reserveID, reserveName, fuelLocationID, system, amount, destination, fuelType, volume, fuelDate
+	from dyn_pos_fuel_reserves R
+	inner join dyn_pos_fuel_reserve_location L 
+	    on R.reserveID = L.reserveID
+	    and R.ownerID = 1
+	inner join cfg_pos_volume V
+		on L.fuelType = V.itemName
+	order by reserveName, system, fuelType
 </cfquery>
 <cfset i_cols = 7>
 <table class="inputtable">
@@ -620,6 +718,15 @@ order by reserveName, system, fuelType
 		</tr>
 	</cfoutput>
 </cfoutput>
+	<tr>
+		<td class="header" align="left" style="padding-right:5px;">&nbsp;</td>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;"></td>
+		<td class="header" align="right" style="padding-right:5px;"></td>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+		<td class="header" align="left" style="padding-right:5px;"></td>
+	</tr>
 </table>
 <br>
 <!--- END: Fuel --->

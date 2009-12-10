@@ -10,8 +10,6 @@
 <cfparam name="form.emptyMoon" type="string" default="">
 <cfparam name="form.corporation" type="string" default="">
 <cfparam name="form.constellation" type="string" default="">
-<cfparam name="form.preset" type="string" default="">
-<cfparam name="form.friendly" type="string" default="">
 <cfset s_filename = GetFileFromPath(GetCurrentTemplatePath())>
 
 <cfif isdefined("form.upd_poslistID") and val(form.upd_poslistID) GT 0>
@@ -28,17 +26,11 @@
 <cfquery datasource="braddoro" name="q_pos">
 	SELECT 
 	P.posListID,
-	M.moonMineralID,  
 	P.constellation, P.system, P.planet, P.moon, 
 	P.corporation, P.alliance, 
 	P.race, P.size, P.faction, P.dateScanned, P.note,
-	M.mineral, M.rarity, M.output,
 	P.deleted
 	from dyn_intel_pos_list P
-	left join dyn_intel_pos_moon_mineral M
-	on P.system = M.system
-	and P.planet = M.planet
-	and P.moon = M.moon
 	where P.deleted = 0
 <cfif form.constellation NEQ "">
 	and P.constellation = '#form.constellation#'
@@ -58,12 +50,6 @@
 <cfif val(form.moon) GT 0>
 	and P.moon = #val(form.moon)#
 </cfif>
-<cfif val(form.rarity) GT 0>
-	and M.rarity = #val(form.rarity)#
-</cfif>
-<cfif form.mineral GT 0>
-	and M.mineral = '#form.mineral#'
-</cfif>
 <cfif isdefined("form.emptyMoon") and form.emptyMoon NEQ "">
 	<cfif form.emptyMoon EQ "Occupied">
 		and (P.corporation <> 'Empty' and P.corporation <> 'None' and P.corporation <> '')
@@ -78,21 +64,6 @@
 		and P.moon > 0
 	</cfif>
 </cfif>
-<cfif isdefined("form.friendly")>
-	<cfif form.friendly EQ "Yes">
-		and (P.alliance = 'Rooks and Kings' OR P.alliance = 'FWA' OR P.alliance = 'VooDoo Technologies')
-	</cfif>
-	<cfif form.friendly EQ "No">
-		and (P.alliance <> 'Rooks and Kings' AND P.alliance <> 'FWA' AND P.alliance <> 'VooDoo Technologies')
-	</cfif>
-</cfif>
-
-<cfif form.preset NEQ "">
-	<cfif form.preset EQ "good moons">
-		and M.rarity >= 16
-	</cfif>
-</cfif>
-
 	order by #orderby# #sortDir#
 </cfquery>
 
@@ -137,16 +108,6 @@
 	and system = '#form.system#'
 </cfif>
 	order by moon
-</cfquery>
-<cfquery name="q_rarity" datasource="braddoro">
-	select distinct rarity 
-	from braddoro.dyn_intel_pos_moon_mineral
-	order by rarity
-</cfquery>
-<cfquery name="q_mineral" datasource="braddoro">
-	select distinct mineral
-	from braddoro.dyn_intel_pos_moon_mineral
-	order by mineral
 </cfquery>
 <cfoutput>
 <cfif isdefined("form.submit_filter")>
@@ -194,16 +155,14 @@ function js_collapseThis(changeme,showType) {
 <cf_dropdown displayString="" dropdownName="moon" itemList="#valueList(q_moon.moon)#" selectedValue="#form.moon#" defaultOption="Moon"><br>
 <cf_dropdown displayString="" dropdownName="corporation" itemList="#valueList(q_corporation.corporation)#" selectedValue="#form.corporation#" defaultOption="Corporation">
 <cf_dropdown displayString="" dropdownName="alliance" itemList="#valueList(q_alliance.alliance)#" selectedValue="#form.alliance#" defaultOption="Alliance"><br>
-<cf_dropdown displayString="" dropdownName="rarity" itemList="#valueList(q_rarity.rarity)#" selectedValue="#form.rarity#" defaultOption="Rarity">
-<cf_dropdown displayString="" dropdownName="mineral" itemList="#valueList(q_mineral.mineral)#" selectedValue="#form.mineral#" defaultOption="Mineral"><br>
+<!--- <cf_dropdown displayString="" dropdownName="rarity" itemList="#valueList(q_rarity.rarity)#" selectedValue="#form.rarity#" defaultOption="Rarity"> --->
+<!--- <cf_dropdown displayString="" dropdownName="mineral" itemList="#valueList(q_mineral.mineral)#" selectedValue="#form.mineral#" defaultOption="Mineral"><br> --->
 <div class="headersmall">Moon Status</div>
 <cf_dropdown displayString="" dropdownName="moonless" itemList="Show Moonless,Hide Moonless" selectedValue="#form.moonless#" defaultOption="Any Moons"><br>
 <cf_dropdown displayString="" dropdownName="emptyMoon" itemList="Occupied,Unoccupied" selectedValue="#form.emptyMoon#" defaultOption="Any Occupancy"><br>
-<cf_dropdown displayString="" dropdownName="friendly" itemList="Yes,No" selectedValue="#form.friendly#" defaultOption="Any Friendly">
 <div class="headersmall">Sort</div>
-<cf_dropdown displayString="" dropdownName="orderby" itemList="P.dateScanned,P.constellation,P.system,P.planet,P.moon,P.corporation,P.alliance,P.race,P.size,P.faction,P.dateScanned,P.note,M.mineral,M.rarity" selectedValue="#form.orderby#" defaultOption="Sort Field">
+<cf_dropdown displayString="" dropdownName="orderby" itemList="P.dateScanned,P.constellation,P.system,P.planet,P.moon,P.corporation,P.alliance,P.race,P.size,P.faction,P.dateScanned,P.note" selectedValue="#form.orderby#" defaultOption="Sort Field">
 <cf_dropdown displayString="" dropdownName="sortDir" itemList="ASC,DESC" selectedValue="#form.sortDir#" defaultOption="Sort Dir">
-<cf_dropdown displayString="" dropdownName="preset" itemList="good moons" selectedValue="#form.preset#" defaultOption="Preset">
 <input type="hidden" id="upd_poslistID" name="upd_poslistID" value="0">
 <input type="submit" id="submit_filter" name="submit_filter" value="Go">
 </div>
@@ -212,7 +171,6 @@ function js_collapseThis(changeme,showType) {
 <table class="inputtable">
 	<tr>
 	<td class="header">Update</td>
-	<!--- <td class="header">Update</td> --->
 	<td class="header">Scanned</td>
 	<td class="header">Constellation</td>
 	<td class="header">System</td>
@@ -223,15 +181,12 @@ function js_collapseThis(changeme,showType) {
 	<td class="header">Size</td>
 	<td class="header">Race</td>
 	<td class="header">Faction</td>
-	<td class="header">Mineral</td>
-	<td class="header">Edit Mins</td>
 	</tr>
 </cfoutput>
 <cfoutput query="q_pos" group="posListID">
 <cfif currentRow MOD 2><cfset s_bgcolor = "##99A68C"><cfelse><cfset s_bgcolor = "##A6A68C"></cfif>
 	<tr>
 	<td class="detail" bgcolor="#s_bgcolor#" align="center" title="A click will update the scan date quick."><img src="Button-Play-16x16.png" border="0" style="cursor:hand;height:12px;width:12px;" onclick="js_submitMe(#poslistID#);"></td>
-	<!--- <td class="detail" bgcolor="#s_bgcolor#"><a href="poslist.cfm?poslistID=#poslistID#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230&task=scanDate" target="_blank">upd</a></td> --->
 	<td class="detail" bgcolor="#s_bgcolor#"><a href="poslist.cfm?poslistID=#poslistID#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230" target="_blank">#dateFormat(dateScanned,"mm/dd/yyyy")#</a></td>
 	<td class="detail" bgcolor="#s_bgcolor#">#constellation#</td>
 	<td class="detail" bgcolor="#s_bgcolor#">#system#</td>
@@ -242,13 +197,6 @@ function js_collapseThis(changeme,showType) {
 	<td class="detail" bgcolor="#s_bgcolor#">#size#</td>
 	<td class="detail" bgcolor="#s_bgcolor#">#race#</td>
 	<td class="detail" bgcolor="#s_bgcolor#">#faction#</td>
-	<cfset s_mineral = "">
-	<cfoutput><cfset s_mineral = s_mineral & "#mineral# (#rarity#), "></cfoutput>
-	<cfset s_mineral = replace(s_mineral,"()","","All")	>
-	<cfset s_mineral = replace(s_mineral,"None (0),","None ","All")>
-	<cfif len(s_mineral) GT 2><cfset s_mineral = left(s_mineral,len(s_mineral)-2)></cfif>
-	<td class="detail" bgcolor="#s_bgcolor#">#s_mineral#&nbsp;</td>
-	<td class="detail" bgcolor="#s_bgcolor#"><a href="moonMins.cfm?system=#system#&planet=#planet#&moon=#moon#&pid=13e45bd5-6b6a-11de-a093-cf48f9094230" target="_blank">Edit</a></td>
 	</tr>
 	<cfset i_rows++>
 </cfoutput>
