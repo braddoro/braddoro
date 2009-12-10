@@ -30,6 +30,14 @@
   </cfif>
 </cfif>
 
+<cfif isdefined("url.task") and url.task EQ "scanDate">
+	<cfquery name="q_save" datasource="braddoro">
+		update braddoro.dyn_intel_pos_list 
+		set dateScanned = '#dateFormat(now(),"yyyy-mm-dd")#'
+		where posListID = #val(posListID)# 
+	</cfquery>
+</cfif>
+
 <cfif isdefined("form.add")>
 	<cfif form.add EQ "add">
 		<cfquery name="q_add" datasource="braddoro">
