@@ -13,10 +13,31 @@ if (isset($_REQUEST["userID"])) {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>PHP Test</title>
-		<?php include("test_lib_c.php"); ?>
+		<style media="screen" type="text/css">
+			.body {font-family:sans-serif;}
+			.phead {border:1px solid black;padding:2px;background-color:#7994B7;color:white;font-family:Arial sans-serif;font-size:1em;font-weight:bold;}
+			.pbody {border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black;padding:2px;background-color:#DDDDDD;font-family:Arial sans-serif;font-size:1em;}
+		</style>
 	</head>
-	<body>
+	<body class="body">
 		<?php
+		echo "Foo";
+		include("test_lib_c.php"); 
+		include("show_panel_lib_c.php");
+		
+		$objPanel = new panelControl();		
+		for($i=0;$i<=5;$i++) {
+			echo $objPanel->main(				
+				$headDivName="panel_$i",
+				$bodyDivName="panel_$i",
+				$headContent="This is the title. $i",
+				$bodyContent="This is content in the body.",
+				$panelWidth="225px"
+				);
+			echo "<br/>";
+		}
+			
+		echo "<br/><br/><br/><hr/>";
 		echo "<form id='myform' name='myform' action='test.php' method='post'>";		
 		$objDropdown = new dropdown("braddoro");
 		echo $objDropdown->dataDropdown($name="userID",$id="userID",$currentValue=$i_userID,$sql="select userID, userName from dyn_users where active = 'Y' order by userName");
