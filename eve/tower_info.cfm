@@ -4,7 +4,7 @@
 <cfset s_pageName = "Tower Info">
 <cfset objDropdown = createObject("component","common.dropdown_c")>
 <cfset objDateInput = createObject("component","common.dateInput_c")>
-
+<cfset i_iconSize = 14>
 <cfset task = "home">
 <cfif isdefined("url.task")>
 	<cfset task = url.task>
@@ -22,6 +22,16 @@
 	  <cfset p = form.p>
   </cfif>
 </cfif>
+
+<cfset s_pid = "0">
+<cfif isdefined("url.pid")>
+	<cfset s_pid = url.pid>
+<cfelse>
+  <cfif isdefined("form.pid")>
+	  <cfset s_pid = form.pid>
+  </cfif>
+</cfif>
+
 <cfset i_towerID = 0>
 <cfquery datasource="braddoro" name="q_public">
 	select towerID 
@@ -71,7 +81,7 @@
 </script>
 </head> 
 <body class="base">
-<span class="headerlabel">#s_pageName#</span> <a href="tower_overview.cfm?task=home">home</a><br><br>
+<span class="headerlabel">#s_pageName#</span> <a href="tower_overview.cfm?task=home&pid=#s_pid#">home</a><br><br>
 </cfoutput>
 
 <cfswitch expression="#task#">
@@ -147,7 +157,7 @@
 		</cfloop>
 	</cfif>
 	
-	<cflocation url="#s_filename#?p=#p#&task=edit" addtoken="false">
+	<cflocation url="#s_filename#?p=#p#&pid=#s_pid#&task=edit" addtoken="false">
 </cfcase>
 
 <cfcase value="home">
@@ -158,7 +168,7 @@
 			on T.towerTypeID = C.towerTypeID
 		inner join dyn_pos_owners O
 			on T.ownerID = O.ownerID
-		where O.publicID = 'a825acff-9416-11de-a19e-ca2e881f03b0'
+		where O.publicID = '#pid#'
 		order by O.owner, T.system, T.planet, T.moon
 	</cfquery>
 	<table class="inputtable">
@@ -247,9 +257,15 @@ and towerID = 1
 		<form id="frm_edit" name="frm_edit" action="#s_filename#" method="post">
 			<input type="hidden" id="task" name="task" value="save">
 			<input type="hidden" id="p" name="p" value="#q_tower.publicID#">
+			<input type="hidden" id="pid" name="pid" value="#s_pid#">
 			<input type="hidden" id="towerTypeID" name="towerTypeID" value="#val(q_tower.towerTypeID)#">
 			<table class="inputtable">
-				
+			
+			<tr>
+			<td class="leftcol">Tower ID</td>
+			<td colspan="#i_blankRows#">#q_tower.towerID#</td>			
+			</tr>
+
 			<tr>
 			<td class="leftcol">Owner</td>
 			<td colspan="#i_blankRows#">#q_tower.owner#</td>			
@@ -397,12 +413,52 @@ and towerID = 1
 			</table>
 		</form>
 	</cfoutput>
+	
+<cfquery datasource="braddoro" name="q_owner">
+SELECT T.towerID, T.system, T.planet, T.moon, C.race, C.size, T.towerTypeID, O.owner, T.publicID, 
+A1.attributeValue as 'StrontiumHours',
+A2.attributeValue as 'FuelDays'
+FROM dyn_pos_tower T
+inner join dyn_pos_tower_attributes A1
+    on T.towerID = A1.towerID
+    and A1.attribute = 'Strontium Hours'
+inner join dyn_pos_tower_attributes A2
+    on T.towerID = A2.towerID
+    and A2.attribute = 'Fuel Days'
+inner join cfg_pos_tower_types C
+	on T.towerTypeID = C.towerTypeID
+inner join dyn_pos_owners O
+	on T.ownerID = O.ownerID
+where O.publicID = '#s_pid#'
+and T.active = 1
+order by O.owner, T.system, T.planet, T.moon
+</cfquery>
+<table class="inputtable">
+	<cfset i_cols = 7>
+	<cfoutput query="q_owner" group="owner">
+		<tr>
+			<td class="header" style="padding-right:5px;"></td>
+			<td class="header" style="padding-right:5px;">System</td>			
+			<td class="header" style="padding-right:5px;">Location</td>
+			<td class="header" style="padding-right:5px;" align="right">Type</td>
+		</tr>
+		<cfoutput>
+			<cfset s_url = "tower_info.cfm?task=edit&p=#publicID#">
+			<cfset s_class="">
+			<tr style="cursor:default;" title="click to view">
+				<td class="#s_class#" style="padding-right:5px;" title="#towerID#"><a href="tower_info.cfm?p=#publicID#&pid=#pid#&task=edit"><img src="Button-Play-16x16.png" border="0" height="#i_iconSize#" width="#i_iconSize#" title="edit"></a></td>
+				<td class="#s_class#" style="padding-right:5px;">#system#</td>			
+				<td class="#s_class#" style="padding-right:5px;" align="right">#planet#-#moon#</td>
+				<td class="#s_class#" style="padding-right:5px;">#race# #size#</td>
+			</tr>
+		</cfoutput>
+	</cfoutput>
+</table>
+	
 </cfcase>
 
 <cfdefaultcase>
 </cfdefaultcase>
-
 </cfswitch>
-
 </body> 
 </html>

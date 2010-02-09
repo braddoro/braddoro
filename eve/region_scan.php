@@ -166,6 +166,7 @@ if ($i_output <> 0) {
 		echo '<th class="cellr">Std. Dev.&nbsp;<img src="../../images/down.gif" onclick="js_sort(7,1);" title="Sort Ascending" style="cursor:pointer;"><img src="../../images/up.gif" onclick="js_sort(7,2);" title="Sort Descending" style="cursor:pointer;"></th>'.$g_break;
 		echo '<th class="cellr">Median&nbsp;<img src="../../images/down.gif" onclick="js_sort(8,1);" title="Sort Ascending" style="cursor:pointer;"><img src="../../images/up.gif" onclick="js_sort(8,2);" title="Sort Descending" style="cursor:pointer;"></th>'.$g_break;
 		echo '<th class="cellr">Region Type&nbsp;<img src="../../images/down.gif" onclick="js_sort(9,1);" title="Sort Ascending" style="cursor:pointer;"><img src="../../images/up.gif" onclick="js_sort(9,2);" title="Sort Descending" style="cursor:pointer;"></th>'.$g_break;
+		echo '<th class="cellr">monthly Income</th>'.$g_break;
 		echo '</tr>'.$g_break;
 	}
 	$i_currRow = 1;
@@ -185,6 +186,7 @@ if ($i_output <> 0) {
 		echo '<td class="cellr '.$s_class.'">$'.number_format($rowData[6],2).'</td>'.$g_break;
 		echo '<td class="cellr '.$s_class.'">$'.number_format($rowData[7],2).'</td>'.$g_break;
 		echo '<td class="celll '.$s_class.'">'.$rowData[8].'</td>'.$g_break;
+		echo '<td class="cellr '.$s_class.'">$'.number_format(($rowData[4]*72000),2).'</td>'.$g_break;
 		echo '</tr>'.$g_break;
 		$i_currRow++;
 	}

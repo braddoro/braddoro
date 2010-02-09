@@ -83,38 +83,62 @@ echo '<title>Eve market update tool.</title>'.$g_break;
 echo '<style type="text/css">'.$g_break; 
 echo '.body {background-color: #F1EFDE;font-family: sans-serif;font-size: .8em}'.$g_break;
 echo '.cell {text-align: right;}'.$g_break;
+echo '.odd {padding: 2px;background-color: #99A68C;}'.$g_break;
+echo '.even {padding: 2px;background-color: #8A8A6A;}'.$g_break;
+echo '.accentrow {padding: 2px;background-color: #ACACAC;}'.$g_break;
 echo '</style>'.$g_break; 
 echo '</head>'.$g_break; 
 echo '<body class="body">'.$g_break;
 echo 'Rows updated '.$i_rows.'.<br />'.$g_break;
 if ($showOutput == 1) {
-	echo '<table>'.$g_break;
+	echo '<table style="border-collapse:collapse;">'.$g_break;
 	echo '<tr>'.$g_break;
 	echo '<th>Eve ID</th>'.$g_break;
 	echo '<th>Item Name</th>'.$g_break;
 	echo '<th>Volume</th>'.$g_break;
-	echo '<th>Average</th>'.$g_break;
 	echo '<th>Minimum</th>'.$g_break;
-	echo '<th>Maximum</th>'.$g_break;
-	echo '<th>Std. Dev.</th>'.$g_break;
-	echo '<th>Median</th>'.$g_break;
+	echo '<th>Per Month</th>'.$g_break;
 	echo '</tr>'.$g_break;
-	$s_sql = 'select eveID, itemName, volume, avg, min, max, stddev, median FROM braddoro.cfg_eve_market order by itemName;';
+	$s_sql = 'select distinct M.eveID, M.itemName, M.volume, M.avg, M.min, M.max, M.stddev, M.median, M.outputModifier, R.xrefID
+	FROM braddoro.cfg_eve_market M
+	left join cfg_pos_reactions C
+		on M.itemName = C.reaction
+	left join dyn_pos_tower_reaction R
+		on C.reactionID = R.reactionID
+	left join dyn_pos_tower T
+		on R.towerID = T.towerID
+		and T.ownerID = 1
+	order by M.min*(M.outputModifier*100), M.min;';
 	$q_data = mysql_query($s_sql);
 	if (!$q_data) {die_well(mysql_error());}
 	while ($rowData = mysql_fetch_row($q_data)) {
+		if ($i_currRow % 2) {
+			$s_class="odd";			
+		}else{
+			$s_class="even";
+		}
+		if ($rowData[9] > 0) {
+			$s_class="accentrow";
+			$s_star = "";
+		}else{
+			$s_star = "";
+		}
 		echo '<tr>'.$g_break;
-		echo '<td>'.$rowData[0].'</td>'.$g_break;
-		echo '<td>'.$rowData[1].'</td>'.$g_break;
-		echo '<td class="cell">'.number_format($rowData[2]).'</td>'.$g_break;
-		echo '<td class="cell">$'.number_format($rowData[3],2).'</td>'.$g_break;
-		echo '<td class="cell">$'.number_format($rowData[4],2).'</td>'.$g_break;
-		echo '<td class="cell">$'.number_format($rowData[5],2).'</td>'.$g_break;
-		echo '<td class="cell">$'.number_format($rowData[6],2).'</td>'.$g_break;
-		echo '<td class="cell">$'.number_format($rowData[7],2).'</td>'.$g_break;
+		echo '<td class="'.$s_class.'">'.$rowData[0].'</td>'.$g_break;
+		echo '<td class="'.$s_class.'">'.$rowData[1].'</td>'.$g_break;
+		echo '<td class="cell '.$s_class.'">'.number_format($rowData[2]).'</td>'.$g_break;
+		echo '<td class="cell '.$s_class.'">$'.number_format($rowData[4],2).'</td>'.$g_break;
+		$i_income = $rowData[4]*($rowData[8]*100)*720;
+		if ($rowData[9] > 0) {
+			$i_total = $i_total + $i_income;
+		}
+		echo '<td class="cell '.$s_class.'">$'.number_format($i_income).'</td>'.$g_break;
+		//echo '<td class="cell '.$s_class.'">'.$s_star.'</td>'.$g_break;
 		echo '</tr>'.$g_break;
+		$i_currRow++;
 	}
 	echo '</table>'.$g_break;
+	//echo "<b>$".number_format($i_total)."<b>";
 }
 echo '</body>'.$g_break; 
 echo '</html>'.$g_break;
