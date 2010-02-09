@@ -1,0 +1,7 @@
+.body {background-color: #F1EFDE;font-family: sans-serif;font-size: .8em}
+.cellr {text-align: right;padding: 3px;}
+.celll {text-align: left;padding: 3px;}
+.title {font-size: 1.25em;font-weight:bold;}
+.odd {background-color: #99A68C;}
+.even {background-color: #A6A68C;}
+.accentrow {padding: 2px;background-color: #ACACAC;}
