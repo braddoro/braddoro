@@ -554,127 +554,96 @@ order by D.attributeGroup, D.attribute, M.min
 
 <!--- BEGIN: Fuel Reserve --->
 <div class="headersmall">Fuel Summary</div>
-<cfquery datasource="braddoro" name="q_pos">
-select reserveName, fuelType as 'reserveFuelType', sum(amount) as 'reserveAmount', V.volume as 'reserveVolume', M.min      
-from dyn_pos_fuel_reserves R
-inner join dyn_pos_fuel_reserve_location L 
-    on R.reserveID = L.reserveID
-inner join dyn_pos_owners O
-	on R.ownerID = O.ownerID
-	and O.publicID = '#s_pid#'
-inner join cfg_pos_volume V
-	on L.fuelType = V.itemName
-inner join cfg_eve_market M
-    on fuelType = M.itemName
-group by reserveName, fuelType, V.volume, M.min
-order by reserveName, fuelType
-</cfquery>
 
 <cfquery datasource="braddoro" name="q_fuel">
-	select reserveName, T.towerID, D.attribute as 'fuelType', 
-	(((C.attributeValue*24)*#i_days#)) as 'amount',  
-	(((C.attributeValue*24)*#i_days#))*V.volume as 'volume'
-	from dyn_pos_tower T
-	inner join dyn_pos_owners O
-		on T.ownerID = O.ownerID
-		and O.publicID = '#s_pid#'
-	inner join dyn_pos_tower_attributes D
-	    on T.towerID = D.towerID
-	inner join cfg_pos_volume V
-	    on D.attribute = V.itemName
-	inner join cfg_pos_tower_attributes C
-	    on D.attribute = C.attribute
-	    and C.towerTypeID = D.towerTypeID
-	inner join dyn_pos_fuel_reserves R
-		on T.ownerID = R.ownerID
-	WHERE D.attributeGroup = 'Fuel'
-	and D.attribute <> 'Strontium Clathrates'
-	and T.active = 1
-	ORDER BY D.attribute 
+select 
+    D.attribute as 'fuelType',
+    M.min,
+    V.volume, 
+    L.amount as 'onHand',
+    sum(((C.attributeValue*24)*R.reserveDays)) as 'needed'
+from 
+    braddoro.dyn_pos_tower_attributes D
+inner join braddoro.cfg_pos_tower_attributes C
+    on D.attribute = C.attribute
+    and D.towerTypeID = C.towerTypeID
+    and D.attributeGroup = 'Fuel'
+    and D.attribute <> 'Strontium Clathrates'    
+inner join braddoro.cfg_pos_volume V
+	on D.attribute = V.itemName
+inner join braddoro.cfg_eve_market M
+    on D.attribute = M.itemName
+inner join braddoro.dyn_pos_tower T
+    on D.towerID = T.towerID
+inner join dyn_pos_owners O
+	on T.ownerID = O.ownerID
+	and O.publicID = '#s_pid#'
+inner join braddoro.dyn_pos_fuel_reserve_location L
+    on D.attribute = L.fuelType
+    and L.system = 'Hoseen'
+inner join dyn_pos_fuel_reserves R
+    on R.reserveID = L.reserveID
+	and R.ownerID = (select ownerID from dyn_pos_owners where publicID = '4adfb220-ffd4-11de-b0ac-21e51bd4d9c1')
+group by 
+    D.attribute,
+    M.min,
+    V.volume,
+    L.amount 
+order by 
+    D.attribute
 </cfquery>
-<!--- and T.ownerID = 1 
-and O.publicID = '#s_pid#' --->
 
-<cfset i_cols = 6>
+<cfset i_cols = 5>
 <table class="inputtable">
-	<cfoutput>
-	<tr>
+<cfoutput>
+	<!--- <tr>
 		<td colspan="#i_cols#" class="example">
 			<form id="frm_edit" name="frm_edit" action="#s_filename#" method="post">
 				<input type="hidden" id="pid" name="pid" value="#s_pid#">
 				Fuel Days: <input type="text" id="days" name="days" class="example" value="#i_days#" size="5"> <input type="submit" id="submit_action" name="submit_action" class="example" value="Go">
 			</form>
 		</td>
-	</tr>
-	</cfoutput>
-<cfoutput query="q_fuel" group="reserveName">
+	</tr> --->
+</cfoutput>
+<tr>
+	<td class="header" align="left" style="padding-right:5px;">Fuel Type</td>
+	<td class="header" align="right" style="padding-right:5px;">Shortfall</td>
+	<td class="header" align="right" style="padding-right:5px;">Cash Needed</td>
+	<td class="header" align="right" style="padding-right:5px;">On Hand</td>
+	<td class="header" align="right" style="padding-right:5px;">Ice Needed</td>
+</tr>
+<cfset i_total = 0>
+<cfoutput query="q_fuel">
 	<tr>
-		<td class="header" align="left" style="padding-right:5px;">Fuel Type</td>
-		<td class="header" align="right" style="padding-right:5px;">Shortfall</td>
-		<td class="header" align="right" style="padding-right:5px;">In Reserve</td>
-		<td class="header" align="right" style="padding-right:5px;">#i_days# days</td>
-		<td class="header" align="right" style="padding-right:5px;">Cost</td>
-		<td class="header" align="right" style="padding-right:5px;">M3</td>
+		<td align="left" style="padding-right:5px;">#fuelType#</td>
+		<td align="right" style="padding-right:5px;">#numberformat(needed-onHand)#</td>
+		<td align="right" style="padding-right:5px;">
+			<cfif fuelType EQ "Heavy Water" OR fuelType EQ "Liquid Ozone" OR fuelType CONTAINS "Isotopes">
+				&nbsp;
+			<cfelse>
+				#dollarformat((needed-onHand)*min)#
+				<cfset i_total = i_total + (needed-onHand)*min>
+			</cfif>
+		</td>
+		<td align="right" style="padding-right:5px;">#numberformat(onHand)#</td>
+		<td align="right" style="padding-right:5px;">
+			<cfif fuelType EQ "Heavy Water" or fuelType EQ "Liquid Ozone" or fuelType CONTAINS "Isotopes">
+				<cfif fuelType CONTAINS "Isotopes">
+					#numberformat((needed-onHand)/300)#
+				<cfelse>
+					#numberformat((needed-onHand)/1000)#
+				</cfif>
+			<cfelse>
+				&nbsp;
+			</cfif>
+		</td>
 	</tr>
-	<cfset i_total = 0>
-	<cfoutput group="fuelType">
-		<cfset s_fuelType = "">
-		<cfset i_amount = 0>
-		<cfoutput>
-			<cfset s_fuelType = #fuelType#>
-			<cfset i_amount = i_amount + #amount#>
-		</cfoutput>
-		<tr>
-			<td align="left" style="padding-right:5px;">#s_fuelType#</td>
-			<cfloop query="q_pos">
-				<cfif q_pos.reserveFuelType EQ s_fuelType>
-					<td align="right" style="padding-right:5px;">#numberformat(reserveAmount)#</td>
-					<td align="right" style="padding-right:5px;"><cfif i_amount-reserveAmount LT 0>0<cfelse>#numberformat(i_amount-reserveAmount)#</cfif></td>
-					<td align="right" style="padding-right:5px;"><cfif i_amount-reserveAmount LT 0>0<cfelse>#numberformat((i_amount-reserveAmount)*reserveVolume)#</cfif></td>
-					<td align="right" style="padding-right:5px;">
-					<cfif s_fuelType EQ "Strontium Clathrates" OR 
-						s_fuelType EQ "Nitrogen Isotopes" OR
-						s_fuelType EQ "Heavy Water" OR
-						s_fuelType EQ "Liquid Ozone">
-						<cfif i_amount-reserveAmount GT 0>
-							<cfswitch expression="#s_fuelType#">
-								<cfcase value="Helium Isotopes"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\300)# Ice</span></cfcase>
-								<cfcase value="Oxygen Isotopes"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\300)# Ice</span></cfcase>
-								<cfcase value="Hydrogen Isotopes"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\300)# Ice</span></cfcase>
-								<cfcase value="Nitrogen Isotopes"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\300)# Ice</span></cfcase>
-								<cfcase value="Heavy Water"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\1000)# Ice</span></cfcase>
-								<cfcase value="Liquid Ozone"><span style="color: blue;">#numberFormat((i_amount-reserveAmount)\1000)# Ice</span></cfcase>
-							</cfswitch>
-						</cfif>
-					<cfelse>
-						<cfif i_amount-reserveAmount LT 0>0<cfelse>#dollarformat((i_amount-reserveAmount)*min)#
-							<cfset i_total = i_total + (i_amount-reserveAmount)* min>
-						</cfif>
-					</cfif>
-					</td>
-				</cfif> 
-			</cfloop>
-			<td align="right" style="padding-right:5px;">
-				#numberformat(i_amount)#
-				<cfswitch expression="#s_fuelType#">
-					<cfcase value="Helium Isotopes"><span style="color: blue;">&nbsp;#numberFormat(i_amount\300)# Ice</span></cfcase>
-					<cfcase value="Oxygen Isotopes"><span style="color: blue;">&nbsp;#numberFormat(i_amount\300)# Ice</span></cfcase>
-					<cfcase value="Hydrogen Isotopes"><span style="color: blue;">&nbsp;#numberFormat(i_amount\300)# Ice</span></cfcase>
-					<cfcase value="Nitrogen Isotopes"><span style="color: blue;">&nbsp;#numberFormat(i_amount\300)# Ice</span></cfcase>
-					<cfcase value="Heavy Water"><span style="color: blue;">&nbsp;#numberFormat(i_amount\1000)# Ice</span></cfcase>
-					<cfcase value="Liquid Ozone"><span style="color: blue;">&nbsp;#numberFormat(i_amount\1000)# Ice</span></cfcase>
-				</cfswitch>				
-			</td>
-		</tr>
-	</cfoutput>
 </cfoutput>
 <cfoutput>
 	<tr>
-		<td class="header" align="left" style="padding-right:5px;"></td>
-		<td class="header" align="right" style="padding-right:5px;"></td>
 		<td class="header" align="right" style="padding-right:5px;" colspan="2"><strong>Cash Needed</strong></td>
 		<td class="header" align="right" style="padding-right:5px;"><strong>#dollarformat(i_total)#</strong></td>
-		<td class="header" align="right" style="padding-right:5px;"></td>
+		<td class="header" colspan="2">&nbsp;</td>
 	</tr>
 </cfoutput>	
 </table>
