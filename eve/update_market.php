@@ -99,16 +99,32 @@ if ($showOutput == 1) {
 	echo '<th>Minimum</th>'.$g_break;
 	echo '<th>Per Month</th>'.$g_break;
 	echo '</tr>'.$g_break;
-	$s_sql = 'select distinct M.eveID, M.itemName, M.volume, M.avg, M.min, M.max, M.stddev, M.median, M.outputModifier, R.xrefID
-	FROM braddoro.cfg_eve_market M
-	left join cfg_pos_reactions C
-		on M.itemName = C.reaction
-	left join dyn_pos_tower_reaction R
-		on C.reactionID = R.reactionID
-	left join dyn_pos_tower T
+	$s_sql = 'select 
+	distinct 
+	M.eveID, 
+	M.itemName, 
+	M.volume, 
+	M.avg, 
+	M.min, 
+	M.max, 
+	M.stddev, 
+	M.median, 
+	M.outputModifier,
+    R.reactionID
+from 
+	braddoro.cfg_eve_market M
+left join braddoro.cfg_pos_reactions C
+	on M.itemName = C.reaction
+left join (
+	select distinct reactionID 
+	from braddoro.dyn_pos_tower_reaction R
+	inner join braddoro.dyn_pos_tower T
 		on R.towerID = T.towerID
 		and T.ownerID = 1
-	order by M.min*(M.outputModifier*100), M.min;';
+	) R   
+	on C.reactionID = R.reactionID
+order by M.min*(M.outputModifier*100), M.min
+	';
 	$q_data = mysql_query($s_sql);
 	if (!$q_data) {die_well(mysql_error());}
 	while ($rowData = mysql_fetch_row($q_data)) {
