@@ -2,7 +2,7 @@ function http_post_request(url, sPostString) {
 	var results = "";
 	var ajax_http_request = false;
 	var AjaxTime = new Date();
-	sPostString += "AjaxTime=" + AjaxTime.getTime();
+	sPostString += "&AjaxTime=" + AjaxTime.getTime();
 	if (window.XMLHttpRequest) {
 		ajax_http_request = new XMLHttpRequest();
 		if (ajax_http_request.overrideMimeType) {

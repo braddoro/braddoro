@@ -25,10 +25,10 @@
 			from cms.dyn_howto_document D
 			inner join cms.dyn_howto_content T
 			    on D.howtoID = T.howtoID
-			inner join cms.cfg_howto_headings H
-			    on H.headingID = T.headingID
+			left join cms.cfg_howto_headings H
+			    on T.headingID = H.headingID 
 			inner join cms.cfg_howto_chapters C
-			    on C.chapterID = H.chapterID 
+			    on T.chapterID = C.chapterID 
 			order by
 			    C.displayOrder,
 			    H.displayOrder,

@@ -38,7 +38,7 @@ if (mysql_num_rows($q_data)){
 	}
 	$s_headingText .= '</select>'."\n";
 } else {
-	$s_headingText .= '<input type="hidden" id="headerID" name="headerID" value="0">'."\n";
+	$s_headingText .= '<input type="hidden" id="headingID" name="headingID" value="0">'."\n";
 }
 include("howto_c.php"); 
 $objhowTo = new howTo();		
@@ -56,20 +56,18 @@ $objhowTo = new howTo();
 		document.getElementById("span_heading").innerHTML = s_return; 
 	}
 	function js_save() {
-		if (document.getElementById("headingID")) {
-			var s_ajax = "task=saveContent";
-			s_ajax += "&howtoID=1";
-			s_ajax += "&headingID=" + document.getElementById("headingID").value;
-			s_ajax += "&displayOrder=" + document.getElementById("displayOrder").value;
-			s_ajax += "&contentTitle=" + document.getElementById("contentTitle").value;
-			s_ajax += "&textContent=" + document.getElementById("textContent").value;
-			s_ajax += "&";
-			var s_return = http_post_request("how_to_ajax.php", s_ajax);
-			document.getElementById("div_output").innerHTML = s_return;
-			document.getElementById("displayOrder").value = "";
-			document.getElementById("contentTitle").value = "";
-			document.getElementById("textContent").value = "";
-		}
+		var s_ajax = "task=saveContent";
+		s_ajax += "&howtoID=1";
+		s_ajax += "&chapterID=" + document.getElementById("chapterID").value;
+		s_ajax += "&headingID=" + document.getElementById("headingID").value;
+		s_ajax += "&displayOrder=" + document.getElementById("displayOrder").value;
+		s_ajax += "&contentTitle=" + document.getElementById("contentTitle").value;
+		s_ajax += "&textContent=" + document.getElementById("textContent").value;
+		var s_return = http_post_request("how_to_ajax.php", s_ajax);
+		document.getElementById("div_output").innerHTML = s_return;
+		document.getElementById("displayOrder").value = "";
+		document.getElementById("contentTitle").value = "";
+		document.getElementById("textContent").value = "";
 	}
 	function js_collapseThis(changeme,showType) {
 		var s_showType = "block";
@@ -111,63 +109,6 @@ echo '<button id="button_click" name="button_click" value="Save" onclick="js_sav
 echo '<hr />';
 echo '<div id="div_output" name="div_output">';
 echo $objhowTo->outputHowTo();
-/*
-$s_sql = "select
-    D.howtoName,
-    C.chapterID, 
-    C.chapterName, 
-    C.displayOrder,
-    H.headingID,
-    H.displayOrder,
-    H.headingName,
-    T.contentID,
-    T.contentTitle,
-    T.displayOrder,
-    T.howtoContent
-from 
-	cms.dyn_howto_document D
-inner join cms.dyn_howto_content T
-    on D.howtoID = T.howtoID
-inner join cms.cfg_howto_headings H
-    on H.headingID = T.headingID
-inner join cms.cfg_howto_chapters C
-    on C.chapterID = H.chapterID 
-order by
-    C.displayOrder,
-    H.displayOrder,
-    T.displayOrder,
-    T.howtoContent;";
-$q_data = mysql_query($s_sql);
-if (!$q_data) {die_well(mysql_error());}
-echo '<table border="1">'.$g_break;
-while ($rowData = mysql_fetch_row($q_data)) {
-    $s_howtoName		= $rowData[0];
-    $i_chapterID		= $rowData[1]; 
-    $s_chapterName		= $rowData[2]; 
-    $i_displayOrderCha	= $rowData[3];
-    $i_headingID		= $rowData[4];
-    $i_displayOrderHed	= $rowData[5];
-    $s_headingName		= $rowData[6];
-    $i_contentID		= $rowData[7];
-    $s_contentTitle		= $rowData[8];
-    $i_displayOrderCon	= $rowData[9];
-    $s_howtoContent		= $rowData[10];
-    echo '<tr>'.$g_break;
-    echo '<td>'.$s_howtoName.'</td>'.$g_break;
-    echo '<td>'.$s_chapterName.'</td>'.$g_break;
-    echo '<td>'.$s_headingName.'</td>'.$g_break;
-    echo '<td>'.$s_contentTitle.'</td>'.$g_break;
-    echo '<td>'.$i_displayOrderCon.'</td>'.$g_break;
-    echo '<td>'.$s_howtoContent.'</td>'.$g_break;
-    echo '</tr>'.$g_break;
-    //echo '<td>'.$i_chapterID.'</td>'.$g_break;
-    //echo '<td>'.$i_displayOrderCha.'</td>'.$g_break;
-    //echo '<td>'.$i_headingID.'</td>'.$g_break;
-    //echo '<td>'.$i_displayOrderHed.'</td>'.$g_break;
-    //echo '<td>'.$i_contentID.'</td>'.$g_break;
-}
-echo '</table>'.$g_break;
-*/
 echo '</div>';
 echo '</body>'.$g_break; 
 echo '</html>'.$g_break;
