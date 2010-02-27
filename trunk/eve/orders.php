@@ -30,6 +30,7 @@ $s_deliverySystem = set_var('deliverySystem',"");
 $s_orderDate = set_var('orderDate',0);
 $s_dueDate = set_var('dueDate',0);
 $i_orderStatusID = set_var('orderStatusID',0);
+$i_priorityID = set_var('priorityID',0);
 $s_publicID = set_var('pid',0);
 $s_submit = set_var('submit_form',"");
 $o_conn = mysql_connect($server=$s_server,$username=$s_userName,$password=$s_password);
@@ -67,13 +68,13 @@ switch ($s_page_task) {
 			if ($i_orderID > 0) {
 				//echo $s_orderDate;
 				//echo $s_dueDate;
-				$s_sql = "update braddoro.dyn_eve_mining_order set orderStatusID=$i_orderStatusID, client='$s_client', leadMiner='$s_leadMiner', deliverySystem = '$s_deliverySystem', orderDate='".date("Y-m-d",$s_orderDate)."', dueDate='".date("Y-m-d",$s_dueDate)."' where orderID=$i_orderID;";
+				$s_sql = "update braddoro.dyn_eve_mining_order set orderStatusID=$i_orderStatusID, client='$s_client', leadMiner='$s_leadMiner', deliverySystem = '$s_deliverySystem', orderDate='".date("Y-m-d",$s_orderDate)."', dueDate='".date("Y-m-d",$s_dueDate)."', priorityID = $i_priorityID where orderID=$i_orderID;";
 				//echo $s_sql;
 				$q_update = mysql_query($s_sql);
 				if (!$q_update) {die_well(__LINE__,mysql_error());}
 			} else {
 				if ($s_client > "") { 
-					$s_sql = "insert into braddoro.dyn_eve_mining_order (orderStatusID, client, leadMiner, deliverySystem, orderDate, dueDate, publicID) select $i_orderStatusID, '$s_client', '$s_leadMiner', '$s_deliverySystem', ".date("Y-m-d",$s_orderDate)."', '".date("Y-m-d",$s_dueDate)."', uuid();";
+					$s_sql = "insert into braddoro.dyn_eve_mining_order (orderStatusID, client, leadMiner, deliverySystem, orderDate, dueDate, publicID, priorityID) select $i_orderStatusID, '$s_client', '$s_leadMiner', '$s_deliverySystem', '".date("Y-m-d",$s_orderDate)."', '".date("Y-m-d",$s_dueDate)."', uuid(), $i_priorityID;";
 					$q_update = mysql_query($s_sql);
 					if (!$q_update) {die_well(__LINE__,mysql_error());}
 					$i_orderID = mysql_insert_id();
@@ -85,7 +86,13 @@ switch ($s_page_task) {
 	case "list":
 		echo $s_header;
 		$page_task=$s_page_task;
-		$s_sql = "select orderID, client, leadMiner, status, orderDate, dueDate, deliverySystem from braddoro.dyn_eve_mining_order O left join braddoro.cfg_eve_mining_order_status S on O.orderStatusID = S.statusID order by orderID desc;";
+		$s_sql = "select orderID, client, leadMiner, S.status, orderDate, dueDate, deliverySystem, P.priority 
+		from braddoro.dyn_eve_mining_order O 
+		left join braddoro.cfg_eve_mining_order_status S 
+			on O.orderStatusID = S.statusID 
+		left join cfg_eve_mining_priority P
+			on O.priorityID = P.priorityID
+		order by orderID desc;";
 		$q_data = mysql_query($s_sql);
 		if (!$q_data) {die_well(__LINE__,mysql_error());}
 		$i_fields = mysql_num_fields($q_data);
@@ -94,6 +101,7 @@ switch ($s_page_task) {
 		echo '<tr>';
 		echo '<th class="accentrow">&nbsp;</th>';
 		echo '<th class="accentrow">Order ID</th>';
+		echo '<th class="accentrow">Priority</th>';
 		echo '<th class="accentrow">Client</th>';
 		echo '<th class="accentrow">Lead Miner</th>';
 		echo '<th class="accentrow">Status</th>';
@@ -106,6 +114,7 @@ switch ($s_page_task) {
 			echo '<tr class="'.$s_class.'">';
 			echo '<td><a href="'.$s_fileName.'?orderID='.$rowData[0].'&page_task=edit" target="_top"><img src="../../images/Button-Pause-16x16.png" border="0" height="12" width="12" title="Edit"></a></td>';
 			echo '<td>'.$rowData[0].'</td>';
+			echo '<td>'.$rowData[7].'</td>';
 			echo '<td>'.$rowData[1].'</td>';
 			echo '<td>'.$rowData[2].'</td>';
 			echo '<td>'.$rowData[3].'</td>';
@@ -161,7 +170,7 @@ switch ($s_page_task) {
     case "edit":
     	echo $s_header;
     	$page_task="save";
-		$s_sql = "select orderID, orderStatusID, client, leadMiner, orderDate, dueDate, publicID, deliverySystem from braddoro.dyn_eve_mining_order where orderID = $i_orderID;";
+		$s_sql = "select orderID, orderStatusID, client, leadMiner, orderDate, dueDate, publicID, deliverySystem, priorityID from braddoro.dyn_eve_mining_order where orderID = $i_orderID;";
 		$q_data = mysql_query($s_sql);
 		if (!$q_data) {die_well(__LINE__,mysql_error());}
 		while ($rowData = mysql_fetch_row($q_data)) {
@@ -173,6 +182,7 @@ switch ($s_page_task) {
 			$s_dueDate = $rowData[5];
 			$s_publicID = $rowData[6];
 			$s_deliverySystem = $rowData[7];
+			$i_priorityID = $rowData[8];
 		}
 		echo '<a href="'.$s_fileName.'" target="_top"><img src="../../images/Button-Info-16x16.png" border="0" height="12" width="12" title="List"></a>';
 		echo '<form id="frmForm" name="frmForm" action="'.$s_fileName.'" method="post">';
@@ -186,7 +196,11 @@ switch ($s_page_task) {
 	
 		echo row_input_text($s_fieldName="orderID",$i_fieldSize=5,$s_data=$i_orderID,$left_class="odd",$right_class="even",$s_fieldString="Order ID",$use_input=0,$use_hidden=1,$value_only=1).$g_break;
     	$s_sel = "select statusID, status from braddoro.cfg_eve_mining_order_status where active = 1 order by status";		
-		echo row_input_select($s_fieldName="orderStatusID",$s_sel,$i_orderStatusID,$left_class="odd",$right_class="even",$s_fieldString="Order Status").$g_break;
+		echo row_input_select($s_fieldName="orderStatusID",$s_sel,$i_orderStatusID,$left_class="odd",$right_class="even",$s_fieldString="Status").$g_break;
+
+    	$s_sel = "select priorityID, priority from braddoro.cfg_eve_mining_priority where active = 1 order by displayOrder";		
+		echo row_input_select($s_fieldName="priorityID",$s_sel,$i_priorityID,$left_class="odd",$right_class="even",$s_fieldString="Priority").$g_break;
+
 		echo row_input_text($s_fieldName="client",$i_fieldSize=30,$s_data=trim($s_client),$left_class="odd",$right_class="even",$s_fieldString="Client").$g_break;
 
 		echo '<tr>'.$g_break;
