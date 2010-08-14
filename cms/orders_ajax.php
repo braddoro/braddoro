@@ -1,13 +1,8 @@
 <?php
-include "..\common\ajax_include.php";
 $s_html = "";
-$s_task =  set_var("task","");
+$s_task = "";
+if (isset($_POST['task'])) {$s_task = $_POST['task'];}
 
-include("howto_c.php"); 
-$objhowTo = new howTo();
-
-switch ($s_task) {
-case "getHeading":
 $s_server = "65.175.107.2:3306";
 $s_userName = "cms_user";
 $s_password = "alvahugh";
@@ -17,7 +12,8 @@ if (!$o_conn) {die_well(mysql_error());}
 $o_sel = mysql_select_db($s_db);
 if (!$o_sel) {die_well(mysql_error());}
 
-
+switch ($s_task) {
+case "getHeading":
 	if (isset($_POST['chapterID'])) {
 		$i_chapterID = intval($_POST['chapterID']);
 	} else {
@@ -46,16 +42,45 @@ if (!$o_sel) {die_well(mysql_error());}
 	$s_html = $s_headingText;
 	break;
 case "saveContent":
-	$i_howtoID =  intval(set_var("howtoID",0));
-	$i_chapterID =  intval(set_var("chapterID",0));
-	$i_headingID =  intval(set_var("headingID",0));
-	$i_displayOrder =  intval(set_var("displayOrder",0));
-	$s_contentTitle =  set_var("contentTitle","");
-	$s_textContent =  set_var("textContent","");
-	$s_sql = "insert into cms.dyn_howto_content (howtoID, chapterID, headingID, displayOrder, howtoContent, contentTitle, addedDate)
-	select $i_howtoID, $i_chapterID, $i_headingID, $i_displayOrder, '$s_textContent', '$s_contentTitle', now();";
+	if (isset($_POST['howtoID'])) {
+		$i_howtoID = intval($_POST["howtoID"]);
+	} else {
+		$i_howtoID = 0;
+	}
 	
-	$s_html = $objhowTo->saveItem(2, $s_sql);
+	if (isset($_POST['chapterID'])) {
+		$i_chapterID = intval($_POST["chapterID"]);
+	} else {
+		$i_chapterID = 0;
+	}
+	if (isset($_POST['headingID'])) {
+		$i_headingID = intval($_POST["headingID"]);
+	} else {
+		$i_headingID = 0;
+	}
+	if (isset($_POST['displayOrder'])) {
+		$i_displayOrder = intval($_POST["displayOrder"]);
+	} else {
+		$i_displayOrder = 0;
+	}
+	if (isset($_POST['contentTitle'])) {
+		$s_contentTitle = trim($_POST["contentTitle"]);
+	} else {
+		$s_contentTitle = "";
+	}
+	if (isset($_POST['textContent'])) {
+		$s_textContent = trim($_POST["textContent"]);
+	} else {
+		$s_textContent = "";
+	}
+	$s_sql = "insert into cms.dyn_howto_content (howtoID, chapterID, headingID, displayOrder, howtoContent, contentTitle)
+	select $i_howtoID, $i_chapterID, $i_headingID, $i_displayOrder, '$s_textContent', '$s_contentTitle';";
+	$q_data = mysql_query($s_sql);
+	$s_error = "";
+	if (!$q_data) {$s_error = mysql_error();}
+	include("howto_c.php"); 
+	$objhowTo = new howTo();
+	$s_html = $objhowTo->outputHowTo();
 	
 	break;
 case "getdetail":
