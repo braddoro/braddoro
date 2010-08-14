@@ -92,7 +92,8 @@
 			update dyn_pos_tower set 
 			system = '#form.system#',
 			planet = #val(form.planet)#,
-			moon = #val(form.moon)#
+			moon = #val(form.moon)#, 
+			changeDate = now()
 			where towerID = #i_towerID#
 		</cfquery>
 		<cfquery datasource="braddoro" name="q_update">
@@ -240,7 +241,7 @@ and towerID = 1
 
 	<cfoutput>
 		<cfquery datasource="braddoro" name="q_tower">
-			SELECT T.towerID, T.system,T.planet, T.moon, C.race, C.size, T.towerTypeID, O.owner, T.publicID, T.towerTypeID
+			SELECT T.towerID, T.system,T.planet, T.moon, C.race, C.size, T.towerTypeID, O.owner, T.publicID, T.towerTypeID, T.changeDate
 			FROM dyn_pos_tower T
 			inner join cfg_pos_tower_types C
 				on T.towerTypeID = C.towerTypeID
@@ -276,6 +277,11 @@ and towerID = 1
 			<td colspan="#i_blankRows#">#q_tower.race# #q_tower.size#</td>			
 			</tr>
 	
+			<tr>
+			<td class="leftcol">Change Date</td>
+			<td colspan="#i_blankRows#">#q_tower.changeDate#</td>			
+			</tr>
+
 			<tr>
 			<td class="leftcol">System</td>
 			<td colspan="#i_blankRows#"><input type="text" id="system" name="system" value="#q_tower.system#" size="30"></td>			
@@ -409,7 +415,6 @@ and towerID = 1
 			<td colspan="#i_blankRows-1#"><input type="submit" id="submit_action" name="submit_action" value="#s_value#"></td>
 			<td class="example" align="right"><strong>#numberformat(i_totalVolume)#</strong></td>
 			</tr>
-			
 			</table>
 		</form>
 	</cfoutput>

@@ -1,6 +1,6 @@
 <?php
 /* Report
- select O.orderID, O.client, O.leadMiner, O.orderDate, O.dueDate, O.publicID, 
+select O.orderID, O.client, O.leadMiner, O.orderDate, O.dueDate, O.publicID, 
 S1.status, I.itemName, I.amount, S2.status, N.noteDate, N.noteBy, N.note   
 from braddoro.dyn_eve_mining_order O
 inner join braddoro.cfg_eve_mining_order_status S1
