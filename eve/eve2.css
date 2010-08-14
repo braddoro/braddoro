@@ -5,4 +5,4 @@
 .odd {background-color: #99A68C;}
 .even {background-color: #A6A68C;}
 .accentrow {padding: 2px;background-color: #ACACAC;}
-.fields {background-color:#ivory;}
+.fields {background-color:#ivory;border: 1px solid black;}

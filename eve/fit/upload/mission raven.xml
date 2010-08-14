@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+	<fittings>
+		<fitting name="Mission">
+			<description value=""/>
+			<shipType value="Raven"/>
+			<hardware slot="hi slot 1" type="Cruise Missile Launcher II"/>
+			<hardware slot="hi slot 7" type="Large Partial E95c Power Conduit"/>
+			<hardware slot="low slot 2" type="Ballistic Control System II"/>
+			<hardware slot="low slot 1" type="Power Diagnostic System II"/>
+			<hardware slot="med slot 2" type="Invulnerability Field II"/>
+			<hardware slot="hi slot 0" type="Cruise Missile Launcher II"/>
+			<hardware slot="rig slot 1" type="Large Capacitor Control Circuit I"/>
+			<hardware slot="low slot 3" type="Ballistic Control System II"/>
+			<hardware slot="hi slot 5" type="Cruise Missile Launcher II"/>
+			<hardware slot="hi slot 6" type="Large Coaxial Regenerative Projector"/>
+			<hardware slot="low slot 0" type="Damage Control II"/>
+			<hardware slot="hi slot 4" type="Cruise Missile Launcher II"/>
+			<hardware slot="rig slot 0" type="Large Capacitor Control Circuit I"/>
+			<hardware slot="med slot 1" type="Shield Boost Amplifier II"/>
+			<hardware slot="low slot 4" type="Photonic CPU Enhancer I"/>
+			<hardware slot="rig slot 2" type="Large Core Defence Field Extender I"/>
+			<hardware slot="hi slot 3" type="Cruise Missile Launcher II"/>
+			<hardware slot="med slot 5" type="Heat Dissipation Field II"/>
+			<hardware slot="hi slot 2" type="Cruise Missile Launcher II"/>
+			<hardware slot="med slot 3" type="Photon Scattering Field II"/>
+			<hardware slot="med slot 0" type="X-Large Shield Booster II"/>
+			<hardware slot="med slot 4" type="Photon Scattering Field II"/>
+			<hardware qty="7" slot="drone bay" type="Hammerhead II"/>
+		</fitting>
+	</fittings>

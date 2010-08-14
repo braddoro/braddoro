@@ -25,6 +25,8 @@
 <cfif form.orderBy EQ "" or form.orderBy EQ "Sort Field">
 	<cfset form.orderBy = "P.constellation, P.system, P.planet, P.moon">
 </cfif>
+
+<cfset s_friends = "P.alliance = 'Rooks and Kings' OR P.alliance = 'FWA' OR P.alliance = 'VooDoo Technologies' OR P.alliance = 'Versatech Co.' OR P.alliance = 'SIN. Corp'">
 <cfquery datasource="braddoro" name="q_pos">
 	SELECT 
 	P.posListID,
@@ -80,10 +82,10 @@
 </cfif>
 <cfif isdefined("form.friendly")>
 	<cfif form.friendly EQ "Yes">
-		and (P.alliance = 'Rooks and Kings' OR P.alliance = 'FWA' OR P.alliance = 'VooDoo Technologies')
+		and (P.alliance = 'Rooks and Kings' OR P.alliance = 'FWA' OR P.alliance = 'VooDoo Technologies' OR P.alliance = 'Aeternus' OR P.alliance = 'Daisho Syndicate' OR P.alliance = 'BLOC') 
 	</cfif>
 	<cfif form.friendly EQ "No">
-		and (P.alliance <> 'Rooks and Kings' AND P.alliance <> 'FWA' AND P.alliance <> 'VooDoo Technologies')
+		and (P.alliance <> 'Rooks and Kings' AND P.alliance <> 'FWA' AND P.alliance <> 'VooDoo Technologies' AND P.alliance <> 'Aeternus' AND P.alliance <> 'Daisho Syndicate' AND P.alliance <> 'BLOC') 
 	</cfif>
 </cfif>
 
@@ -92,7 +94,6 @@
 		and M.rarity >= 16
 	</cfif>
 </cfif>
-
 	order by #orderby# #sortDir#
 </cfquery>
 

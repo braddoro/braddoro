@@ -60,7 +60,7 @@
 			set
 			  reserveID = #val(form.reserveID)#,
 			  fuelType = '#form.fuelType#',
-			  amount = #val(form.amount)#,
+			  amount = #val(form.amount2)#,
 			  system = '#form.systemName#',
 			  destination = '#form.destination#',
 			  fueldate = now()
@@ -70,7 +70,7 @@
 	<cfelse>
 		<cfquery datasource="braddoro" name="q_sql">
 			insert into dyn_pos_fuel_reserve_location (reserveID, fuelType, amount, system, destination, fuelDate)
-			values (#val(form.reserveID)#, '#form.fuelType#', #val(form.amount)#, '#form.systemName#', '#form.destination#', now())
+			values (#val(form.reserveID)#, '#form.fuelType#', #val(form.amount2)#, '#form.systemName#', '#form.destination#', now())
 		</cfquery>
 	</cfif>
 </cfcase>
@@ -593,7 +593,7 @@ order by
     D.attribute
 </cfquery>
 
-<cfset i_cols = 5>
+<cfset i_cols = 7>
 <table class="inputtable">
 <cfoutput>
 	<!--- <tr>
@@ -607,8 +607,10 @@ order by
 </cfoutput>
 <tr>
 	<td class="header" align="left" style="padding-right:5px;">Fuel Type</td>
+	<td class="header" align="right" style="padding-right:5px;">Months</td>
+	<td class="header" align="right" style="padding-right:5px;">Needed</td>
 	<td class="header" align="right" style="padding-right:5px;">Shortfall</td>
-	<td class="header" align="right" style="padding-right:5px;">Cash Needed</td>
+	<td class="header" align="right" style="padding-right:5px;">Value</td>
 	<td class="header" align="right" style="padding-right:5px;">On Hand</td>
 	<td class="header" align="right" style="padding-right:5px;">Ice Needed</td>
 </tr>
@@ -616,14 +618,21 @@ order by
 <cfoutput query="q_fuel">
 	<tr>
 		<td align="left" style="padding-right:5px;">#fuelType#</td>
+		<td align="right" style="padding-right:5px;">#numberformat(onHand/needed,"0.0")#</td>
+		<td align="right" style="padding-right:5px;">#numberformat(needed)#</td>
 		<td align="right" style="padding-right:5px;">#numberformat(needed-onHand)#</td>
 		<td align="right" style="padding-right:5px;">
+			<!--- 
 			<cfif fuelType EQ "Heavy Water" OR fuelType EQ "Liquid Ozone" OR fuelType CONTAINS "Isotopes">
 				&nbsp;
 			<cfelse>
-				#dollarformat((needed-onHand)*min)#
-				<cfset i_total = i_total + (needed-onHand)*min>
+				#dollarformat((onHand)*min)#
+				needed- 
+				<cfset i_total = i_total + (onHand)*min>
 			</cfif>
+			--->
+			#dollarformat((onHand)*min)#
+			<cfset i_total = i_total + (onHand)*min>
 		</td>
 		<td align="right" style="padding-right:5px;">#numberformat(onHand)#</td>
 		<td align="right" style="padding-right:5px;">
@@ -642,8 +651,8 @@ order by
 <cfoutput>
 	<tr>
 		<td class="header" align="right" style="padding-right:5px;" colspan="2"><strong>Cash Needed</strong></td>
-		<td class="header" align="right" style="padding-right:5px;"><strong>#dollarformat(i_total)#</strong></td>
-		<td class="header" colspan="2">&nbsp;</td>
+		<td class="header" align="right" style="padding-right:5px;" colspan="2"><strong>#dollarformat(i_total)#</strong></td>
+		<td class="header" colspan="3">&nbsp;</td>
 	</tr>
 </cfoutput>	
 </table>
@@ -699,7 +708,7 @@ order by
 
 	<tr>
 	<td class="leftcol">Amount</td>
-	<td><input type="text" id="amount" name="amount" value="#val(q_fuel.amount)#" size="10"></td>			
+	<td><input type="text" id="amount2" name="amount2" value="#val(q_fuel.amount)#" size="10"></td>			
 	</tr>
 
 	<tr>
@@ -716,7 +725,7 @@ order by
 </form>
 </div>
 <cfif task EQ "add" or task EQ "edit">
-	<script language="JavaScript">document.getElementById("systemName").focus();</script>
+	<script language="JavaScript">document.getElementById("amount2").focus();</script>
 </cfif>
 </cfoutput>
 
