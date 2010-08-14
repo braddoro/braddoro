@@ -1,5 +1,7 @@
 <?php
 $s_title = "How-To";
+$i_howtoID = 2;
+
 $g_break = chr(10).chr(13);
 
 $s_server = "65.175.107.2:3306";
@@ -57,7 +59,7 @@ $objhowTo = new howTo();
 	}
 	function js_save() {
 		var s_ajax = "task=saveContent";
-		s_ajax += "&howtoID=1";
+		s_ajax += "&howtoID="+<?php echo $i_howtoID;?>;
 		s_ajax += "&chapterID=" + document.getElementById("chapterID").value;
 		s_ajax += "&headingID=" + document.getElementById("headingID").value;
 		s_ajax += "&displayOrder=" + document.getElementById("displayOrder").value;
@@ -108,7 +110,7 @@ echo '<textarea id="textContent" name="textContent" rows="10" cols="60"></textar
 echo '<button id="button_click" name="button_click" value="Save" onclick="js_save();">Save</button><br />'.$g_break;
 echo '<hr />';
 echo '<div id="div_output" name="div_output">';
-echo $objhowTo->outputHowTo();
+echo $objhowTo->outputHowTo($i_howtoID);
 echo '</div>';
 echo '</body>'.$g_break; 
 echo '</html>'.$g_break;
