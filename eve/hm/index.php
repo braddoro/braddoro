@@ -5,13 +5,21 @@ $s_server = "65.175.107.2:3306";
 $s_userName = "webapp";
 $s_password = "alvahugh";
 $s_db = "braddoro";
+
 $o_conn = mysql_connect($server=$s_server,$username=$s_userName,$password=$s_password);
 if (!$o_conn) {die_well(__LINE__,mysql_error());}
 $o_sel = mysql_select_db($s_db);
 if (!$o_sel) {die_well(__LINE__,mysql_error());}
-$s_sql = "select P.ship_purpose, S.ship_name, F.slot, F.fitting, F.shipFittingID, F.shipID, F.shipPurposeID, P.description from braddoro.dyn_ship_fitting F inner join braddoro.cfg_ship_type S on F.shipID = S.shipTypeID inner join braddoro.cfg_ship_purpose P on F.shipPurposeID = P.shipPurposeID order by P.ship_purpose, S.ship_name, F.slot, F.fitting;";
+$s_sql = "select P.ship_purpose, S.ship_name, F.slot, F.fitting, F.shipFittingID, F.shipID, F.shipPurposeID, P.description 
+from braddoro.dyn_ship_fitting F
+inner join braddoro.cfg_ship_type S
+    on F.shipID = S.shipTypeID
+inner join braddoro.cfg_ship_purpose P
+on F.shipPurposeID = P.shipPurposeID
+order by P.ship_purpose, S.ship_name, F.slot, F.fitting;";
 $q_data = mysql_query($s_sql);
 if (!$q_data) {die_well(__LINE__,mysql_error());}
+
 $s_row = "";
 $i_shipID = 0;
 $i_shipPurposeID = 0;
@@ -49,11 +57,13 @@ while ($row = mysql_fetch_row($q_data)) {
 	$s_row .= "<td><strong>$slot</strong></td>";
 	$s_row .= "<td>$fitting</td>";
 	$s_row .= "</tr>";
+	
 	$i_shipID = $shipID;
 	$i_shipPurposeID = $shipPurposeID;
 }
 mysql_free_result($q_data);
 /*
+
 <strong>Nidhoggur</strong><br/>
 Damage Control II<br/>
 Amarr Navy Energized Adaptive Nano Membrane<br/>
@@ -79,6 +89,10 @@ Large Trimark Armor Pump I<br/>
 Large Trimark Armor Pump I<br/>
 */
 ?>
+
+
+
+
 <html>
 <head>
 <title>Heavy Metal Ship Fitting Guide</title>
