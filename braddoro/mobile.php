@@ -66,11 +66,11 @@ while ($Row = mysql_fetch_row($q_data))
 	$addedDate	= $Row[8];
 	
 	$s_html .= "<tr class='accentrow' id='row_$i_rows'>\n";
-	$s_html .= "<td><strong>$title</strong></td>\n";
+	$s_html .= "<td><strong>$title : $topic</strong></td>\n";
 	$s_html .= "<td align='right'><strong>$siteName $addedDate</strong></td>\n";
 	$s_html .= "</tr>\n";
 	$s_html .= "<tr>\n";
-	$s_html .= "<td colspan='2' style='padding-left:10px;'>$post</td>\n";
+	$s_html .= "<td colspan='2'>$post</td>\n";
 	$s_html .= "</tr>\n";
 	$s_html .= "<tr>\n";
 	$s_html .= "<td><br/></td>\n";
