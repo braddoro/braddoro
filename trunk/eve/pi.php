@@ -50,7 +50,16 @@ for ($x=0;$x<sizeof($a_location);$x++)
 	}
 $s_sel .= "</select>";
 $s_html .= $s_sel;
+$s_html .= '<input class="s3" type="text" size="30" name="user" id="user" value=""/>';
 
+$s_sel = "<select id='cc_size' name='cc_size'>";
+$s_sel .= "<option value='1'>Basic</option>";
+$s_sel .= "<option value='2'>Intermediate</option>";
+$s_sel .= "<option value='3'>Standard</option>";
+$s_sel .= "<option value='4'>Advanced</option>";
+$s_sel .= "<option value='5'>Elite</option>";
+$s_sel .= "</select>";
+$s_html .= $s_sel;
 mysql_free_result($q_data);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
