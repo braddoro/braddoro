@@ -7,6 +7,9 @@
 <cfset obj_user = 			createObject("component","braddoro.user.user_logic").init(dsn=session.siteDsn)>
 <cfset obj_post = 			createObject("component","braddoro.post.post_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
 <cfset obj_date = 			createObject("component","braddoro.date.date_logic").init(dsn=session.siteDsn,userID=Val(session.userID))>
+<cfif not isdefined("session.userID")>
+	<cfset session.userID = 0>
+</cfif>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
