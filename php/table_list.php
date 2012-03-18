@@ -17,6 +17,8 @@ if (!$db_selected) {
 }
 
 /*
+// Mf8jU4zp6dd2
+
 $q_data = mysql_query("
 INSERT INTO default.db_log (log_time, log_type, log_item, log_detail)
 VALUES ('test', 'this is a test', 'this is a test record.');
@@ -127,3 +129,5 @@ mysql_close($link);
 ?>
 </body>
 </html>
+
+Mf8jU4zp6dd2
